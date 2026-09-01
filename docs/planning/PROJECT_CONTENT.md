@@ -71,29 +71,36 @@ This order is editorial, not chronological.
 
 # 2. V1 Case Studies
 
-V1 launches with:
+**Updated by M1-04 — ADR-012 (Home content exclusivity, `docs/DECISIONS.md`):**
+a named project/study now has exactly one primary Home section. V1 launches
+with:
 
 ```text
 CASE STUDY / 01
-Procurement Intelligence
+Steel Indicator
 
 CASE STUDY / 02
-Steel Indicator
+Developer Market Research / CNN Brasil
 ```
 
 Why:
 
 ```text
-Procurement Intelligence
-→ strongest ML + data product evidence
-
 Steel Indicator
-→ strongest engineering + methodology evidence
+→ strongest engineering + methodology evidence; its value is in the
+  problem, provenance and reproducibility, not just "what was built"
+
+Developer Market Research / CNN Brasil
+→ applied research, analysis, communication and public impact — a
+  different kind of case study than the two engineering-heavy Selected
+  Work flagships
 ```
 
-Application Job remains a normal Project in V1.
+Procurement Intelligence is a Selected Work-only flagship — no duplicate
+Case Study (avoids repeating the same project across Home sections).
 
-Employee Attrition Prediction remains a normal Project in V1.
+Application Job and Employee Attrition Prediction remain Selected Work
+projects in V1, not Case Studies.
 
 ---
 
@@ -765,6 +772,10 @@ Rebuild the architecture using portfolio components.
 ---
 
 # 17. Procurement Intelligence — Case Study outline
+
+**Deferred by M1-04 (ADR-012):** Procurement Intelligence is Selected
+Work-only in V1 — this outline stays as reference for a future full case
+study page, not the V1 Case Studies Home section (see §2).
 
 Official sections:
 
@@ -2304,29 +2315,37 @@ e as decisões por trás do resultado final.
 
 # 57. Case Study / 01 card
 
+**Renumbered by M1-04 (ADR-012):** Steel Indicator is now Case Study / 01
+(was / 02) — Procurement Intelligence's card moved out of Case Studies
+entirely (Selected Work-only, see §2, §17). Card format also changed:
+Case Studies use label+sentence evidence blocks (problem/decisions, not
+big-number tiles) to read as more analytical than Selected Work's proof
+grid — see the Case Study design principle in HOME_WIREFRAME §21 and
+`src/components/ui/CaseStudyFeature.tsx`.
+
 ## EN
 
 ```text
 CASE STUDY / 01
 
-Procurement Intelligence
+Steel Indicator
 
-From millions of public procurement records
-to a reproducible price-intelligence system.
+Building an auditable economic indicator
+from fragmented public data.
 
-5.7M+
-transactions
+PROBLEM
+Fragmented public sources and changing policy parameters.
 
-124
-automated tests
+ENGINEERING
+Immutable vintages and source provenance.
 
-BRONZE → SILVER → GOLD
-data architecture
+METHODOLOGY
+Versioned index methodology and declared proxies.
 
-TEMPORAL
-ML validation
+RELIABILITY
+529 automated tests.
 
-Read case study →
+GitHub ↗
 ```
 
 ---
@@ -2336,53 +2355,81 @@ Read case study →
 ```text
 ESTUDO DE CASO / 01
 
-Procurement Intelligence
+Steel Indicator
 
-De milhões de registros de compras públicas
-a um sistema reproduzível de inteligência de preços.
+Construindo um indicador econômico auditável
+a partir de dados públicos fragmentados.
 
-5,7M+
-transações
+PROBLEMA
+Fontes públicas fragmentadas e parâmetros de política em constante
+mudança.
 
-124
-testes automatizados
+ENGENHARIA
+Vintages imutáveis e rastreabilidade de origem dos dados.
 
-BRONZE → SILVER → GOLD
-arquitetura de dados
+METODOLOGIA
+Metodologia de índice versionada e proxies declarados.
 
-TEMPORAL
-validação de ML
+CONFIABILIDADE
+529 testes automatizados.
 
-Ler estudo de caso →
+GitHub ↗
 ```
 
 ---
 
 # 58. Case Study / 02 card
 
+**New in M1-04 (ADR-012):** Developer Market Research / CNN Brasil replaces
+Procurement Intelligence as Case Study / 02. This is a research/
+communication case study, not an engineering one — see the "safe
+positioning" rules below before editing this copy.
+
+Evidence-safety rules for this card specifically:
+
+- Do not attribute the 5,000+ quantitative responses / ~50 qualitative
+  interviews figures (from the user's master résumé) to this specific CNN
+  study unless repository/document evidence proves they're the same
+  research initiative — they may refer to a different Rocketseat research
+  effort. Not connected as of M1-04.
+- Do not overstate individual authorship ("I authored the definitive
+  study", "CNN commissioned my research", "I was interviewed by CNN")
+  unless evidence supports it. Prefer "research I contributed to" /
+  "analysis developed during my work at Rocketseat" / "findings reached
+  CNN Brasil".
+- The external link (https://lnkd.in/p/djifF6qh) is a LinkedIn post
+  containing the CNN coverage/video — not a direct CNN URL. Do not present
+  it as one.
+- The "~20%" figure is the user's own provided research theme ("mulheres
+  ocupam somente 20% dos empregos em tecnologia"), used only as a hedged,
+  decorative diagram stat ("~20% reported representation"), not asserted
+  as a precise, independently-sourced statistic in the accessible evidence
+  text.
+
 ## EN
 
 ```text
 CASE STUDY / 02
 
-Steel Indicator
+Developer Market Research
 
-Building an auditable economic indicator
-from fragmented public data.
+Research and data analysis developed during my time at Rocketseat, with
+findings on women's representation in technology reaching CNN Brasil.
 
-529
-automated tests
+QUESTION
+What does the Brazilian technology workforce look like?
 
-IMMUTABLE
-data vintages
+RESEARCH
+Market and workforce data analysis, conducted during my time at Rocketseat.
 
-VERSIONED
-methodology
+FINDING
+Women represented a minority of technology employment in the reported
+analysis.
 
-AUDITABLE
-publication pipeline
+IMPACT
+The finding reached CNN Brasil coverage.
 
-Read case study →
+Watch coverage ↗
 ```
 
 ---
@@ -2392,24 +2439,27 @@ Read case study →
 ```text
 ESTUDO DE CASO / 02
 
-Steel Indicator
+Pesquisa sobre o Mercado de Tecnologia
 
-Construindo um indicador econômico auditável
-a partir de dados públicos fragmentados.
+Pesquisa e análise de dados desenvolvidas durante minha atuação na
+Rocketseat, com resultados sobre a participação feminina no mercado de
+tecnologia chegando à CNN Brasil.
 
-529
-testes automatizados
+QUESTÃO
+Como se configura o mercado de tecnologia no Brasil?
 
-IMUTÁVEIS
-vintages de dados
+PESQUISA
+Análise de dados de mercado e força de trabalho, conduzida durante minha
+atuação na Rocketseat.
 
-VERSIONADA
-metodologia
+ACHADO
+Mulheres representaram uma minoria dos empregos em tecnologia na análise
+reportada.
 
-AUDITÁVEL
-pipeline de publicação
+REPERCUSSÃO
+O achado chegou à cobertura da CNN Brasil.
 
-Ler estudo de caso →
+Assistir cobertura ↗
 ```
 
 ---
@@ -3027,6 +3077,10 @@ It is an internal editorial principle.
 
 # 79. Home Selected Work final order — EN
 
+Updated by M1-04 (ADR-012, Home content exclusivity): Steel Indicator moved
+out of Selected Work into Case Studies (§81) — a named project/study now has
+one primary Home section, not two. Selected Work is three projects, not four.
+
 ```text
 02 / SELECTED WORK
 
@@ -3038,14 +3092,10 @@ Procurement Intelligence
 Machine Learning · Data Product
 
 02
-Steel Indicator
-Data Engineering · Economic Intelligence
-
-03
 Application Job
 AI Automation · Productivity System
 
-04
+03
 Employee Attrition Prediction
 Machine Learning · People Analytics
 ```
@@ -3065,14 +3115,10 @@ Procurement Intelligence
 Machine Learning · Produto de Dados
 
 02
-Steel Indicator
-Engenharia de Dados · Inteligência Econômica
-
-03
 Application Job
 Automação com IA · Sistema de Produtividade
 
-04
+03
 Employee Attrition Prediction
 Machine Learning · People Analytics
 ```
@@ -3081,17 +3127,23 @@ Machine Learning · People Analytics
 
 # 81. Case Studies final order — EN
 
+Updated by M1-04 (ADR-012, Home content exclusivity): Procurement
+Intelligence stays a Selected Work-only feature (no duplicate Case Study).
+Case Studies is now Steel Indicator (engineering/methodology depth) +
+Developer Market Research / CNN Brasil (applied research/communication) —
+two genuinely different kinds of case study, not two ML/data products.
+
 ```text
 03 / CASE STUDIES
 
 The reasoning behind
-the systems.
+the work.
 
 01
-Procurement Intelligence
+Steel Indicator
 
 02
-Steel Indicator
+Developer Market Research
 ```
 
 ---
@@ -3102,13 +3154,13 @@ Steel Indicator
 03 / ESTUDOS DE CASO
 
 O raciocínio por trás
-dos sistemas.
+do trabalho.
 
 01
-Procurement Intelligence
+Steel Indicator
 
 02
-Steel Indicator
+Pesquisa sobre o Mercado de Tecnologia
 ```
 
 ---

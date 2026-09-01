@@ -1640,14 +1640,18 @@ This section is intentionally more editorial and analytical than Projects.
 
 ## 21.2 Header
 
+Updated by M1-04 (ADR-012): "the systems" -> "the work" — Case Studies now
+mixes an engineering case (Steel) with a research/communication case
+(Developer Market Research), not two systems.
+
 ```text
 03 / CASE STUDIES
 
 The reasoning behind
-the systems.
+the work.
 
-Problems, architecture, validation,
-trade-offs and what did not work the first time.
+Problems, architecture, methodology,
+trade-offs and evidence behind selected work.
 ```
 
 ---
@@ -3677,6 +3681,8 @@ Ver todos os projetos →
 
 ## Case Studies
 
+Updated by M1-04 (ADR-012): "dos sistemas" -> "do trabalho".
+
 Label:
 
 ```text
@@ -3687,7 +3693,7 @@ Headline:
 
 ```text
 O raciocínio por trás
-dos sistemas.
+do trabalho.
 ```
 
 Supporting:

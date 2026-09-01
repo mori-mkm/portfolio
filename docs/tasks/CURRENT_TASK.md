@@ -4,127 +4,163 @@
 
 ## Task
 
-ID: M1-03
-Title: Selected Work
+ID: M1-04
+Title: Case Studies Home + Selected Work editorial correction
 Status: done
 
 ## Goal
 
-Implement the Home's Selected Work section with four evidence-backed
-projects, maintaining the approved Minimal + Technical + Editorial visual
-system.
+1. Correct Employee Attrition's Selected Work layout (it had genuinely
+   different diagram anatomy from the other three projects).
+2. Remove Steel Indicator from Selected Work.
+3. Rebalance Selected Work around three projects.
+4. Build `03 / Case Studies`.
+5. Add Steel Indicator as Case Study / 01.
+6. Add Developer Market Research / CNN Brasil as Case Study / 02.
+7. Maintain EN/PT.
+8. Preserve the current approved visual identity.
 
 ## Scope
 
 IN:
 
-- section header
-- Procurement Intelligence
-- Steel Indicator
-- Application Job
-- Employee Attrition Prediction
-- EN/PT
+- fixing Employee Attrition's diagram anatomy (Selected Work)
+- removing Steel from Selected Work's rendered project list
+- new Case Studies section (`id="case-studies"`) with 2 case studies
+- ADR-012 (Home content exclusivity) + planning-doc updates to match
+- EN/PT for all of the above
 - responsive desktop/mobile
-- project evidence
-- working external links
-- accessible project structure
-- restrained interactions
+- evidence-safe CNN research copy (no unverified authorship/figures)
 
 OUT:
 
-- project detail pages
-- case-study pages
-- Projects index
-- Case Studies Home
-- Experience
-- Research
-- other Home sections
+- project detail pages / `/[locale]/projects/[slug]`
+- `/[locale]/case-studies/[slug]` detail pages
+- Experience, Research, Capabilities, Writing, Contact, Footer
 - new dependencies
 
 ## Verification
 
 ```bash
-npm run verify   # PASS (lint + build), run twice — before and after the
-                  # ESTRUTURADA overflow fix below
+npm run verify   # PASS — run 3x across the session (after the code changes,
+                  # unaffected by the doc-only edits, and again during the
+                  # reviewer's independent re-run)
+git diff --check # PASS
 ```
 
 Manual visual review (headless Chromium via Playwright against `npm run dev`,
-since no interactive browser is available in this environment):
+same approach as M1-03 — no interactive browser available in this
+environment):
 
 - `/en` 1440x900 — checked, 0px horizontal overflow, screenshotted + inspected
 - `/en` 390x844 — checked, 0px horizontal overflow, screenshotted + inspected
 - `/pt` 1440x900 — checked, 0px horizontal overflow, screenshotted + inspected
 - `/pt` 390x844 — checked, 0px horizontal overflow, screenshotted + inspected
 
-All four combinations were both measured (`scrollWidth - clientWidth === 0`)
-and visually inspected via full-page screenshots + zoomed crops. Not a
-substitute for the user's own look, but not skipped either.
+Confirmed via screenshot + zoomed crops: Selected Work has exactly 3
+projects with the correct alternation (Procurement text|visual, Application
+Job visual|text, Attrition text|visual); Attrition's diagram now uses the
+same vertical box+arrow anatomy as the other two, just smaller/tighter, not
+a different structure; Case Studies renders both studies with wrapping
+diagrams and no horizontal scroll at any breakpoint; PT's longer evidence
+labels ("CONFIABILIDADE", "REPERCUSSÃO") wrap cleanly, no overflow (this
+component uses small wrapping label/sentence text, not the large single-line
+values that caused M1-03's "ESTRUTURADA" bug — that bug class doesn't apply
+here).
 
 ## Evidence / notes
 
-- Bug found and fixed during implementation: PT-BR's "ESTRUTURADA" proof
-  value (Application Job, `docs/planning/PROJECT_CONTENT.md` §35) overflowed
-  its 2-column proof grid into the neighboring column at the original
-  28px/34px (mobile/desktop) type size — confirmed via zoomed screenshot
-  crop. Fixed by reducing proof-value type to 24px/30px and adding
-  `break-words` (`src/components/ui/ProjectFeature.tsx`) as a safety net for
-  any future long translated value. This is a **deliberate, permanent
-  deviation** from WIREFRAME §14.3's spec'd 32-40px metric-value range,
-  applied uniformly to all four projects in both locales — not a one-off
-  patch. Recorded here per the reviewer's finding; not significant enough
-  to warrant a separate ADR.
+- **Employee Attrition root cause**: `ProjectVisual.tsx` previously had TWO
+  diagram-rendering functions — `PipelineDiagram` (vertical box+arrow,
+  used by procurement/steel/application-job) and a one-off `AttritionDiagram`
+  (horizontal flex-wrap chip row + separate centered stat). That's a genuine
+  structural inconsistency, not just a scale difference. Fixed by deleting
+  `AttritionDiagram` and routing all four kinds through one `PipelineDiagram`
+  function, parameterized by `stages: string[]`, an optional trailing
+  `stat?: {value, label}` (used by attrition: "74% / Recall"), and a
+  `compact` flag that only affects padding/gap/container-height — never
+  structure. This makes the anatomy bug structurally impossible to
+  reintroduce by accident (there's only one diagram renderer left).
+- **Home content exclusivity (ADR-012)**: recorded in `docs/DECISIONS.md`.
+  Steel Indicator moved from Selected Work into Case Studies; Procurement
+  Intelligence stays Selected Work-only (no duplicate Case Study, unlike the
+  original plan). Source-of-truth docs updated to match: `PROJECT_CONTENT.md`
+  §2 (V1 Case Studies scope), §17 (Procurement Case Study outline marked
+  deferred), §57-58 (Case Study cards rewritten to match what was actually
+  implemented, incl. an evidence-safety rules block for the CNN case study),
+  §79-82 (Selected Work / Case Studies final order, EN+PT); `PORTFOLIO_SPEC.md`
+  §10.2-10.3, §13.2; `HOME_WIREFRAME.md` §21.2 (EN+PT header text, "the
+  systems" -> "the work").
+- **Case Studies vs. Selected Work anatomy**: deliberately different
+  components, not a reused `ProjectFeature`. Selected Work = alternating
+  two-column text/visual grid + big-number proof tiles ("what did I build").
+  Case Studies = single-column editorial block (title -> positioning ->
+  diagram -> label+sentence evidence blocks -> link), same typography/
+  border/spacing tokens but a genuinely different structure ("how did I
+  think about the problem"). No CSS reordering needed since DOM order
+  already matches the required order at every breakpoint.
+- **CNN case study evidence safety** (the highest-risk content in this
+  task): verified no invented claims.
+  - No individual-authorship overstatement anywhere — copy uses "research
+    ... developed during my time at Rocketseat" / "analysis ... conducted
+    during my time at Rocketseat", never "I authored" / "CNN commissioned
+    my research" / "I was interviewed by CNN".
+  - The master résumé's "5,000+ quantitative responses / ~50 qualitative
+    interviews" figures are explicitly NOT attributed to this CNN study
+    anywhere in rendered content — `PROJECT_CONTENT.md` §58 has an explicit
+    rule against doing so (no proof they're the same research initiative).
+  - "~20%" (from the user's own provided theme, "mulheres ocupam somente
+    20% dos empregos em tecnologia") appears ONLY as a hedged, decorative,
+    `aria-hidden` diagram stat ("~20% reported representation") —
+    deliberately absent from the accessible FINDING evidence text, which
+    states the qualitative claim ("a minority") without the number.
+  - The external link (`https://lnkd.in/p/djifF6qh`) is labeled "Watch
+    coverage" / "Assistir cobertura", not presented as a direct CNN URL —
+    it's a LinkedIn post containing the coverage. Verified live (200,
+    resolves to a real post under the user's own LinkedIn handle).
+- **No dead links**: `CaseStudyFeature.tsx` only renders `githubHref` (Steel)
+  or `externalHref`+`externalLabel` (CNN) when present — no `/case-studies/
+  [slug]` route exists yet, so no "Read case study →" internal link was
+  rendered anywhere.
+- **No regressions**: `Header.tsx`, `Hero.tsx`, `About.tsx`, and
+  `ProjectFeature.tsx` are untouched (confirmed via `git diff --stat`).
+  `package.json` untouched — no new dependency. No `"use client"` in any
+  new/changed file.
 - Reviewer self-review (`.claude/agents/reviewer.md`) ran against the full
-  diff: verdict **PASS**. 2 MINOR findings addressed (the type-scale
-  deviation above, now recorded; and a decorative-diagram code comment that
-  overstated text/visual parity, corrected in
-  `src/components/ui/ProjectVisual.tsx`). 2 NOTE-level items left as
-  optional future polish (no "View all projects →" link — correctly
-  omitted, `/projects` doesn't exist yet; GitHub/Live Demo links share a
-  generic accessible name across projects — works fine today, an
-  `aria-label` per link would be a cheap future improvement).
-- No project screenshots exist in `public/` yet — confirmed by listing the
-  directory before building. All four project visuals are restrained
-  CSS/mono "system diagrams" derived only from verified evidence (pipeline
-  stage names, stack), not screenshots and not claimed to be screenshots.
-- All 5 external links (4x GitHub, 1x Streamlit live demo) verified with
-  `curl` to resolve successfully. The Streamlit demo initially showed a
-  redirect loop (303) under `curl -L` without cookie persistence — this is
-  Streamlit Community Cloud's normal session-cookie handshake, not a broken
-  link; re-tested with a cookie jar and confirmed a clean 200. A real
-  browser handles this transparently.
-- Content (category/title/description/proof/stack, EN+PT, all 4 projects)
-  copied verbatim from `docs/planning/PROJECT_CONTENT.md` §9, §21, §35, §44
-  (the per-project "Home copy" sections — more specific/authoritative than
-  SPEC §10.3's earlier draft list, used where the two differed, e.g. Steel's
-  "PUBLIC data pipeline" over the task prompt's approximate "AUDITABLE
-  publication pipeline"). No invented claims (ADR-007).
-- Section header PT copy: headline "Sistemas construídos para / resolver
-  problemas reais." taken from the approved translation already present in
-  `HOME_WIREFRAME.md` §63 / `PROJECT_CONTENT.md` §80 (not the task prompt's
-  looser fallback wording). Supporting line has no approved PT source yet,
-  so the task's fallback wording was used as instructed.
-- `/[locale]/projects/*` and `/[locale]/case-studies/*` remain unbuilt by
-  design. No internal `Case Study →` / `View project →` links were rendered
-  anywhere — only `githubHref`/`demoHref` (optional fields, only rendered
-  when set) produce links, and both are real external URLs opened with
-  `target="_blank" rel="noopener noreferrer"`.
+  diff: verdict **PASS**. Answered all 10 review questions from the task
+  brief explicitly (no duplicate projects across sections, Steel fully
+  removed from Selected Work, Attrition's diagram anatomy now unified,
+  CNN copy evidence-safe, 5,000/50 figures not misattributed, external URLs
+  verified live, no dead links, PT overflow risk low — different bug class
+  than M1-03's, no SaaS-card aesthetics, no regressions to Header/Hero/
+  About/ProjectFeature). One MAJOR finding — this file and
+  `.claude/state/progress.md` not yet updated for M1-04 — addressed by this
+  update. Two NOTE-level items accepted as-is: `PORTFOLIO_SPEC.md` §10.3's
+  old 4-project draft stays below a pointer note to the authoritative
+  `PROJECT_CONTENT.md` sections rather than being fully rewritten (deliberate,
+  minimal-edit scope); diagram stage labels stay in English regardless of
+  locale (decorative, `aria-hidden`, same precedent already accepted in
+  M1-03).
 
 ## Final result
 
-- Changed: `src/content/home.ts` (extended with `SelectedWorkContent` /
-  `SelectedProject` / `ProjectProof` / `ProjectVisualKind` types + EN/PT data
-  for all 4 projects), `src/app/[locale]/page.tsx` (wires `SelectedWork` in
-  after `About`). New: `src/components/sections/SelectedWork.tsx`,
-  `src/components/ui/ProjectFeature.tsx`, `src/components/ui/ProjectVisual.tsx`
-  — all Server Components, no new dependency, no unnecessary Client
-  Component (hover is pure CSS).
-- Verification: `npm run verify` PASS (confirmed twice, incl. after the
-  overflow fix). `git diff --check` PASS. Reviewer self-review PASS (2 MINOR
-  findings addressed above, 2 NOTE items left as optional future polish).
-  Manual visual check: `/en` and `/pt` at 1440px and 390px, screenshotted and
-  inspected, 0px horizontal overflow measured at all four.
-- Not done (explicitly out of scope for M1-03, tracked for later
-  milestones): "View all projects →" link (needs `/projects`, M1-06+);
-  per-link `aria-label`s distinguishing GitHub links across projects
-  (optional polish); real project screenshots to replace the system-diagram
-  placeholders, if/when approved assets exist.
+- Changed: `src/content/home.ts` (removed Steel from `selectedWork.projects`
+  + re-indexed, added `caseStudies` content block + `CaseStudy`/`CaseEvidence`/
+  `CaseStudyVisualKind`/`CaseStudiesContent` types, EN+PT), `src/components/
+  ui/ProjectVisual.tsx` (unified Attrition onto the shared `PipelineDiagram`),
+  `src/app/[locale]/page.tsx` (wires `CaseStudies` in after `SelectedWork`),
+  `docs/DECISIONS.md` (ADR-012), `docs/planning/{PROJECT_CONTENT,
+  PORTFOLIO_SPEC,HOME_WIREFRAME}.md` (updated to match). New:
+  `src/components/sections/CaseStudies.tsx`,
+  `src/components/ui/CaseStudyFeature.tsx` — both Server Components, no new
+  dependency, no unnecessary Client Component.
+- Verification: `npm run verify` PASS (run 3x, incl. the reviewer's own
+  independent re-run). `git diff --check` PASS. Reviewer self-review PASS
+  (1 MAJOR addressed — this state update; 2 NOTE items accepted as
+  documented above). Manual visual check: `/en` and `/pt` at 1440px and
+  390px, screenshotted and inspected, 0px horizontal overflow measured at
+  all four; Employee Attrition's fix and the new Case Studies section both
+  visually confirmed before/after.
+- Not done (explicitly out of scope for M1-04, tracked for later
+  milestones): `/case-studies/[slug]` detail pages (would activate a future
+  "Read case study →" internal CTA); Experience section (M1-05, next).

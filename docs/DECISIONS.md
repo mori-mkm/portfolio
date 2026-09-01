@@ -330,3 +330,44 @@ Negative / trade-off: the master document's full context isn't available to a fu
 
 - Do not write the originally-uploaded (non-redacted) master resume file to any path under the repository.
 - When the user sends a redacted copy, confirm it truly excludes phone/email before adding it anywhere `git`-tracked.
+
+---
+
+### ADR-012 — Home content exclusivity
+
+**Date:** 2026-09-01
+**Status:** accepted
+
+**Context**
+
+Repeating the same strongest projects/studies in Selected Work, Case Studies and (later) Research creates redundancy and weakens the editorial narrative. Selected Work originally featured all 4 V1 projects (incl. Steel Indicator), and Case Studies originally featured Procurement Intelligence + Steel Indicator — meaning Procurement and Steel were each planned to appear twice on the same Home page.
+
+**Decision**
+
+Each named project/study has exactly one primary Home section. Current allocation:
+
+Selected Work:
+- Procurement Intelligence
+- Application Job
+- Employee Attrition Prediction
+
+Case Studies:
+- Steel Indicator
+- Developer Market Research / CNN Brasil
+
+Experience may reference a company/job context (e.g. Rocketseat as employment) but must not reproduce a full project/case-study treatment already given elsewhere. Future content (FarmAI/Santander Hackathon, Retail Sales Forecasting, UFSCar, Closer AI, etc.) must be assigned to one narrative section before implementation, not added opportunistically to whichever section is being worked on.
+
+**Alternatives considered**
+
+- Keep Steel in both Selected Work and Case Studies — rejected: directly repeats the same project's evidence in two sections of the same page, diluting both.
+- Also feature Procurement in Case Studies (as originally planned) — rejected once the exclusivity rule was adopted: Procurement's Selected Work treatment (5.7M+ transactions, 124 tests, live dashboard) already carries its strongest evidence; a second card would be redundant, not additive.
+
+**Consequences**
+
+Positive: each Home section has a distinct narrative job (Selected Work = "what did I build", Case Studies = "how did I think about the problem"), no visitor sees the same project pitched twice.
+Negative / trade-off: Selected Work is one project shorter (3 instead of 4) — accepted per the task brief ("do not force a fourth project merely for symmetry"). The Developer Market Research / CNN Brasil case study has less concrete engineering evidence than a code project (no repo, no tests) — mitigated by keeping its claims hedged (see `src/content/home.ts` and `PROJECT_CONTENT.md` §58's evidence-safety rules): no unverified authorship claims, and the 5,000+ responses / ~50 interviews figures from the user's master résumé are explicitly NOT attributed to this specific CNN study without documented proof they're the same research initiative.
+
+**Verification / follow-up**
+
+- `docs/planning/PROJECT_CONTENT.md` §2, §17, §57-58, §79-82 and `PORTFOLIO_SPEC.md` §10.2-10.3, §13.2 updated to match (M1-04).
+- Before adding any new named project/study to any Home section later, check it isn't already featured elsewhere on Home.

@@ -4,6 +4,7 @@ import { Header } from "@/components/layout/Header";
 import { Hero } from "@/components/sections/Hero";
 import { About } from "@/components/sections/About";
 import { SelectedWork } from "@/components/sections/SelectedWork";
+import { CaseStudies } from "@/components/sections/CaseStudies";
 import { homeContent } from "@/content/home";
 import { isValidLocale } from "@/lib/i18n";
 
@@ -81,6 +82,14 @@ export default async function HomePage({
           githubLabel={content.selectedWork.githubLabel}
           demoLabel={content.selectedWork.demoLabel}
           projects={content.selectedWork.projects}
+        />
+        <CaseStudies
+          eyebrow={content.caseStudies.eyebrow}
+          headlineLine1={content.caseStudies.headlineLine1}
+          headlineLine2={content.caseStudies.headlineLine2}
+          supportingCopy={content.caseStudies.supportingCopy}
+          githubLabel={content.caseStudies.githubLabel}
+          studies={content.caseStudies.studies}
         />
       </main>
     </>

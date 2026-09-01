@@ -22,6 +22,12 @@ import type { Locale } from "@/lib/i18n";
  *   sharing is "Anyone with the link -> Viewer". If it's set to "Editor",
  *   every site visitor could edit the resume. Flagged to the user; not
  *   verified from here (no access to the doc's sharing settings).
+ *
+ * `selectedWork` / `caseStudies` (M1-03/M1-04): see docs/DECISIONS.md
+ * ADR-012 (Home content exclusivity) for why Steel Indicator moved out of
+ * Selected Work and into Case Studies, and why the Developer Market
+ * Research / CNN Brasil case study is deliberately hedged (no unverified
+ * authorship or figures beyond what the user confirmed).
  */
 
 export type NavItem = {
@@ -68,6 +74,35 @@ export type SelectedWorkContent = {
   projects: SelectedProject[];
 };
 
+export type CaseStudyVisualKind = "steel" | "research";
+
+export type CaseEvidence = {
+  label: string;
+  text: string;
+};
+
+export type CaseStudy = {
+  index: string;
+  category: string;
+  title: string;
+  positioning: string;
+  evidence: CaseEvidence[];
+  visual: CaseStudyVisualKind;
+  /** Optional — only rendered when the destination actually exists (no dead links). */
+  githubHref?: string;
+  externalHref?: string;
+  externalLabel?: string;
+};
+
+export type CaseStudiesContent = {
+  eyebrow: string;
+  headlineLine1: string;
+  headlineLine2: string;
+  supportingCopy: string;
+  githubLabel: string;
+  studies: CaseStudy[];
+};
+
 type HomeContent = {
   brand: string;
   nav: NavItem[];
@@ -111,6 +146,7 @@ type HomeContent = {
     pillars: Pillar[];
   };
   selectedWork: SelectedWorkContent;
+  caseStudies: CaseStudiesContent;
 };
 
 export const homeContent: Record<Locale, HomeContent> = {
@@ -213,22 +249,6 @@ export const homeContent: Record<Locale, HomeContent> = {
         },
         {
           index: "02",
-          category: "DATA ENGINEERING · ECONOMIC INTELLIGENCE",
-          title: "Steel Indicator",
-          description:
-            "A reproducible and auditable platform for Brazilian steel-sector economic indices.",
-          proof: [
-            { value: "529", label: "automated tests" },
-            { value: "IMMUTABLE", label: "data vintages" },
-            { value: "VERSIONED", label: "methodology" },
-            { value: "PUBLIC", label: "data pipeline" },
-          ],
-          stack: "Python · Pandas · Public APIs · Docker",
-          visual: "steel",
-          githubHref: "https://github.com/mori-mkm/steel-indicator",
-        },
-        {
-          index: "03",
           category: "AI AUTOMATION · PRODUCTIVITY SYSTEM",
           title: "Application Job",
           description:
@@ -244,7 +264,7 @@ export const homeContent: Record<Locale, HomeContent> = {
           githubHref: "https://github.com/mori-mkm/application-job",
         },
         {
-          index: "04",
+          index: "03",
           category: "MACHINE LEARNING · PEOPLE ANALYTICS",
           title: "Employee Attrition Prediction",
           description:
@@ -258,6 +278,65 @@ export const homeContent: Record<Locale, HomeContent> = {
           stack: "Python · Scikit-learn · Imbalanced-learn",
           visual: "attrition",
           githubHref: "https://github.com/mori-mkm/HR-Predict",
+        },
+      ],
+    },
+    caseStudies: {
+      eyebrow: "03 / CASE STUDIES",
+      headlineLine1: "The reasoning behind",
+      headlineLine2: "the work.",
+      supportingCopy:
+        "Problems, architecture, methodology, trade-offs and evidence behind selected work.",
+      githubLabel: "GitHub",
+      studies: [
+        {
+          index: "01",
+          category: "DATA ENGINEERING · ECONOMIC INTELLIGENCE",
+          title: "Steel Indicator",
+          positioning:
+            "Building an auditable economic indicator from fragmented public data.",
+          evidence: [
+            {
+              label: "PROBLEM",
+              text: "Fragmented public sources and changing policy parameters.",
+            },
+            {
+              label: "ENGINEERING",
+              text: "Immutable vintages and source provenance.",
+            },
+            {
+              label: "METHODOLOGY",
+              text: "Versioned index methodology and declared proxies.",
+            },
+            { label: "RELIABILITY", text: "529 automated tests." },
+          ],
+          visual: "steel",
+          githubHref: "https://github.com/mori-mkm/steel-indicator",
+        },
+        {
+          index: "02",
+          category: "APPLIED RESEARCH · DATA SCIENCE",
+          title: "Developer Market Research",
+          positioning:
+            "Research and data analysis developed during my time at Rocketseat, with findings on women's representation in technology reaching CNN Brasil.",
+          evidence: [
+            {
+              label: "QUESTION",
+              text: "What does the Brazilian technology workforce look like?",
+            },
+            {
+              label: "RESEARCH",
+              text: "Market and workforce data analysis, conducted during my time at Rocketseat.",
+            },
+            {
+              label: "FINDING",
+              text: "Women represented a minority of technology employment in the reported analysis.",
+            },
+            { label: "IMPACT", text: "The finding reached CNN Brasil coverage." },
+          ],
+          visual: "research",
+          externalHref: "https://lnkd.in/p/djifF6qh",
+          externalLabel: "Watch coverage",
         },
       ],
     },
@@ -362,22 +441,6 @@ export const homeContent: Record<Locale, HomeContent> = {
         },
         {
           index: "02",
-          category: "ENGENHARIA DE DADOS · INTELIGÊNCIA ECONÔMICA",
-          title: "Steel Indicator",
-          description:
-            "Uma plataforma reproduzível e auditável para índices econômicos do setor siderúrgico brasileiro.",
-          proof: [
-            { value: "529", label: "testes automatizados" },
-            { value: "IMUTÁVEIS", label: "vintages de dados" },
-            { value: "VERSIONADA", label: "metodologia" },
-            { value: "PÚBLICO", label: "pipeline de dados" },
-          ],
-          stack: "Python · Pandas · APIs Públicas · Docker",
-          visual: "steel",
-          githubHref: "https://github.com/mori-mkm/steel-indicator",
-        },
-        {
-          index: "03",
           category: "AUTOMAÇÃO COM IA · SISTEMA DE PRODUTIVIDADE",
           title: "Application Job",
           description:
@@ -393,7 +456,7 @@ export const homeContent: Record<Locale, HomeContent> = {
           githubHref: "https://github.com/mori-mkm/application-job",
         },
         {
-          index: "04",
+          index: "03",
           category: "MACHINE LEARNING · PEOPLE ANALYTICS",
           title: "Employee Attrition Prediction",
           description:
@@ -407,6 +470,65 @@ export const homeContent: Record<Locale, HomeContent> = {
           stack: "Python · Scikit-learn · Imbalanced-learn",
           visual: "attrition",
           githubHref: "https://github.com/mori-mkm/HR-Predict",
+        },
+      ],
+    },
+    caseStudies: {
+      eyebrow: "03 / ESTUDOS DE CASO",
+      headlineLine1: "O raciocínio por trás",
+      headlineLine2: "do trabalho.",
+      supportingCopy:
+        "Problemas, arquitetura, metodologia, trade-offs e evidências por trás de trabalhos selecionados.",
+      githubLabel: "GitHub",
+      studies: [
+        {
+          index: "01",
+          category: "ENGENHARIA DE DADOS · INTELIGÊNCIA ECONÔMICA",
+          title: "Steel Indicator",
+          positioning:
+            "Construindo um indicador econômico auditável a partir de dados públicos fragmentados.",
+          evidence: [
+            {
+              label: "PROBLEMA",
+              text: "Fontes públicas fragmentadas e parâmetros de política em constante mudança.",
+            },
+            {
+              label: "ENGENHARIA",
+              text: "Vintages imutáveis e rastreabilidade de origem dos dados.",
+            },
+            {
+              label: "METODOLOGIA",
+              text: "Metodologia de índice versionada e proxies declarados.",
+            },
+            { label: "CONFIABILIDADE", text: "529 testes automatizados." },
+          ],
+          visual: "steel",
+          githubHref: "https://github.com/mori-mkm/steel-indicator",
+        },
+        {
+          index: "02",
+          category: "PESQUISA APLICADA · DATA SCIENCE",
+          title: "Pesquisa sobre o Mercado de Tecnologia",
+          positioning:
+            "Pesquisa e análise de dados desenvolvidas durante minha atuação na Rocketseat, com resultados sobre a participação feminina no mercado de tecnologia chegando à CNN Brasil.",
+          evidence: [
+            {
+              label: "QUESTÃO",
+              text: "Como se configura o mercado de tecnologia no Brasil?",
+            },
+            {
+              label: "PESQUISA",
+              text: "Análise de dados de mercado e força de trabalho, conduzida durante minha atuação na Rocketseat.",
+            },
+            {
+              label: "ACHADO",
+              text: "Mulheres representaram uma minoria dos empregos em tecnologia na análise reportada.",
+            },
+            { label: "REPERCUSSÃO", text: "O achado chegou à cobertura da CNN Brasil." },
+          ],
+          visual: "research",
+          externalHref: "https://lnkd.in/p/djifF6qh",
+          externalLabel: "Assistir cobertura",
         },
       ],
     },

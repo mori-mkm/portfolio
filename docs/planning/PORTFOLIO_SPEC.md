@@ -691,13 +691,22 @@ Ela precisa fazer o visitante querer explorar os projetos.
 
 V1:
 
-**4 projetos**
+**3 projetos**
+
+Atualizado no M1-04 (ADR-012, `docs/DECISIONS.md`): Steel Indicator saiu de
+Selected Work e passou a viver exclusivamente em Case Studies — um projeto
+nomeado tem uma única seção primária na Home.
 
 Não mostrar todo o GitHub.
 
 ---
 
 ## 10.3 Ordem recomendada — V1
+
+Esta subseção é o rascunho original (4 projetos, incluindo Steel e o link
+"Case Study →" em Procurement). A ordem e a composição **finais** estão em
+`PROJECT_CONTENT.md` §79-80 (Selected Work) e §81-82/§2/§57-58 (Case
+Studies) — consulte esses para a Home implementada.
 
 ### 01 — Procurement Intelligence
 
@@ -1048,16 +1057,20 @@ Projetos candidatos:
 
 Começar com dois.
 
+Atualizado no M1-04 (ADR-012): Procurement Intelligence permanece
+exclusivamente em Selected Work — sem Case Study duplicado. Ver
+`PROJECT_CONTENT.md` §2.
+
 ### Case Study / 01
 
 ```text
-Procurement Intelligence
+Steel Indicator
 ```
 
 ### Case Study / 02
 
 ```text
-Steel Indicator
+Developer Market Research / CNN Brasil
 ```
 
 Não esperar três para lançar.
