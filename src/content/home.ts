@@ -34,6 +34,40 @@ export type Pillar = {
   description: string;
 };
 
+export type ProjectVisualKind =
+  | "procurement"
+  | "steel"
+  | "application-job"
+  | "attrition";
+
+export type ProjectProof = {
+  value: string;
+  label: string;
+};
+
+export type SelectedProject = {
+  index: string;
+  category: string;
+  title: string;
+  description: string;
+  proof: ProjectProof[];
+  stack: string;
+  visual: ProjectVisualKind;
+  /** Optional — only rendered when the destination actually exists (no dead links). */
+  githubHref?: string;
+  demoHref?: string;
+};
+
+export type SelectedWorkContent = {
+  eyebrow: string;
+  headlineLine1: string;
+  headlineLine2: string;
+  supportingCopy: string;
+  githubLabel: string;
+  demoLabel: string;
+  projects: SelectedProject[];
+};
+
 type HomeContent = {
   brand: string;
   nav: NavItem[];
@@ -76,6 +110,7 @@ type HomeContent = {
     direction: string[];
     pillars: Pillar[];
   };
+  selectedWork: SelectedWorkContent;
 };
 
 export const homeContent: Record<Locale, HomeContent> = {
@@ -150,6 +185,82 @@ export const homeContent: Record<Locale, HomeContent> = {
         },
       ],
     },
+    selectedWork: {
+      eyebrow: "02 / SELECTED WORK",
+      headlineLine1: "Systems designed to",
+      headlineLine2: "solve real problems.",
+      supportingCopy:
+        "A selection of machine learning systems, AI workflows and data products.",
+      githubLabel: "GitHub",
+      demoLabel: "Live Demo",
+      projects: [
+        {
+          index: "01",
+          category: "MACHINE LEARNING · DATA PRODUCT",
+          title: "Procurement Intelligence",
+          description:
+            "A spend and price intelligence platform built on 5.7M+ public procurement transactions.",
+          proof: [
+            { value: "5.7M+", label: "transactions" },
+            { value: "124", label: "automated tests" },
+            { value: "TEMPORAL", label: "ML validation" },
+            { value: "LIVE", label: "dashboard" },
+          ],
+          stack: "Python · DuckDB · LightGBM · Streamlit",
+          visual: "procurement",
+          githubHref: "https://github.com/mori-mkm/procurement-intelligence",
+          demoHref: "https://procurement-intelligence-mkm.streamlit.app/",
+        },
+        {
+          index: "02",
+          category: "DATA ENGINEERING · ECONOMIC INTELLIGENCE",
+          title: "Steel Indicator",
+          description:
+            "A reproducible and auditable platform for Brazilian steel-sector economic indices.",
+          proof: [
+            { value: "529", label: "automated tests" },
+            { value: "IMMUTABLE", label: "data vintages" },
+            { value: "VERSIONED", label: "methodology" },
+            { value: "PUBLIC", label: "data pipeline" },
+          ],
+          stack: "Python · Pandas · Public APIs · Docker",
+          visual: "steel",
+          githubHref: "https://github.com/mori-mkm/steel-indicator",
+        },
+        {
+          index: "03",
+          category: "AI AUTOMATION · PRODUCTIVITY SYSTEM",
+          title: "Application Job",
+          description:
+            "An AI-assisted workflow that turns job descriptions and verified career evidence into tailored applications.",
+          proof: [
+            { value: "STRUCTURED", label: "JSON output" },
+            { value: "ATS", label: "DOCX generation" },
+            { value: "TRACKED", label: "applications" },
+            { value: "LOCAL", label: "AI workflow" },
+          ],
+          stack: "Python · Claude Code · JSON Schema · DOCX",
+          visual: "application-job",
+          githubHref: "https://github.com/mori-mkm/application-job",
+        },
+        {
+          index: "04",
+          category: "MACHINE LEARNING · PEOPLE ANALYTICS",
+          title: "Employee Attrition Prediction",
+          description:
+            "An interpretable classification workflow focused on identifying employees at higher attrition risk.",
+          proof: [
+            { value: "74%", label: "recall" },
+            { value: "SMOTE", label: "class balancing" },
+            { value: "THRESHOLD", label: "optimization" },
+            { value: "5-FOLD", label: "cross-validation" },
+          ],
+          stack: "Python · Scikit-learn · Imbalanced-learn",
+          visual: "attrition",
+          githubHref: "https://github.com/mori-mkm/HR-Predict",
+        },
+      ],
+    },
   },
 
   pt: {
@@ -220,6 +331,82 @@ export const homeContent: Record<Locale, HomeContent> = {
           title: "PRODUTOS DE DADOS",
           description:
             "Transformando modelos e análises em ferramentas que as pessoas realmente usam.",
+        },
+      ],
+    },
+    selectedWork: {
+      eyebrow: "02 / PROJETOS SELECIONADOS",
+      headlineLine1: "Sistemas construídos para",
+      headlineLine2: "resolver problemas reais.",
+      supportingCopy:
+        "Uma seleção de sistemas de machine learning, workflows de IA e produtos de dados.",
+      githubLabel: "GitHub",
+      demoLabel: "Demo",
+      projects: [
+        {
+          index: "01",
+          category: "MACHINE LEARNING · PRODUTO DE DADOS",
+          title: "Procurement Intelligence",
+          description:
+            "Uma plataforma de inteligência de gastos e preços construída sobre mais de 5,7 milhões de transações de compras públicas.",
+          proof: [
+            { value: "5,7M+", label: "transações" },
+            { value: "124", label: "testes automatizados" },
+            { value: "TEMPORAL", label: "validação de ML" },
+            { value: "LIVE", label: "dashboard" },
+          ],
+          stack: "Python · DuckDB · LightGBM · Streamlit",
+          visual: "procurement",
+          githubHref: "https://github.com/mori-mkm/procurement-intelligence",
+          demoHref: "https://procurement-intelligence-mkm.streamlit.app/",
+        },
+        {
+          index: "02",
+          category: "ENGENHARIA DE DADOS · INTELIGÊNCIA ECONÔMICA",
+          title: "Steel Indicator",
+          description:
+            "Uma plataforma reproduzível e auditável para índices econômicos do setor siderúrgico brasileiro.",
+          proof: [
+            { value: "529", label: "testes automatizados" },
+            { value: "IMUTÁVEIS", label: "vintages de dados" },
+            { value: "VERSIONADA", label: "metodologia" },
+            { value: "PÚBLICO", label: "pipeline de dados" },
+          ],
+          stack: "Python · Pandas · APIs Públicas · Docker",
+          visual: "steel",
+          githubHref: "https://github.com/mori-mkm/steel-indicator",
+        },
+        {
+          index: "03",
+          category: "AUTOMAÇÃO COM IA · SISTEMA DE PRODUTIVIDADE",
+          title: "Application Job",
+          description:
+            "Um fluxo assistido por IA que transforma descrições de vagas e evidências profissionais verificadas em candidaturas personalizadas.",
+          proof: [
+            { value: "ESTRUTURADA", label: "saída JSON" },
+            { value: "ATS", label: "geração DOCX" },
+            { value: "RASTREADAS", label: "candidaturas" },
+            { value: "LOCAL", label: "workflow de IA" },
+          ],
+          stack: "Python · Claude Code · JSON Schema · DOCX",
+          visual: "application-job",
+          githubHref: "https://github.com/mori-mkm/application-job",
+        },
+        {
+          index: "04",
+          category: "MACHINE LEARNING · PEOPLE ANALYTICS",
+          title: "Employee Attrition Prediction",
+          description:
+            "Um workflow de classificação interpretável focado em identificar funcionários com maior risco de desligamento.",
+          proof: [
+            { value: "74%", label: "recall" },
+            { value: "SMOTE", label: "balanceamento" },
+            { value: "THRESHOLD", label: "otimização" },
+            { value: "5-FOLD", label: "validação cruzada" },
+          ],
+          stack: "Python · Scikit-learn · Imbalanced-learn",
+          visual: "attrition",
+          githubHref: "https://github.com/mori-mkm/HR-Predict",
         },
       ],
     },

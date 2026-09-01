@@ -8,7 +8,7 @@ Build a bilingual (EN/PT) professional portfolio positioning Matheus Mori as a D
 
 ## Current milestone
 
-M1 - Home foundation (M1-02 done; M1-03 not started)
+M1 - Home foundation (M1-02, M1-03 done; M1-04 not started)
 
 ## Completed
 
@@ -24,16 +24,17 @@ M1 - Home foundation (M1-02 done; M1-03 not started)
 - `npm run verify` script added (`lint && build`) as the harness baseline verifier.
 - **M1-02 done** (2026-09-01): design tokens, Header (desktop nav, mobile menu, language switcher), Hero, About - `src/components/{layout,sections,ui}/`. `npm run verify` passes on the user's machine; visually confirmed via screenshots (`/en` desktop + mobile).
 - Resume link now points to the user's live Google Doc (not a static PDF) so they can keep it current without a redeploy.
+- **M1-03 done** (2026-09-01): Selected Work section (`id="projects"`), four editorial project rows (Procurement Intelligence, Steel Indicator, Application Job, Employee Attrition Prediction) with alternating desktop layout / fixed mobile order, restrained CSS "system diagram" visuals (no real screenshots exist yet), EN/PT content in `src/content/home.ts`. Hero CTA and Header "Projects" nav now land on a real section. Only external links are active (4x GitHub, 1x Streamlit demo) - no internal `/projects` or `/case-studies` routes exist yet, so no dead links were introduced. Full detail in `CURRENT_TASK.md`'s Evidence/notes (incl. a real PT-BR text-overflow bug found and fixed, and the reviewer's PASS verdict).
 
 ## In progress
 
-- None. M1-02 is done; M1-03 (Selected Work) has not been started.
+- None. M1-03 is done; M1-04 (Case Studies Home) has not been started.
 
 ## Next planned
 
 1. Confirm the Resume Google Doc's sharing is "Viewer" (not "Editor") - see DECISIONS/CURRENT_TASK note.
-2. Decide what to do with the user's master resume/evidence document (uploaded 2026-09-01) and new content facts (CNN research feature, Santander Hackathon 1st place, additional GitHub repos: closer-ai, UFSCar, retail-sales-forecasting) - these are real inputs for M1-03 (Selected Work) and M1-05 (Experience), but have not been incorporated into PROJECT_CONTENT.md yet. Do not build this out silently - scope it as its own task first.
-3. Move M1-03 (Selected Work) into `CURRENT_TASK.md` when ready to start it.
+2. Decide what to do with the user's master resume/evidence document (uploaded 2026-09-01) and new content facts (CNN research feature, Santander Hackathon 1st place, additional GitHub repos: closer-ai, UFSCar, retail-sales-forecasting) - these are real inputs for M1-05 (Experience), but have not been incorporated into PROJECT_CONTENT.md yet. Do not build this out silently - scope it as its own task first. (Selected Work / M1-03 is done and intentionally did not use these - see PROJECT_CONTENT.md's explicit exclusion list for M1-03.)
+3. Move M1-04 (Case Studies Home) into `CURRENT_TASK.md` when ready to start it - not yet started.
 
 ## Blockers
 

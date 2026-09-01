@@ -3,6 +3,7 @@ import { notFound } from "next/navigation";
 import { Header } from "@/components/layout/Header";
 import { Hero } from "@/components/sections/Hero";
 import { About } from "@/components/sections/About";
+import { SelectedWork } from "@/components/sections/SelectedWork";
 import { homeContent } from "@/content/home";
 import { isValidLocale } from "@/lib/i18n";
 
@@ -71,6 +72,15 @@ export default async function HomePage({
           directionLabel={content.about.directionLabel}
           direction={content.about.direction}
           pillars={content.about.pillars}
+        />
+        <SelectedWork
+          eyebrow={content.selectedWork.eyebrow}
+          headlineLine1={content.selectedWork.headlineLine1}
+          headlineLine2={content.selectedWork.headlineLine2}
+          supportingCopy={content.selectedWork.supportingCopy}
+          githubLabel={content.selectedWork.githubLabel}
+          demoLabel={content.selectedWork.demoLabel}
+          projects={content.selectedWork.projects}
         />
       </main>
     </>
