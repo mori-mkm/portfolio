@@ -36,6 +36,17 @@ import type { Locale } from "@/lib/i18n";
  * none of these entries reproduce the Selected Work / Case Studies content
  * already featured elsewhere (no CNN/research detail under Rocketseat, no
  * Employee Attrition metrics under Banco BV).
+ *
+ * `researchRecognition` (M1-06): see docs/DECISIONS.md ADR-013 (Research &
+ * Recognition allocation) for why this replaces the older, pre-ADR-012
+ * Research wireframe content (Economic Index Construction, Shapley Driver
+ * Decomposition, Survival Analysis, Forecasting Workforce Dynamics — all
+ * dropped as duplicates of Steel Indicator / Experience / Employee
+ * Attrition). Exactly 3 items, editorial (non-chronological) order. FarmIA
+ * and Retail Sales Forecasting are framed strictly as historical/academic
+ * work (hackathon prototype, final coursework project) — no production,
+ * deployment, or business-outcome claims. Closer AI is deliberately
+ * omitted (ADR-007, evidence before prominence).
  */
 
 export type NavItem = {
@@ -128,6 +139,30 @@ export type ExperienceContent = {
   items: ExperienceItem[];
 };
 
+export type ResearchRecognitionType = "research" | "recognition";
+
+export type ResearchRecognitionItem = {
+  type: ResearchRecognitionType;
+  index: string;
+  title: string;
+  /** Institution/competition + program-type + year — treated as an identity fact, not translated (same rationale as Experience's company/role). */
+  context: string;
+  description: string;
+  metadata: string;
+  /** Optional standout callout (e.g. a placement result or a status flag) — quiet, not a metric tile. */
+  evidence?: string;
+  href: string;
+  linkLabel: string;
+};
+
+export type ResearchRecognitionContent = {
+  eyebrow: string;
+  headlineLine1: string;
+  headlineLine2: string;
+  supportingCopy: string;
+  items: ResearchRecognitionItem[];
+};
+
 type HomeContent = {
   brand: string;
   nav: NavItem[];
@@ -173,6 +208,7 @@ type HomeContent = {
   selectedWork: SelectedWorkContent;
   caseStudies: CaseStudiesContent;
   experience: ExperienceContent;
+  researchRecognition: ResearchRecognitionContent;
 };
 
 export const homeContent: Record<Locale, HomeContent> = {
@@ -407,6 +443,50 @@ export const homeContent: Record<Locale, HomeContent> = {
         },
       ],
     },
+    researchRecognition: {
+      eyebrow: "05 / RESEARCH & RECOGNITION",
+      headlineLine1: "Research and milestones",
+      headlineLine2: "that shaped my work.",
+      supportingCopy:
+        "Academic investigations and early projects across statistics, forecasting and applied data science.",
+      items: [
+        {
+          type: "research",
+          index: "01",
+          title: "Wavelet Multivariate Time Series Analysis",
+          context: "UFSCar · Undergraduate Thesis · 2023",
+          description:
+            "Undergraduate statistics research examining how relationships among financial markets change across time and scale using wavelet methods.",
+          metadata: "Time Series · Statistics · Wavelets",
+          href: "https://github.com/mori-mkm/UFSCar/tree/main/undergraduate-thesis",
+          linkLabel: "View research",
+        },
+        {
+          type: "recognition",
+          index: "01",
+          title: "FarmIA — Santander Data Challenge",
+          context: "1st Place · 2020",
+          description:
+            "First-place data challenge project developed by a five-person team, using statistical modeling and agrometeorological data to support agricultural planning.",
+          evidence: "1ST PLACE · 100+ TEAMS",
+          metadata: "Applied Data Science · Agriculture",
+          href: "https://github.com/mori-mkm/FarmAI.Hackaton",
+          linkLabel: "GitHub",
+        },
+        {
+          type: "research",
+          index: "02",
+          title: "Retail Sales Forecasting",
+          context: "Digital House · Final Data Science Project",
+          description:
+            "Academic forecasting project exploring monthly store-level sales with SARIMAX, chronological validation and a historical Flask prototype.",
+          evidence: "ACADEMIC PROJECT",
+          metadata: "Forecasting · SARIMAX · Time Series",
+          href: "https://github.com/mori-mkm/retail-sales-forecasting",
+          linkLabel: "GitHub",
+        },
+      ],
+    },
   },
 
   pt: {
@@ -637,6 +717,50 @@ export const homeContent: Record<Locale, HomeContent> = {
           description:
             "Apliquei ciência de dados em segmentação, retenção, coortes e Growth Analytics sobre uma base de mais de 60 mil alunos pagantes. Uma iniciativa de segmentação com árvore de decisão contribuiu para cerca de 15% de aumento na conversão de compra de cursos.",
           metadata: "Python · R · SQL · Customer Analytics",
+        },
+      ],
+    },
+    researchRecognition: {
+      eyebrow: "05 / PESQUISA & RECONHECIMENTO",
+      headlineLine1: "Pesquisas e marcos",
+      headlineLine2: "que moldaram meu trabalho.",
+      supportingCopy:
+        "Investigações acadêmicas e projetos anteriores em estatística, forecasting e ciência de dados aplicada.",
+      items: [
+        {
+          type: "research",
+          index: "01",
+          title: "Wavelet Multivariate Time Series Analysis",
+          context: "UFSCar · Undergraduate Thesis · 2023",
+          description:
+            "Pesquisa de graduação em Estatística investigando como as relações entre mercados financeiros mudam ao longo do tempo e em diferentes escalas utilizando métodos wavelet.",
+          metadata: "Time Series · Statistics · Wavelets",
+          href: "https://github.com/mori-mkm/UFSCar/tree/main/undergraduate-thesis",
+          linkLabel: "Ver pesquisa",
+        },
+        {
+          type: "recognition",
+          index: "01",
+          title: "FarmIA — Santander Data Challenge",
+          context: "1º Lugar · 2020",
+          description:
+            "Projeto vencedor de um data challenge desenvolvido por uma equipe de cinco pessoas, utilizando modelagem estatística e dados agrometeorológicos para apoiar o planejamento agrícola.",
+          evidence: "1º LUGAR · 100+ EQUIPES",
+          metadata: "Applied Data Science · Agriculture",
+          href: "https://github.com/mori-mkm/FarmAI.Hackaton",
+          linkLabel: "GitHub",
+        },
+        {
+          type: "research",
+          index: "02",
+          title: "Retail Sales Forecasting",
+          context: "Digital House · Final Data Science Project",
+          description:
+            "Projeto acadêmico de forecasting de vendas mensais por loja utilizando SARIMAX, validação cronológica e um protótipo histórico em Flask.",
+          evidence: "PROJETO ACADÊMICO",
+          metadata: "Forecasting · SARIMAX · Time Series",
+          href: "https://github.com/mori-mkm/retail-sales-forecasting",
+          linkLabel: "GitHub",
         },
       ],
     },

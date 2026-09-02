@@ -47,10 +47,12 @@ Likely code: `src/app/[locale]/case-studies/` (not created yet)
 Read: SPEC §15 (04 / Experience), WIREFRAME §22-23 (04 / Experience + mobile)
 Likely code: `src/components/sections/Experience.tsx` (not created yet), `src/content/home.ts`
 
-## Research
+## Research & Recognition
 
-Read: SPEC §16-17 (05 / Research, Research vs Writing), WIREFRAME §24-25 (05 / Research + mobile)
-Likely code: `src/components/sections/Research.tsx` (not created yet)
+Read: SPEC §16 (05 / Research & Recognition — finalized M1-06, ADR-013) + §17 (Research vs Writing), WIREFRAME §24-25 (05 / Research & Recognition + mobile)
+Content: CONTENT §92 (Research & Recognition — Wavelet thesis, FarmIA, Retail Sales Forecasting; the only 3 V1 items)
+Likely code: `src/components/sections/ResearchRecognition.tsx`, `src/content/home.ts`
+Note: the pre-ADR-012 4-topic Research draft (Economic Index Construction, Shapley Driver Decomposition, Survival Analysis, Forecasting Workforce Dynamics) is obsolete — kept only in a collapsed historical note in SPEC §16 / WIREFRAME §24-25, do not implement it.
 
 ## Capabilities
 

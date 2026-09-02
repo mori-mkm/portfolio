@@ -365,9 +365,48 @@ Experience may reference a company/job context (e.g. Rocketseat as employment) b
 **Consequences**
 
 Positive: each Home section has a distinct narrative job (Selected Work = "what did I build", Case Studies = "how did I think about the problem"), no visitor sees the same project pitched twice.
-Negative / trade-off: Selected Work is one project shorter (3 instead of 4) — accepted per the task brief ("do not force a fourth project merely for symmetry"). The Developer Market Research / CNN Brasil case study has less concrete engineering evidence than a code project (no repo, no tests) — mitigated by keeping its claims hedged (see `src/content/home.ts` and `PROJECT_CONTENT.md` §58's evidence-safety rules): no unverified authorship claims, and the 5,000+ responses / ~50 interviews figures from the user's master résumé are explicitly NOT attributed to this specific CNN study without documented proof they're the same research initiative.
+Negative / trade-off: Selected Work is one project shorter (3 instead of 4) — accepted per the task brief ("do not force a fourth project merely for symmetry"). The Developer Market Research / CNN Brasil case study has less concrete engineering evidence than a code project (no repo, no tests) — mitigated by keeping its claims hedged (see `src/content/home.ts` and `PROJECT_CONTENT.md` §58's evidence-safety rules): no unverified authorship claims.
+
+**Correction (M1-06, 2026-09-01):** the note above originally said the 5,000+ quantitative responses / ~50 qualitative interviews figures could NOT be attributed to this CNN study without documented proof. The evidence base has since been clarified: those figures (5,000+ responses, ~50 interviews, 60+ hours of interviews, 6 personas) do belong to the persona research that had external repercussion and was cited by CNN in coverage about the developer/programmer profile in Brazil. This correction is documentation-only — the rendered Case Study copy in `src/content/home.ts` was deliberately NOT changed to add these figures (no visual/content redesign of Case Studies in M1-06), and the figures are still not duplicated in any other Home section (Research & Recognition, Experience) per the exclusivity rule below.
 
 **Verification / follow-up**
 
 - `docs/planning/PROJECT_CONTENT.md` §2, §17, §57-58, §79-82 and `PORTFOLIO_SPEC.md` §10.2-10.3, §13.2 updated to match (M1-04).
 - Before adding any new named project/study to any Home section later, check it isn't already featured elsewhere on Home.
+- M1-06 added Research & Recognition (ADR-013) — Wavelet thesis, FarmIA, Retail Sales Forecasting. None of these, nor the CNN research figures above, are duplicated across sections.
+
+---
+
+### ADR-013 — Research & Recognition allocation
+
+**Date:** 2026-09-01
+**Status:** accepted
+
+**Context**
+
+The original `05 / Research` section (HOME_WIREFRAME §24-25, PORTFOLIO_SPEC §16) was designed before ADR-012 and its candidate topics — Economic Index Construction, Shapley Driver Decomposition, Survival Analysis for Workforce Dynamics, Forecasting Workforce Dynamics — now overlap content already placed elsewhere on Home: the first two belong narratively to Steel Indicator (Case Studies), and the latter two came from the professional/People Analytics context now covered by Experience (Banco BV) and would also risk echoing Employee Attrition Prediction (Selected Work).
+
+**Decision**
+
+Section 05 becomes `Research & Recognition` and contains exactly three unique items, in a deliberate (non-chronological) editorial order:
+
+Research / 01 — Wavelet Multivariate Time Series Analysis (UFSCar undergraduate thesis)
+Recognition / 01 — FarmIA — Santander Data Challenge (1st place)
+Research / 02 — Retail Sales Forecasting (Digital House final project)
+
+The Header nav label stays `Research` / `Pesquisa` (unchanged, `#research` anchor) — only the section's own heading is the expanded name.
+
+**Alternatives considered**
+
+- Keep the original 4-topic Research wireframe — rejected: directly conflicts with ADR-012 (Home content exclusivity); Economic Index/Shapley would duplicate Steel Indicator, Survival Analysis/Workforce Forecasting would duplicate Experience/Employee Attrition territory.
+- Add a fourth generic "UFSCar academic portfolio" row for broader coursework — rejected: the undergraduate thesis already provides the strongest, most specific academic evidence; a broad low-signal repository row would dilute it, not add to it.
+
+**Consequences**
+
+Positive: Research & Recognition now shows three kinds of evidence that appear nowhere else on Home — academic/statistical depth, external recognition, and foundational forecasting work — reinforcing rather than repeating the rest of the page.
+Negative / trade-off: no Steel methodology topics duplicated here; no Banco BV workforce analytics duplicated here; CNN research remains Case Studies-only (not moved here, not duplicated); Closer AI remains excluded until it has real evidence (ADR-007); UFSCar's broader coursework is not treated as another Home feature; the ~60-hour UFSCar teaching experience is not added in this milestone (deferred to a future Capabilities/About revision if ever used).
+
+**Verification / follow-up**
+
+- `docs/planning/PORTFOLIO_SPEC.md` §16, `HOME_WIREFRAME.md` §24-25, `PROJECT_CONTENT.md` (new Research & Recognition block), and `docs/CONTEXT_MAP.md` updated to match (M1-06).
+- Before adding a fourth Research & Recognition item later (e.g. UFSCar teaching), check ADR-012's exclusivity rule and confirm it doesn't already have a narrative home.

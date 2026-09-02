@@ -1892,17 +1892,137 @@ Editorial list is cleaner.
 
 ---
 
-# 24. 05 / Research
+# 24. 05 / Research & Recognition
 
-Anchor:
+**Updated by M1-06 (ADR-013):** section renamed from "05 / Research" —
+the old 4-item wireframe below predates ADR-012 and duplicated Steel
+Indicator (Case Studies) and Experience/Employee Attrition territory. See
+`PORTFOLIO_SPEC.md` §16 for the full rationale and finalized copy.
+
+Anchor (unchanged):
 
 ```text
 #research
 ```
 
+Header nav label stays `Research` / `Pesquisa` — only the section heading
+uses the expanded name.
+
 ---
 
 ## 24.1 Header
+
+```text
+05 / RESEARCH & RECOGNITION
+
+Research and milestones
+that shaped my work.
+```
+
+Supporting:
+
+```text
+Academic investigations and early projects across statistics,
+forecasting and applied data science.
+```
+
+---
+
+## 24.2 Desktop layout
+
+Editorial index, not large cards, not a strict multi-column grid — each
+row stacks vertically (type/index → title → context → description →
+optional evidence/status line → metadata + link), the same reading order
+at every breakpoint. Rows separated by `border-top`, generous vertical
+padding (matches Experience's `py-9 md:py-12` rhythm).
+
+Final 3 rows (editorial order, not chronological):
+
+```text
+┌──────────────────────────────────────────────────────────────────────────┐
+│ RESEARCH / 01                                                            │
+│ Wavelet Multivariate Time Series Analysis                                │
+│ UFSCar · Undergraduate Thesis · 2023                                     │
+│ Undergraduate statistics research examining how relationships among      │
+│ financial markets change across time and scale using wavelet methods.    │
+│ Time Series · Statistics · Wavelets                    View research ↗   │
+├──────────────────────────────────────────────────────────────────────────┤
+│ RECOGNITION / 01                                                         │
+│ FarmIA — Santander Data Challenge                                        │
+│ 1st Place · 2020                                                         │
+│ First-place data challenge project developed by a five-person team,      │
+│ using statistical modeling and agrometeorological data to support        │
+│ agricultural planning.                                                   │
+│ 1ST PLACE · 100+ TEAMS                                                   │
+│ Applied Data Science · Agriculture                              GitHub ↗ │
+├──────────────────────────────────────────────────────────────────────────┤
+│ RESEARCH / 02                                                            │
+│ Retail Sales Forecasting                                                 │
+│ Digital House · Final Data Science Project                               │
+│ Academic forecasting project exploring monthly store-level sales with    │
+│ SARIMAX, chronological validation and a historical Flask prototype.      │
+│ ACADEMIC PROJECT                                                         │
+│ Forecasting · SARIMAX · Time Series                              GitHub ↗│
+└──────────────────────────────────────────────────────────────────────────┘
+```
+
+---
+
+## 24.3 Visual hierarchy
+
+```text
+Type/index    Geist Mono, 11-12px, muted, uppercase
+Title         28-36px
+Context       13-15px, secondary
+Description   17-18px, secondary
+Evidence      mono, small, quiet (not a metric tile)
+Metadata      mono, small, quiet
+Link          editorial external link (underline + ↗), not a button
+```
+
+No cards, no shadows, no diagrams, no metric tiles, no logos, no icons —
+the visually quietest section on Home.
+
+---
+
+## 24.4 Links
+
+All three links are real external URLs (2x GitHub, 1x GitHub) — no
+internal "Read notes →" route exists, so none is rendered. `target="_blank"
+rel="noopener noreferrer"`.
+
+---
+
+# 25. Research & Recognition mobile
+
+Each row becomes, in the same order as desktop (no reordering needed —
+the layout is a single stacked column at every breakpoint):
+
+```text
+RESEARCH / 01
+
+Wavelet Multivariate Time Series Analysis
+
+UFSCar · Undergraduate Thesis · 2023
+
+Undergraduate statistics research examining how relationships among
+financial markets change across time and scale using wavelet methods.
+
+Time Series · Statistics · Wavelets
+
+View research ↗
+```
+
+Border-top between rows. Metadata and link stack vertically on mobile
+(they sit side-by-side only from `sm:` up). Natural text wrapping, no
+horizontal scroll, no desktop columns retained.
+
+---
+
+### Historical / obsolete (pre-ADR-012, do not implement)
+
+<details>
+<summary>Original 05 / Research wireframe (superseded)</summary>
 
 ```text
 05 / RESEARCH
@@ -1910,21 +2030,6 @@ Anchor:
 Applied investigations
 behind the systems.
 ```
-
-Supporting:
-
-```text
-Methods, experiments and technical questions
-that informed the work.
-```
-
----
-
-## 24.2 Desktop layout
-
-Use an index/list rather than large cards.
-
-Wireframe:
 
 ```text
 ┌──────────────────────────────────────────────────────────────────────────┐
@@ -1942,56 +2047,12 @@ Wireframe:
 └──────────────────────────────────────────────────────────────────────────┘
 ```
 
----
+Removed per ADR-013: Economic Index Construction and Shapley Driver
+Decomposition are now Steel Indicator (Case Studies) territory; Survival
+Analysis and Forecasting Workforce Dynamics are now Experience/Employee
+Attrition territory.
 
-## 24.3 Research row columns
-
-Desktop:
-
-```text
-2 cols metadata
-6 cols title
-3 cols categories
-1 col arrow
-```
-
----
-
-## 24.4 Hover
-
-Row:
-
-```text
-background → background-soft
-```
-
-Arrow moves:
-
-```text
-+3px
-```
-
-No card elevation.
-
----
-
-# 25. Research mobile
-
-Each becomes:
-
-```text
-RESEARCH / 01
-
-Economic Index Construction
-
-Methodology · Data Engineering · Economics
-
-2026
-
-Read →
-```
-
-Border top between rows.
+</details>
 
 ---
 

@@ -6,6 +6,7 @@ import { About } from "@/components/sections/About";
 import { SelectedWork } from "@/components/sections/SelectedWork";
 import { CaseStudies } from "@/components/sections/CaseStudies";
 import { Experience } from "@/components/sections/Experience";
+import { ResearchRecognition } from "@/components/sections/ResearchRecognition";
 import { homeContent } from "@/content/home";
 import { isValidLocale } from "@/lib/i18n";
 
@@ -102,6 +103,13 @@ export default async function HomePage({
             label: content.externalLinks.resume,
             href: content.externalLinks.resumeHref,
           }}
+        />
+        <ResearchRecognition
+          eyebrow={content.researchRecognition.eyebrow}
+          headlineLine1={content.researchRecognition.headlineLine1}
+          headlineLine2={content.researchRecognition.headlineLine2}
+          supportingCopy={content.researchRecognition.supportingCopy}
+          items={content.researchRecognition.items}
         />
       </main>
     </>

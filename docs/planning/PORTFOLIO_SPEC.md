@@ -1521,7 +1521,16 @@ detalhes completos.
 
 ---
 
-# 16. 05 / Research
+# 16. 05 / Research & Recognition
+
+**Finalized by M1-06** (2026-09-01, ADR-013) — replaces the section below,
+which predated ADR-012 (Home content exclusivity) and whose candidate
+topics (Economic Index Construction, Shapley Driver Decomposition —
+narratively part of Steel Indicator in Case Studies; Survival Analysis,
+Forecasting & Workforce Dynamics — People Analytics/workforce topics that
+would echo Experience/Employee Attrition Prediction) are now obsolete. Kept
+below, struck through in spirit, for historical context only — do not
+implement any of it.
 
 ## 16.1 Conceito
 
@@ -1531,9 +1540,203 @@ Nesta marca, Research significa:
 
 > technical investigations, methodologies and experiments that produced reusable knowledge.
 
+This section now also carries **Recognition** — external validation (a
+competition placement) that doesn't fit Selected Work or Case Studies but
+is still real, evidence-backed signal.
+
 ---
 
 ## Heading
+
+EN:
+
+```text
+05 / RESEARCH & RECOGNITION
+
+Research and milestones
+that shaped my work.
+
+Academic investigations and early projects across statistics,
+forecasting and applied data science.
+```
+
+PT-BR:
+
+```text
+05 / PESQUISA & RECONHECIMENTO
+
+Pesquisas e marcos
+que moldaram meu trabalho.
+
+Investigações acadêmicas e projetos anteriores em estatística,
+forecasting e ciência de dados aplicada.
+```
+
+The Header nav label stays `Research` / `Pesquisa` (unchanged, `#research`
+anchor) — only the section's own heading uses the expanded name.
+
+---
+
+## 16.2 Final allocation (V1) — editorial order, not chronological
+
+### Research / 01 — Wavelet Multivariate Time Series Analysis
+
+```text
+UFSCar · Undergraduate Thesis · 2023
+```
+
+Undergraduate Statistics thesis (defended 2023-08-24) studying
+relationships among IBOVESPA, Dow Jones, S&P 500 and Bitcoin (2012–2023)
+using Continuous Wavelet Transform, Multiresolution Analysis, MODWT,
+multiscale wavelet correlation, wavelet coherence and ADF diagnostics.
+Python · MATLAB.
+
+EN copy:
+
+```text
+Undergraduate statistics research examining how relationships among
+financial markets change across time and scale using wavelet methods.
+```
+
+PT-BR copy:
+
+```text
+Pesquisa de graduação em Estatística investigando como as relações entre
+mercados financeiros mudam ao longo do tempo e em diferentes escalas
+utilizando métodos wavelet.
+```
+
+Metadata: `Time Series · Statistics · Wavelets`
+
+Link: `https://github.com/mori-mkm/UFSCar/tree/main/undergraduate-thesis`
+— "View research →" / "Ver pesquisa →"
+
+Claims to avoid: trading strategy, investment performance, predictive
+alpha, production forecasting, causal relationships — this is descriptive/
+exploratory statistical research, not a trading system.
+
+---
+
+### Recognition / 01 — FarmIA — Santander Data Challenge
+
+```text
+1st Place · 2020 · Santander Data Challenge/Hackathon · 100+ teams
+```
+
+1st place, 5-person team, Matheus as Data Scientist. Time series, linear/
+multiple/polynomial regression on agrometeorological variables (rainfall,
+temperature, soil/agricultural conditions, production/prices), focused on
+rice agriculture, to support family-agriculture planning.
+
+EN copy:
+
+```text
+First-place data challenge project developed by a five-person team, using
+statistical modeling and agrometeorological data to support agricultural
+planning.
+```
+
+PT-BR copy:
+
+```text
+Projeto vencedor de um data challenge desenvolvido por uma equipe de cinco
+pessoas, utilizando modelagem estatística e dados agrometeorológicos para
+apoiar o planejamento agrícola.
+```
+
+Evidence line: `1ST PLACE · 100+ TEAMS` / `1º LUGAR · 100+ EQUIPES`
+Metadata: `Applied Data Science · Agriculture`
+
+Link: `https://github.com/mori-mkm/FarmAI.Hackaton` — "GitHub ↗"
+
+Claims to avoid: no testimonial quotes from the repository; no real
+farmer-revenue increase, real crop-yield increase, real production
+deployment, real credit decisions, or validated climate-change
+forecasting. Frame strictly as hackathon prototype + data-science
+solution + competition recognition — never a production agricultural
+platform.
+
+---
+
+### Research / 02 — Retail Sales Forecasting
+
+```text
+Digital House · Final Data Science Project
+```
+
+Monthly store-level retail sales forecasting: preprocessing, history-
+length-based store segmentation, ADF stationarity testing, differencing,
+chronological train/test split, SARIMAX with AIC-based parameter
+selection, 12-month forecasting, MAE/MFE/MSE/RMSE/MAPE evaluation, and a
+historical Flask prototype interface. Some original artifacts are
+missing — the repository cannot currently reproduce the original
+application end-to-end; treat as a historical academic project.
+
+EN copy:
+
+```text
+Academic forecasting project exploring monthly store-level sales with
+SARIMAX, chronological validation and a historical Flask prototype.
+```
+
+PT-BR copy:
+
+```text
+Projeto acadêmico de forecasting de vendas mensais por loja utilizando
+SARIMAX, validação cronológica e um protótipo histórico em Flask.
+```
+
+Status flag: `ACADEMIC PROJECT` / `PROJETO ACADÊMICO`
+Metadata: `Forecasting · SARIMAX · Time Series`
+
+Link: `https://github.com/mori-mkm/retail-sales-forecasting` — "GitHub ↗"
+
+Claims to avoid: "production forecasting system", "deployed ML product",
+"live application", "MLOps system" — this is a historical academic
+project, not a production system.
+
+---
+
+## 16.3 Explicitly excluded (V1)
+
+- **Closer AI** (`https://github.com/mori-mkm/closer-ai`) — no implemented
+  project evidence yet (ADR-007, evidence before prominence). Do not show
+  a "Coming Soon"/"Future Project" placeholder — just omit it entirely.
+- **UFSCar general repository** — no broad "UFSCar / Academic Portfolio /
+  College Projects" row; the undergraduate thesis already provides the
+  strongest, most specific academic evidence.
+- **UFSCar teaching** (~60-hour APIs/Web Scraping course) — not added this
+  milestone; a possible future Capabilities/About input, not Research.
+- **Developer Market Research / CNN Brasil** — stays Case Studies-only
+  (ADR-012); never duplicated here.
+
+---
+
+## Estrutura de Research/Recognition row (implemented)
+
+```text
+TYPE / INDEX
+
+Title
+
+Context (institution/competition · program-type · year)
+
+1-2 sentence description.
+
+[optional evidence/status line]
+
+Metadata                                              Link ↗
+```
+
+Editorial index, not project cards — no diagrams, no metric tiles, no
+shadows. See `src/components/sections/ResearchRecognition.tsx`.
+
+---
+
+### Historical / obsolete (pre-ADR-012, do not implement)
+
+<details>
+<summary>Original 05 / Research draft (superseded)</summary>
 
 ```text
 05 / RESEARCH
@@ -1541,74 +1744,17 @@ Nesta marca, Research significa:
 Applied investigations behind the systems.
 ```
 
----
+Candidatos (obsolete — see M1-06 rationale above):
 
-## Candidatos
+- Economic Index Construction — now Steel Indicator (Case Studies) territory.
+- Shapley Driver Decomposition — now Steel Indicator (Case Studies) territory.
+- Survival Analysis — now Experience/Employee Attrition territory.
+- Forecasting & Workforce Dynamics — now Experience/Employee Attrition territory.
+- RAG Evaluation — still a legitimate future candidate (add only when there
+  is a real, evidence-backed RAG project — same "evidence before
+  prominence" rule as Closer AI).
 
-### Economic Index Construction
-
-```text
-Building reproducible sector indices from
-public economic and trade data.
-```
-
-Associado ao Steel Indicator.
-
----
-
-### Shapley Driver Decomposition
-
-```text
-Using exact contribution decomposition to explain
-monthly movements in economic indicators.
-```
-
----
-
-### Survival Analysis
-
-```text
-Using time-to-event methods to investigate
-promotion and workforce dynamics.
-```
-
----
-
-### Forecasting & Workforce Dynamics
-
-```text
-Time-series methods for workforce planning
-and attrition-related analysis.
-```
-
----
-
-### RAG Evaluation
-
-Adicionar quando houver pesquisa/aplicação concreta.
-
-```text
-Evaluating retrieval and grounded generation
-beyond anecdotal chatbot testing.
-```
-
----
-
-## Estrutura de Research Card
-
-```text
-RESEARCH / 01
-
-Economic Index Construction
-
-Methodology · Data Engineering · Economics
-
-A reproducible approach to combining public data,
-historical policy parameters and versioned methodology.
-
-Read notes →
-Related project ↗
-```
+</details>
 
 ---
 

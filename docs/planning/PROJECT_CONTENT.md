@@ -2387,11 +2387,17 @@ positioning" rules below before editing this copy.
 
 Evidence-safety rules for this card specifically:
 
-- Do not attribute the 5,000+ quantitative responses / ~50 qualitative
-  interviews figures (from the user's master résumé) to this specific CNN
-  study unless repository/document evidence proves they're the same
-  research initiative — they may refer to a different Rocketseat research
-  effort. Not connected as of M1-04.
+- **Updated M1-06:** the evidence base now confirms the persona research
+  behind this case study had 5,000+ quantitative responses, ~50
+  qualitative interviews (60+ hours of interviews), and 6 personas, and
+  that this research had external repercussion and was cited by CNN in
+  coverage about the developer/programmer profile in Brazil. (M1-04's
+  original note said this could not be confirmed without documented
+  proof — that uncertainty is resolved.) This is a documentation
+  correction only: the rendered Home copy below was deliberately NOT
+  changed to add these figures (no Case Studies redesign in M1-06), and
+  they must not be duplicated in any other Home section (Research &
+  Recognition, Experience) per ADR-012.
 - Do not overstate individual authorship ("I authored the definitive
   study", "CNN commissioned my research", "I was interviewed by CNN")
   unless evidence supports it. Prefer "research I contributed to" /
@@ -3418,5 +3424,158 @@ CODE / DEMO / RESULT
 ```
 
 That is the content system.
+
+---
+
+# 92. Research & Recognition (M1-06, ADR-013)
+
+Source of truth for `src/content/home.ts`'s `researchRecognition` block.
+Three items only — see ADR-013 in `docs/DECISIONS.md` for why the section
+was renamed and rescoped, and PORTFOLIO_SPEC.md §16 for the full desktop/
+mobile layout spec. Concise entries only — do not replicate the source
+repositories' full READMEs here.
+
+## 92.1 Research / 01 — Wavelet Multivariate Time Series Analysis
+
+Identity:
+
+```yaml
+type: research
+index: "01"
+```
+
+Verified evidence: undergraduate Statistics thesis at UFSCar, defended
+2023-08-24. Studies relationships among IBOVESPA, Dow Jones Industrial
+Average, S&P 500 and Bitcoin, 2012–2023. Core methods: Continuous Wavelet
+Transform, Multiresolution Analysis, MODWT, multiscale wavelet
+correlation, wavelet coherence, ADF diagnostics. Python, MATLAB.
+
+Approved Home copy:
+
+```text
+EN:
+Undergraduate statistics research examining how relationships among
+financial markets change across time and scale using wavelet methods.
+
+PT-BR:
+Pesquisa de graduação em Estatística investigando como as relações entre
+mercados financeiros mudam ao longo do tempo e em diferentes escalas
+utilizando métodos wavelet.
+```
+
+Context (identity fact, not translated): `UFSCar · Undergraduate Thesis · 2023`
+Metadata: `Time Series · Statistics · Wavelets`
+
+Link: `https://github.com/mori-mkm/UFSCar/tree/main/undergraduate-thesis`
+Label: `View research` (EN) / `Ver pesquisa` (PT)
+
+Claims to avoid: trading strategy, investment performance, predictive
+alpha, production forecasting, causal relationships. This is descriptive/
+exploratory statistical research.
+
+---
+
+## 92.2 Recognition / 01 — FarmIA — Santander Data Challenge
+
+Identity:
+
+```yaml
+type: recognition
+index: "01"
+```
+
+Verified evidence: 1st place, Santander Data Challenge/Hackathon, 100+
+teams, 5-person team, Matheus as Data Scientist. Problem: support family-
+agriculture planning. Methods: time series, linear/multiple/polynomial
+regression on agrometeorological variables. Repository focuses especially
+on rice agriculture (rainfall, temperature, soil/agricultural conditions,
+production/prices).
+
+Approved Home copy:
+
+```text
+EN:
+First-place data challenge project developed by a five-person team, using
+statistical modeling and agrometeorological data to support agricultural
+planning.
+
+PT-BR:
+Projeto vencedor de um data challenge desenvolvido por uma equipe de cinco
+pessoas, utilizando modelagem estatística e dados agrometeorológicos para
+apoiar o planejamento agrícola.
+```
+
+Context: `1st Place · 2020` (EN) / `1º Lugar · 2020` (PT)
+Evidence line: `1ST PLACE · 100+ TEAMS` (EN) / `1º LUGAR · 100+ EQUIPES` (PT)
+Metadata: `Applied Data Science · Agriculture`
+
+Link: `https://github.com/mori-mkm/FarmAI.Hackaton`
+Label: `GitHub` (both locales)
+
+Limitations / claims to avoid: do not use testimonial quotes from the
+repository. Do not claim real farmer-revenue increase, real crop-yield
+increase, real production deployment, real credit decisions, or validated
+climate-change forecasting — the historical repo contains prototype/
+product language that must not carry over. Treat as: hackathon prototype +
+data-science solution + competition recognition, never a production
+agricultural platform.
+
+---
+
+## 92.3 Research / 02 — Retail Sales Forecasting
+
+Identity:
+
+```yaml
+type: research
+index: "02"
+```
+
+Verified evidence: final Data Science project at Digital House. Monthly
+store-level retail sales forecasting: preprocessing, store segmentation by
+history length, ADF stationarity testing, differencing, chronological
+train/test split, SARIMAX with AIC-based parameter selection, 12-month
+forecasting, MAE/MFE/MSE/RMSE/MAPE evaluation. Historical Flask prototype
+interface.
+
+Limitation: some original artifacts are missing — the repository cannot
+currently reproduce the original application end-to-end. It is a
+historical academic project, not a live/reproducible system.
+
+Approved Home copy:
+
+```text
+EN:
+Academic forecasting project exploring monthly store-level sales with
+SARIMAX, chronological validation and a historical Flask prototype.
+
+PT-BR:
+Projeto acadêmico de forecasting de vendas mensais por loja utilizando
+SARIMAX, validação cronológica e um protótipo histórico em Flask.
+```
+
+Context: `Digital House · Final Data Science Project` (not translated)
+Status flag: `ACADEMIC PROJECT` (EN) / `PROJETO ACADÊMICO` (PT)
+Metadata: `Forecasting · SARIMAX · Time Series`
+
+Link: `https://github.com/mori-mkm/retail-sales-forecasting`
+Label: `GitHub` (both locales)
+
+Claims to avoid: "production forecasting system", "deployed ML product",
+"live application", "MLOps system".
+
+---
+
+## 92.4 Explicitly excluded from V1
+
+- **Closer AI** — no implemented project evidence yet (ADR-007). Omit
+  entirely; no "Coming Soon" placeholder.
+- **UFSCar general repository** (broad coursework) — the undergraduate
+  thesis is the strongest, most specific academic evidence; a broad
+  low-signal row would dilute it.
+- **UFSCar teaching** (~60-hour APIs/Web Scraping course) — not this
+  milestone; possible future Capabilities/About input.
+- **Developer Market Research / CNN Brasil** — stays Case Studies-only
+  (ADR-012); never duplicated here.
 
 **End of PROJECT_CONTENT.md**
