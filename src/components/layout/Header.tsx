@@ -80,7 +80,7 @@ export function Header({
         {/* Desktop nav */}
         <nav
           aria-label="Primary"
-          className="hidden items-center gap-7 md:flex"
+          className="hidden items-center gap-7 lg:flex"
         >
           {nav.map((item) => (
             <a
@@ -93,7 +93,7 @@ export function Header({
           ))}
         </nav>
 
-        <div className="hidden items-center gap-6 md:flex">
+        <div className="hidden items-center gap-6 lg:flex">
           <LanguageSwitcher locale={locale} labels={languageSwitcher} />
           <a
             href={resume.href}
@@ -111,7 +111,7 @@ export function Header({
           onClick={() => setMenuOpen((open) => !open)}
           aria-expanded={menuOpen}
           aria-controls="mobile-menu"
-          className="font-mono text-sm uppercase tracking-[0.04em] text-[var(--text-primary)] md:hidden"
+          className="font-mono text-sm uppercase tracking-[0.04em] text-[var(--text-primary)] lg:hidden"
         >
           {menuOpen ? menuToggle.close : menuToggle.open}
         </button>
@@ -120,7 +120,7 @@ export function Header({
       {menuOpen && (
         <div
           id="mobile-menu"
-          className="fixed inset-x-0 top-16 bottom-0 z-40 overflow-y-auto bg-[var(--background)] px-5 py-8 md:hidden"
+          className="fixed inset-x-0 top-16 bottom-0 z-40 overflow-y-auto bg-[var(--background)] px-5 py-8 md:top-[72px] lg:hidden"
         >
           <nav aria-label="Primary" className="flex flex-col gap-5">
             {nav.map((item) => (
