@@ -2079,29 +2079,38 @@ turn ideas into working systems.
 
 ## 26.2 Desktop structure
 
+**Updated by M1-07 (ADR-007 applied):** "AI ENGINEERING" -> "APPLIED AI" —
+see `PORTFOLIO_SPEC.md` §18.1 for why. Final V1 items also replace the
+speculative list below (no RAG/Agentic Systems/FastAPI/PySpark/CI-CD —
+deferred until public evidence exists).
+
 Four columns.
 
 ```text
-AI ENGINEERING
+APPLIED AI
 MACHINE LEARNING
 DATA
 ENGINEERING
 ```
 
-Wireframe:
+Wireframe (final V1 content):
 
 ```text
 ┌───────────────────┬───────────────────┬───────────────────┬───────────────────┐
-│ AI ENGINEERING    │ MACHINE LEARNING  │ DATA              │ ENGINEERING       │
+│ APPLIED AI        │ MACHINE LEARNING  │ DATA              │ ENGINEERING       │
 │                   │                   │                   │                   │
-│ LLM Applications  │ Regression        │ Python            │ FastAPI           │
-│ RAG               │ Classification    │ SQL               │ Docker            │
-│ Agentic Systems   │ Forecasting       │ Pandas            │ Git               │
-│ Evaluation        │ Survival Analysis │ PySpark           │ MLflow            │
-│ Context Eng.      │ Experimentation   │ Power BI          │ Testing           │
-│ AI APIs           │ Model Evaluation  │ Data Modeling     │ APIs              │
+│ LLM Applications  │ Regression        │ Python            │ Git & GitHub      │
+│ AI-assisted...    │ Classification    │ SQL               │ Docker            │
+│ Structured...     │ Gradient Boosting │ Pandas            │ Testing           │
+│ Prompt & Context  │ Forecasting       │ Power BI          │ MLflow            │
+│   Engineering     │ Survival Analysis │ Data Modeling     │ APIs              │
+│ AI Automation     │ Experimentation   │ Data Pipelines    │ Streamlit         │
+│                   │ Model Evaluation  │ Data Quality      │ Automation        │
 └───────────────────┴───────────────────┴───────────────────┴───────────────────┘
 ```
+
+No per-item claim survives here unaccompanied by real evidence elsewhere
+on Home — see `PORTFOLIO_SPEC.md` §18.2 for the rationale per group.
 
 ---
 
@@ -2122,13 +2131,19 @@ Items:
 line-height 1.8
 ```
 
-Optional border-left between columns.
-
 No icons.
 
 No percentage bars.
 
 No logo cloud.
+
+**Implementation note (M1-07):** no vertical border between columns was
+used in the end — the task's own guidance ("prefer whitespace first")
+and the complexity of getting `border-left` correct across three
+different responsive column-counts (1 -> 2 -> 4) made a single
+`border-top` above the whole group grid (separating it from the section
+header) the simpler, equally-quiet choice. See
+`src/components/sections/Capabilities.tsx`.
 
 ---
 
@@ -2147,7 +2162,7 @@ Because readability is more important.
 Order:
 
 ```text
-AI ENGINEERING
+APPLIED AI
 items
 
 MACHINE LEARNING
@@ -2171,6 +2186,19 @@ At 600–900px tablet:
 ```text
 2 × 2 grid
 ```
+
+**Implementation note (M1-07):** the rendered breakpoints are `sm:` (640px)
+for the 1 -> 2 column switch and `lg:` (1024px) for 2 -> 4, not exactly
+600/900px. Reason: an arbitrary `min-[900px]:` variant does not reliably
+win the CSS cascade against a named `sm:` variant touching the same
+property in this Tailwind setup (confirmed by a real 4-column-not-
+triggering bug caught during M1-07 visual verification and fixed by
+switching to the named `lg:` breakpoint) — always prefer named Tailwind
+breakpoints over arbitrary `min-[Npx]:` ones when more than one
+breakpoint state touches the same CSS property, to guarantee correct
+mobile-first cascade order. Readability at the actual rendered widths was
+manually re-verified (600, 700, 768, 900, 1024px) and reads correctly;
+only the exact px threshold differs from this original wireframe note.
 
 ---
 

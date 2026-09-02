@@ -4,181 +4,175 @@
 
 ## Task
 
-ID: M1-06
-Title: Research & Recognition
+ID: M1-07
+Title: Capabilities
 Status: done
 
 ## Goal
 
-Implement a concise editorial Research & Recognition section that shows
-Matheus's statistical foundation, early forecasting work and external
-recognition without duplicating projects or professional experience
-already featured elsewhere on Home.
+Implement a concise, evidence-backed Capabilities section that synthesizes
+what the portfolio already demonstrates (professional experience + public
+projects + evidence-backed studies), without listing every technology the
+user has ever touched or inventing maturity the current evidence doesn't
+support.
 
 ## Scope
 
 IN:
 
-- #research
+- #capabilities
 - section header
-- three editorial entries
-- Wavelet thesis
-- FarmIA recognition
-- Retail Sales Forecasting
+- four groups: Applied AI, Machine Learning, Data, Engineering
 - EN/PT
-- external GitHub links
-- responsive desktop/mobile
-- evidence boundaries
-- ADR-013
-- stale CNN documentation correction
-- planning/state updates
+- responsive desktop/tablet/mobile
+- evidence-boundary discipline (no RAG/Agents/FastAPI/PySpark/CI-CD/Cloud)
+- planning doc update (PORTFOLIO_SPEC §18)
+- harness state update
 
 OUT:
 
-- Capabilities
 - Writing
 - Contact
 - Footer
-- Education section
-- certifications
-- UFSCar general coursework
-- UFSCar teaching
-- Closer AI
-- full research pages
-- project detail pages
+- Header nav changes
 - new dependencies
+- individual algorithm names (LightGBM, SARIMAX, etc.)
+- proficiency levels / percentages / skill meters
+- project descriptions or evidence metrics embedded in capability items
 
 ## Verification
 
 ```bash
-npm run verify   # PASS — run 2x (after implementation, and again during
-                  # the reviewer's independent re-run)
+npm run verify   # PASS — run 3x (after implementation, after the
+                  # breakpoint bug fix below, and again during the
+                  # reviewer's independent re-run)
 git diff --check # PASS
 git diff -- package.json package-lock.json  # empty — no new dependency
 ```
 
 Manual visual review (headless Chromium via Playwright against `npm run dev`,
 same approach as prior M1 tasks — no interactive browser available in this
-environment):
+environment). This task explicitly called for extra tablet/breakpoint
+coverage beyond the usual 4 combos, so more viewports were checked:
 
-- `/en` 1440x900 — checked, 0px horizontal overflow, screenshotted + inspected
-- `/en` 390x844 — checked, 0px horizontal overflow, screenshotted + inspected
-- `/pt` 1440x900 — checked, 0px horizontal overflow, screenshotted + inspected
-- `/pt` 390x844 — checked, 0px horizontal overflow, screenshotted + inspected
+- `/en` 1440x900, 1024x900, 900x900, 768x900, 700x900, 600x900, 390x844,
+  360x800 — all checked, screenshotted + inspected
+- `/pt` 1440x900, 900x900, 700x900, 390x844 — checked, screenshotted +
+  inspected
 
-Confirmed via screenshot + zoomed crops: three entries render in the
-correct editorial (non-chronological) order — Research/01 Wavelet,
-Recognition/01 FarmIA, Research/02 Retail Sales Forecasting; desktop shows
-metadata and link side-by-side (`sm:` up), mobile stacks them; type/index
-labels ("RESEARCH / 01", "RECOGNITION / 01") read correctly; PT's
-translated evidence lines ("1º LUGAR · 100+ EQUIPES", "PROJETO ACADÊMICO")
-wrap cleanly with no overflow; the section reads as a quiet editorial
-index — no cards, no diagrams, no metric tiles — visually closest to
-Experience's plain list treatment, distinct from Selected Work/Case
-Studies. One initial visual concern (a faint duplicate-looking text
-fragment near the bottom of a downscaled thumbnail) was investigated by
-cropping the full-resolution region directly — confirmed to be a
-downscaling/compression artifact in the thumbnail, not a real rendering
-bug (the actual pixels are Retail's own metadata/link row, correctly
-rendered once). 1024px/768px/360px were not separately screenshotted —
-low risk, this section has no custom breakpoint of its own (single-column
-at every width, only the metadata/link row's `sm:` flex-direction changes).
+Result: 0px horizontal overflow at every width **except 768px**, where an
+18px overflow was found and traced (via DOM element inspection — the
+overflowing element is `<HEADER>`, not anything in this diff) to
+`Header.tsx`'s desktop nav being too wide for exactly a 768px viewport.
+This is a **pre-existing issue, not a regression from this task** —
+`Header.tsx` is completely untouched by this diff (confirmed via
+`git diff --stat`), and nothing in this diff changes global CSS, layout,
+or container-width tokens. Reported below as a discovered-but-out-of-scope
+finding, not fixed (Header is explicitly off-limits for M1-07).
+
+Confirmed via screenshots: exactly 4 groups (Applied AI, Machine Learning,
+Data, Engineering) in that order; grid renders 4 columns at ≥1024px, a
+clean 2×2 at 640–1023px, and 1 column below 640px; semantic `<h3>` group
+headings + `<ul>/<li>` item lists; no cards/pills/icons/percentages; PT
+translations (including longer group items like "Modelagem de Dados",
+"Workflows assistidos por IA") wrap cleanly with no overflow at any width
+checked.
 
 ## Evidence / notes
 
-- **Content allocation was pre-decided** by the user before this
-  execution (not re-litigated): Research/01 Wavelet thesis, Recognition/01
-  FarmIA, Research/02 Retail Sales Forecasting — exactly these three, in
-  this editorial order, per the task brief.
-- **ADR-012 exclusivity verified** (not just asserted): grepped the new
-  `researchRecognition` content and `ResearchRecognition.tsx` for
-  `CNN|persona|5,000|5000|50 interview|Steel Indicator|Employee
-  Attrition|Banco BV|closer-ai` — zero hits. None of Steel Indicator,
-  Developer Market Research/CNN, Employee Attrition/Banco BV people
-  analytics, or Closer AI appear anywhere in this section. No broad
-  "UFSCar general repository" row was added — only the specific
-  undergraduate-thesis subpath link.
-- **CNN evidence reconciliation** (the highest-risk documentation change
-  in this task): two stale notes existed from M1-04, both saying the
-  5,000+ quantitative responses / ~50 qualitative interviews figures could
-  NOT be attributed to the CNN-covered persona research without documented
-  proof (`docs/DECISIONS.md` ADR-012's Consequences section, and
-  `docs/planning/PROJECT_CONTENT.md` §58's evidence-safety rules). The
-  user's updated evidence base confirms the connection: 5,000+ responses,
-  ~50 interviews (60+ hours), 6 personas, external repercussion including
-  CNN citation about the developer/programmer profile in Brazil. Both
-  notes were corrected to state this — **documentation-only**: the
-  rendered `caseStudies` block in `src/content/home.ts` (the "Developer
-  Market Research" entry) was deliberately NOT modified to add these
-  figures, and `CaseStudies.tsx`/`CaseStudyFeature.tsx` were NOT touched
-  at all (no visual redesign, per the task's explicit instruction). The
-  corrected figures also do not appear anywhere in the new Research &
-  Recognition content — not duplicated into the new section either.
-- **Evidence-accuracy boundaries** (verified against the actual rendered
-  EN/PT text, not just asserted):
-  - **Wavelet thesis**: framed as descriptive/exploratory statistical
-    research ("examining how relationships... change across time and
-    scale using wavelet methods") — no trading strategy, investment
-    performance, predictive alpha, production forecasting, or causal
-    relationship claims.
-  - **FarmIA**: framed strictly as hackathon prototype + team recognition
-    ("First-place data challenge project developed by a five-person
-    team...") — no testimonial quotes from the repository, no real
-    farmer-revenue increase, real crop-yield increase, real production
-    deployment, real credit decisions, or validated climate-change
-    forecasting claims. The "100+ teams" competition-size figure is
-    recorded as verified evidence in `PROJECT_CONTENT.md` §92.2, not
-    invented.
-  - **Retail Sales Forecasting**: explicitly flagged `ACADEMIC PROJECT` /
-    `PROJETO ACADÊMICO` and described as "Academic forecasting project...
-    historical Flask prototype" — never called a production forecasting
-    system, deployed ML product, live application, or MLOps system.
-- **Header nav unchanged**: `{ label: "Research", href: "#research" }`
-  (EN) / `{ label: "Pesquisa", href: "#research" }` (PT) — confirmed
-  untouched (`Header.tsx` absent from `git diff --stat`), NOT expanded to
-  "Research & Recognition" in the nav. Only the section's own heading text
-  (`researchRecognition.eyebrow`/headline) uses the expanded name, exactly
-  as instructed.
+- **A real layout bug was found and fixed during this task's own visual
+  verification** (not by the reviewer — caught before requesting review):
+  the grid originally used `min-[900px]:grid-cols-4` (an arbitrary
+  Tailwind variant) alongside `sm:grid-cols-2`. At 1024px and 1440px the
+  screenshots showed only 2 columns instead of 4 — the arbitrary variant
+  wasn't winning the CSS cascade against the named `sm:` variant touching
+  the same property. Root cause: Tailwind doesn't guarantee an arbitrary
+  `min-[Npx]:` variant is emitted after a named breakpoint variant in the
+  generated stylesheet, so when both apply at the same viewport width, the
+  named variant can win regardless of pixel value. **Fix**: switched to
+  the named `lg:grid-cols-4` (1024px) instead — named breakpoints are
+  always correctly mobile-first-ordered by Tailwind. Re-verified with
+  fresh screenshots at 1024px and 1440px after the fix: 4 columns render
+  correctly. `Experience.tsx`'s existing `min-[900px]:flex-row` pattern
+  (M1-05) was checked and confirmed NOT exposed to this bug — it only has
+  two competing states (base vs. `min-[900px]`), no competing named
+  breakpoint touches the same `flex-direction` property, so there's no
+  cascade conflict there. Documented as an implementation lesson in
+  `HOME_WIREFRAME.md` §26 for future sections: prefer named Tailwind
+  breakpoints over arbitrary `min-[Npx]:` ones whenever more than one
+  breakpoint state touches the same CSS property.
+- **Pre-existing Header 768px overflow discovered, not fixed**: see
+  Verification section above. Recorded here so it isn't silently
+  rediscovered later; a future task should fix `Header.tsx`'s desktop nav
+  width at that specific viewport (likely the point where the mobile
+  "MENU" toggle hasn't kicked in yet but the full desktop nav + logo +
+  language switcher + Resume button don't quite fit).
+- **Evidence-boundary discipline** (verified against the actual rendered
+  EN/PT text, not just asserted): grepped the `capabilities` content block
+  for RAG/Retrieval-Augmented/Agentic Systems/Multi-Agent/LangChain/
+  LangGraph/CrewAI/Vector Database/AI Evaluation/AI Observability/
+  FastAPI/PySpark/CI-CD/Kubernetes/Terraform/AWS/GCP/Cloud
+  Architecture/Microservices/Monitoring/Observability/individual-
+  algorithm-names(LightGBM/XGBoost/CatBoost/SARIMAX/Prophet/Logistic
+  Regression/Cox)/database-tool-inventory(SQL Server/DuckDB/MongoDB/
+  Databricks) — zero hits inside the block. The only "AI ENGINEERING"
+  string in the repo is pre-existing Hero/About content (M1-02), untouched
+  by this task.
+- **Group is "Applied AI", not "AI Engineering"** — deliberate, per ADR-007
+  (evidence before prominence) applied to the current state of public
+  project evidence (LLM-assisted workflows/structured outputs/prompt
+  engineering are publicly evidenced mainly through Application Job; RAG/
+  agentic systems/evals are not yet publicly evidenced at a mature level).
+  No new ADR created — this is an application of an existing decision, not
+  a new one, per the task's explicit instruction.
+- **No proficiency annotations, no embedded evidence metrics**: verified
+  no item anywhere carries a "Professional"/"Personal Project"/"Academic"/
+  years/skill-level label, and no item has a project-specific number
+  appended (e.g. no "Testing — 124 tests").
+- **Header unchanged**: no "Capabilities"/"Capacidades" nav item was added
+  — confirmed both locale `nav` arrays untouched and `Header.tsx` itself
+  untouched (`git diff --stat`). This was a deliberate task requirement,
+  not an oversight.
 - **No regressions**: `Header.tsx`, `Hero.tsx`, `About.tsx`,
   `SelectedWork.tsx`, `ProjectFeature.tsx`, `CaseStudies.tsx`,
-  `CaseStudyFeature.tsx`, `Experience.tsx` are all untouched (confirmed via
-  `git diff --stat`). `package.json`/`package-lock.json` untouched — no
-  new dependency. No `"use client"` in the new component.
-- **All 3 external links verified live** via `curl` (200 for all three:
-  the UFSCar thesis subpath, FarmAI.Hackaton, retail-sales-forecasting)
-  and confirmed byte-identical between the diff and the curl-tested
-  strings (no typos).
+  `CaseStudyFeature.tsx`, `Experience.tsx`, `ResearchRecognition.tsx` are
+  all untouched (confirmed via `git diff --stat`). `package.json`/
+  `package-lock.json` untouched — no new dependency. No `"use client"` in
+  the new component.
 - Reviewer self-review (`.claude/agents/reviewer.md`) ran against the full
-  diff with a 12-point structural checklist plus the two strict
-  correctness bars (ADR-012 exclusivity, CNN evidence reconciliation):
-  verdict **PASS**. Zero BLOCKER/MAJOR/MINOR findings — confirmed
-  independently (not just asserted): `npm run verify` re-run PASS; grep
-  confirmed no exclusivity violations; `git diff --stat` confirmed no
-  untouched-file regressions; link strings confirmed to match exactly.
+  diff with a 12-point structural/content checklist plus explicit
+  re-verification of the breakpoint-bug fix and the Header-overflow
+  root-cause conclusion: verdict **PASS**. All findings NOTE-level
+  (confirmatory), zero BLOCKER/MAJOR/MINOR.
 
 ## Final result
 
-- Changed: `src/content/home.ts` (added `ResearchRecognitionType`/
-  `ResearchRecognitionItem`/`ResearchRecognitionContent` types + content
-  block, EN+PT, 3 items), `src/app/[locale]/page.tsx` (wires
-  `ResearchRecognition` in after `Experience`), `docs/DECISIONS.md` (new
-  ADR-013 + ADR-012 correction), `docs/planning/PORTFOLIO_SPEC.md` §16
-  (rewritten, old draft kept in a collapsed historical note),
-  `docs/planning/HOME_WIREFRAME.md` §24-25 (rewritten, same treatment),
-  `docs/planning/PROJECT_CONTENT.md` (new §92 source-of-truth block + §58
-  correction), `docs/CONTEXT_MAP.md` (Research entry updated). New:
-  `src/components/sections/ResearchRecognition.tsx` — Server Component, no
-  new dependency, no unnecessary Client Component.
-- Verification: `npm run verify` PASS (run 2x, incl. the reviewer's own
+- Changed: `src/content/home.ts` (added `CapabilityGroup`/
+  `CapabilitiesContent` types + content block, EN+PT, 4 groups),
+  `src/app/[locale]/page.tsx` (wires `Capabilities` in after
+  `ResearchRecognition`), `docs/planning/PORTFOLIO_SPEC.md` §18 (rewritten
+  to the evidence-backed V1 allocation, old speculative list kept in a
+  collapsed historical note), `docs/planning/HOME_WIREFRAME.md` §26-27
+  (AI Engineering → Applied AI, final item lists, + the `min-[Npx]:`
+  cascade-bug implementation note), `docs/CONTEXT_MAP.md` (Capabilities
+  entry updated). New: `src/components/sections/Capabilities.tsx` — Server
+  Component, no new dependency, no unnecessary Client Component.
+- Verification: `npm run verify` PASS (run 3x, incl. the reviewer's own
   independent re-run). `git diff --check` PASS. `package.json`/
   `package-lock.json` unchanged. Reviewer self-review PASS (0 findings at
-  any severity). Manual visual check: `/en` and `/pt` at 1440px and 390px,
-  screenshotted and inspected, 0px horizontal overflow measured at all
-  four; correct editorial order, correct type labels, correct PT wrapping
-  all visually confirmed.
-- Not visually verified (explicitly, not silently skipped): 1024px, 768px,
-  360px breakpoints weren't separately screenshotted — low risk, this
-  section has no custom breakpoint beyond the metadata/link row's `sm:`
-  flex-direction switch.
-- Not done (explicitly out of scope for M1-06, tracked for later
-  milestones): M1-07 Capabilities.
+  BLOCKER/MAJOR/MINOR). Manual visual check across 8 EN + 4 PT viewport
+  combinations (broader than the usual 4, per this task's explicit tablet-
+  breakpoint requirement) — 0px overflow everywhere except a pre-existing,
+  out-of-scope Header issue at 768px (documented above, not fixed).
+- Not done (explicitly out of scope for M1-07, tracked separately): fixing
+  the pre-existing 768px Header overflow (a future task should address
+  this — flagged in `progress.md`'s Known pitfalls).
+
+## Discovered but out of scope
+
+- **Pre-existing `Header.tsx` horizontal overflow at exactly 768px
+  viewport width** (18px, traced to the `<HEADER>` element itself via DOM
+  inspection). Confirmed unrelated to this diff — `Header.tsx` is
+  untouched by M1-07 (or any recent M1 task). Needs its own future fix;
+  recorded in `.claude/state/progress.md`'s Known pitfalls so it isn't
+  silently rediscovered.

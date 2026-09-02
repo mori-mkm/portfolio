@@ -1789,6 +1789,12 @@ Mas eles não são a mesma taxonomia.
 
 # 18. 06 / Capabilities
 
+**Finalized by M1-07** (2026-09-02) — this replaces the speculative list
+below with the evidence-backed V1 allocation. This is an application of
+**ADR-007 (evidence before prominence)** to the current state of the
+public projects/experience, not a new architectural decision — no new
+ADR was created for this.
+
 Substituir “Skills” por:
 
 ```text
@@ -1797,24 +1803,46 @@ Substituir “Skills” por:
 
 Porque comunica capacidade de construir, não um catálogo de keywords.
 
+Header nav is NOT extended with a "Capabilities" item — the existing nav
+(About, Projects, Case Studies, Experience, Research, Writing, Contact)
+stays as-is; this section has no nav entry.
+
 ---
 
-## 18.1 AI Engineering
+## 18.1 Why "Applied AI", not "AI Engineering"
+
+The Hero can position the direction ("Data Scientist & AI Engineer"), but
+Capabilities must be precise about evidence available *today*. The
+portfolio has public evidence of LLM-assisted workflows, structured
+output/JSON Schema, prompt/context design and AI automation — mainly
+through Application Job (Selected Work). It does not yet have public
+evidence of RAG, agentic/multi-agent systems, AI evaluation systems, LLM
+observability, or production AI services at a maturity worth featuring as
+a capability. So the group is **Applied AI**, not **AI Engineering** — this
+can evolve once Closer AI (or another public project) supplies that
+evidence; Closer AI is not used as evidence for any of it today (its
+repository has no implemented project evidence yet).
+
+---
+
+## 18.2 Final V1 groups (rendered)
+
+### 01 — Applied AI
 
 ```text
 LLM Applications
-Retrieval-Augmented Generation
-Agentic Systems
-Evaluation
-Prompt / Context Engineering
-AI APIs
+AI-assisted Workflows
+Structured Outputs
+Prompt & Context Engineering
+AI Automation
 ```
 
-Adicionar frameworks específicos apenas quando houver uso concreto.
+Deferred until public evidence exists (omit silently — no "coming soon"/
+"planned" labels, this section is not a roadmap): RAG, Retrieval-Augmented
+Generation, Agentic Systems, Multi-Agent Systems, LangChain, LangGraph,
+CrewAI, Vector Databases, AI Evaluation, AI Observability.
 
----
-
-## 18.2 Machine Learning
+### 02 — Machine Learning
 
 ```text
 Regression
@@ -1826,38 +1854,67 @@ Experimentation
 Model Evaluation
 ```
 
----
+Evidence distributed across Procurement Intelligence, Employee Attrition,
+Retail Sales Forecasting, professional experience and statistics
+background. Deliberately classes of problem/method, not an algorithm
+inventory — do not list LightGBM, XGBoost, CatBoost, SARIMAX, Prophet,
+Logistic Regression, Cox, etc. individually.
 
-## 18.3 Data
+### 03 — Data
 
 ```text
 Python
 SQL
 Pandas
-PySpark
 Power BI
 Data Modeling
 Data Pipelines
+Data Quality
 ```
 
----
+Strong professional and/or public evidence. **PySpark deferred** — not
+enough current portfolio evidence to give it the same weight as Python/SQL.
+Also deliberately excludes a database/tool inventory (SQL Server, DuckDB,
+MongoDB, Databricks) — those already appear in the projects/Experience
+entries where they have real context; Capabilities works one level above
+that.
 
-## 18.4 Engineering
+### 04 — Engineering
 
 ```text
-FastAPI
+Git & GitHub
 Docker
-Git
-MLflow
 Testing
+MLflow
 APIs
-CI/CD
-Cloud Foundations
+Streamlit
+Automation
 ```
+
+Rationale: Git/GitHub (public projects + the portfolio itself), Docker
+(Steel Indicator), Testing (Procurement + Steel's public test suites),
+MLflow (Procurement Intelligence), APIs (experience/projects/technical
+background), Streamlit (Procurement Intelligence's live app), Automation
+(Application Job + professional experience).
+
+**Deferred until public evidence exists:** FastAPI, CI/CD, Kubernetes,
+Terraform, AWS, GCP, Cloud Architecture, Microservices, Monitoring,
+Observability.
 
 ---
 
-## 18.5 Visual
+## 18.3 What Capabilities is not
+
+No project descriptions or evidence metrics embedded in items (bad:
+"Testing — 124 tests in Procurement"; better: just "Testing" — the
+evidence already lives in Selected Work/Case Studies). No proficiency
+annotations (Professional/Personal Project/Academic, years, Advanced/
+Intermediate/Beginner) — that's noise and subjective ranking the rest of
+the site already contextualizes elsewhere. No individual algorithm names.
+
+---
+
+## 18.4 Visual
 
 Não usar progress bars:
 
@@ -1869,9 +1926,53 @@ LangChain 85%
 
 Isso não possui interpretação objetiva.
 
-Usar grupos tipográficos.
+Usar grupos tipográficos. No cards, pills, badges, logos, icons, radar
+charts, skill meters, animated bars, or carousels — this should be one of
+the visually quietest sections on Home.
 
 ---
+
+### Historical / superseded (do not implement)
+
+<details>
+<summary>Original speculative Capabilities list (pre-M1-07)</summary>
+
+```text
+AI ENGINEERING
+LLM Applications
+Retrieval-Augmented Generation
+Agentic Systems
+Evaluation
+Prompt / Context Engineering
+AI APIs
+
+DATA
+Python
+SQL
+Pandas
+PySpark
+Power BI
+Data Modeling
+Data Pipelines
+
+ENGINEERING
+FastAPI
+Docker
+Git
+MLflow
+Testing
+APIs
+CI/CD
+Cloud Foundations
+```
+
+This list was written as portfolio *direction* before evidence-before-
+prominence was applied to the current state of the projects. RAG, Agentic
+Systems, FastAPI, PySpark and CI/CD are not deleted from the long-term
+direction — they're future candidates, promotable to §18.2 once a public
+project provides concrete evidence, not before.
+
+</details>
 
 # 19. 07 / Writing
 

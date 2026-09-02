@@ -56,8 +56,9 @@ Note: the pre-ADR-012 4-topic Research draft (Economic Index Construction, Shapl
 
 ## Capabilities
 
-Read: SPEC §18 (06 / Capabilities), WIREFRAME §26-27 (06 / Capabilities + mobile)
-Likely code: `src/components/sections/Capabilities.tsx` (not created yet)
+Read: SPEC §18 (06 / Capabilities — finalized M1-07, ADR-007 applied), WIREFRAME §26-27 (06 / Capabilities + mobile)
+Code: `src/components/sections/Capabilities.tsx`, `src/content/home.ts`
+Note: group is "Applied AI", not "AI Engineering" (evidence boundary — see SPEC §18.1). The old speculative item list (RAG, Agentic Systems, FastAPI, PySpark, CI/CD) is obsolete — kept only in a collapsed historical note in SPEC §18, do not implement it. No Header nav item was added for this section.
 
 ## Writing
 

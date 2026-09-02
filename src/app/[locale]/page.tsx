@@ -7,6 +7,7 @@ import { SelectedWork } from "@/components/sections/SelectedWork";
 import { CaseStudies } from "@/components/sections/CaseStudies";
 import { Experience } from "@/components/sections/Experience";
 import { ResearchRecognition } from "@/components/sections/ResearchRecognition";
+import { Capabilities } from "@/components/sections/Capabilities";
 import { homeContent } from "@/content/home";
 import { isValidLocale } from "@/lib/i18n";
 
@@ -110,6 +111,13 @@ export default async function HomePage({
           headlineLine2={content.researchRecognition.headlineLine2}
           supportingCopy={content.researchRecognition.supportingCopy}
           items={content.researchRecognition.items}
+        />
+        <Capabilities
+          eyebrow={content.capabilities.eyebrow}
+          headlineLine1={content.capabilities.headlineLine1}
+          headlineLine2={content.capabilities.headlineLine2}
+          supportingCopy={content.capabilities.supportingCopy}
+          groups={content.capabilities.groups}
         />
       </main>
     </>

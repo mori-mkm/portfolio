@@ -47,6 +47,18 @@ import type { Locale } from "@/lib/i18n";
  * work (hackathon prototype, final coursework project) — no production,
  * deployment, or business-outcome claims. Closer AI is deliberately
  * omitted (ADR-007, evidence before prominence).
+ *
+ * `capabilities` (M1-07): synthesis layer, not a new evidence source — an
+ * application of ADR-007 (evidence before prominence) to the current
+ * public-project/experience evidence, not a new architectural decision
+ * (no ADR-014). Group is "Applied AI", not "AI Engineering" — the public
+ * evidence today supports LLM-assisted workflows / structured outputs /
+ * prompt engineering, not RAG / agentic systems / evals as *mature*
+ * capabilities. Deliberately excludes RAG, Agentic Systems, Multi-Agent
+ * Systems, LangChain/LangGraph/CrewAI, Vector Databases, AI Evaluation, AI
+ * Observability, FastAPI, PySpark, CI/CD, and cloud infra — all omitted
+ * silently (no "coming soon"/"planned" labels, this section is not a
+ * roadmap). Closer AI is not used as evidence for any of the above.
  */
 
 export type NavItem = {
@@ -163,6 +175,20 @@ export type ResearchRecognitionContent = {
   items: ResearchRecognitionItem[];
 };
 
+export type CapabilityGroup = {
+  /** Stored as literal display text (e.g. "APPLIED AI"), matching the rest of the site's convention for eyebrow/category strings — the "0X / " index prefix is composed from array position in the component, not stored here. */
+  title: string;
+  items: string[];
+};
+
+export type CapabilitiesContent = {
+  eyebrow: string;
+  headlineLine1: string;
+  headlineLine2: string;
+  supportingCopy?: string;
+  groups: CapabilityGroup[];
+};
+
 type HomeContent = {
   brand: string;
   nav: NavItem[];
@@ -209,6 +235,7 @@ type HomeContent = {
   caseStudies: CaseStudiesContent;
   experience: ExperienceContent;
   researchRecognition: ResearchRecognitionContent;
+  capabilities: CapabilitiesContent;
 };
 
 export const homeContent: Record<Locale, HomeContent> = {
@@ -487,6 +514,59 @@ export const homeContent: Record<Locale, HomeContent> = {
         },
       ],
     },
+    capabilities: {
+      eyebrow: "06 / CAPABILITIES",
+      headlineLine1: "Tools and methods I use to",
+      headlineLine2: "turn ideas into working systems.",
+      groups: [
+        {
+          title: "APPLIED AI",
+          items: [
+            "LLM Applications",
+            "AI-assisted Workflows",
+            "Structured Outputs",
+            "Prompt & Context Engineering",
+            "AI Automation",
+          ],
+        },
+        {
+          title: "MACHINE LEARNING",
+          items: [
+            "Regression",
+            "Classification",
+            "Gradient Boosting",
+            "Forecasting",
+            "Survival Analysis",
+            "Experimentation",
+            "Model Evaluation",
+          ],
+        },
+        {
+          title: "DATA",
+          items: [
+            "Python",
+            "SQL",
+            "Pandas",
+            "Power BI",
+            "Data Modeling",
+            "Data Pipelines",
+            "Data Quality",
+          ],
+        },
+        {
+          title: "ENGINEERING",
+          items: [
+            "Git & GitHub",
+            "Docker",
+            "Testing",
+            "MLflow",
+            "APIs",
+            "Streamlit",
+            "Automation",
+          ],
+        },
+      ],
+    },
   },
 
   pt: {
@@ -761,6 +841,59 @@ export const homeContent: Record<Locale, HomeContent> = {
           metadata: "Forecasting · SARIMAX · Time Series",
           href: "https://github.com/mori-mkm/retail-sales-forecasting",
           linkLabel: "GitHub",
+        },
+      ],
+    },
+    capabilities: {
+      eyebrow: "06 / CAPACIDADES",
+      headlineLine1: "Ferramentas e métodos que uso para",
+      headlineLine2: "transformar ideias em sistemas funcionais.",
+      groups: [
+        {
+          title: "APPLIED AI",
+          items: [
+            "LLM Applications",
+            "Workflows assistidos por IA",
+            "Saídas estruturadas",
+            "Prompt & Context Engineering",
+            "Automação com IA",
+          ],
+        },
+        {
+          title: "MACHINE LEARNING",
+          items: [
+            "Regressão",
+            "Classificação",
+            "Gradient Boosting",
+            "Forecasting",
+            "Análise de Sobrevivência",
+            "Experimentação",
+            "Avaliação de Modelos",
+          ],
+        },
+        {
+          title: "DATA",
+          items: [
+            "Python",
+            "SQL",
+            "Pandas",
+            "Power BI",
+            "Modelagem de Dados",
+            "Pipelines de Dados",
+            "Qualidade de Dados",
+          ],
+        },
+        {
+          title: "ENGINEERING",
+          items: [
+            "Git & GitHub",
+            "Docker",
+            "Testes",
+            "MLflow",
+            "APIs",
+            "Streamlit",
+            "Automação",
+          ],
         },
       ],
     },
