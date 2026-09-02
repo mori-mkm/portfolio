@@ -5,6 +5,7 @@ import { Hero } from "@/components/sections/Hero";
 import { About } from "@/components/sections/About";
 import { SelectedWork } from "@/components/sections/SelectedWork";
 import { CaseStudies } from "@/components/sections/CaseStudies";
+import { Experience } from "@/components/sections/Experience";
 import { homeContent } from "@/content/home";
 import { isValidLocale } from "@/lib/i18n";
 
@@ -90,6 +91,17 @@ export default async function HomePage({
           supportingCopy={content.caseStudies.supportingCopy}
           githubLabel={content.caseStudies.githubLabel}
           studies={content.caseStudies.studies}
+        />
+        <Experience
+          eyebrow={content.experience.eyebrow}
+          headlineLine1={content.experience.headlineLine1}
+          headlineLine2={content.experience.headlineLine2}
+          intro={content.experience.intro}
+          items={content.experience.items}
+          resume={{
+            label: content.externalLinks.resume,
+            href: content.externalLinks.resumeHref,
+          }}
         />
       </main>
     </>

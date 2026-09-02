@@ -1341,6 +1341,13 @@ Exemplos:
 
 # 15. 04 / Experience
 
+**Finalized by M1-05** (2026-09-01) — this replaces the earlier placeholder
+copy below with the actual implemented content, per ADR-011 (no private
+résumé material in the repo — only public-safe facts) and ADR-012 (Home
+content exclusivity). Source of truth for `src/content/home.ts`'s
+`experience` block. Full detail/evidence rationale: `docs/tasks/CURRENT_TASK.md`
+(M1-05 Evidence/notes) once superseded by the next task, or git history.
+
 ## Objetivo
 
 Provar contexto profissional sem repetir o currículo inteiro.
@@ -1349,79 +1356,158 @@ Provar contexto profissional sem repetir o currículo inteiro.
 
 ## Heading
 
+EN:
+
 ```text
 04 / EXPERIENCE
 
-Where I've worked and what I've built.
+Where I've worked
+and what I've built.
+```
+
+PT-BR:
+
+```text
+04 / EXPERIÊNCIA
+
+Onde trabalhei
+e o que construí.
 ```
 
 ---
 
 ## Estrutura
 
-Timeline vertical.
+Editorial list (no timeline dots/rail/connectors), reverse chronological
+order — four companies, exactly as below. Company/role/period are treated
+as historical facts and are **not translated** between EN/PT (only the
+description prose is localized).
 
-### Banco BV
+### 01 — Banco BV
 
 ```text
-Banco BV
-Data / People Analytics
 2025 — 2026
-
-Built analytics, forecasting and decision-support
-solutions for workforce and leadership use.
+Banco BV
+People Analytics Analyst Pleno · Data Analytics
 ```
 
-Possible evidence chips:
+"People Analytics Analyst Pleno" is the official historical title —
+"Data Analytics" is an allowed functional descriptor alongside it, not a
+replacement for it.
+
+EN copy:
 
 ```text
-Power BI
-SQL
-Databricks
-Machine Learning
-People Analytics
+Built and evolved analytics, forecasting and decision-support products
+covering a workforce of 4,000+ employees and serving multiple levels of
+leadership. Worked across SQL Server, Power BI, Python and Databricks.
 ```
+
+Metadata: `SQL Server · Power BI · Python · Databricks`
+
+Evidence constraints: Databricks work was maintaining/fixing existing
+Bronze/Silver/Gold notebooks and pipelines, not architecting the lakehouse
+— do not claim "architected", "built from scratch", or "designed the
+corporate data lake". Do not duplicate Employee Attrition Prediction's
+Selected Work treatment here (no 74% recall / SMOTE / threshold /
+attrition-model architecture) — see ADR-012.
 
 ---
 
-### BIP Consulting
+### 02 — BIP Consulting
 
 ```text
-BIP Consulting
-People Analytics
 2024 — 2025
-
-Built data transformations and analytics products
-for HR and workforce processes.
+BIP Consulting
+People Analytics · Data Analytics
 ```
+
+The user entered as an intern and was later promoted to Junior Analyst, but
+the exact transition date isn't in the evidence base — the Home
+deliberately uses the functional role above instead of labeling the whole
+2024–2025 period "Junior", which would be a false level/date combination.
+
+EN copy:
+
+```text
+Took ownership of People Analytics operations and redesigned monthly
+international reporting, reducing consolidation from about one week to
+one day. Built ETL and automation flows with Power Automate, Python and
+Power Query.
+```
+
+Metadata: `Python · Power Query · Power Automate · ETL`
+
+Evidence constraints: do not claim "led an international data team" or
+Oracle HCM ownership/authorship — the safe evidence is international HR
+reporting, interaction with the Italy/Oracle HCM team, and the reporting
+cycle improvement (~1 week → ~1 day).
 
 ---
 
-### Contmatic Phoenix
+### 03 — Contmatic Phoenix
 
 ```text
-Contmatic Phoenix
-Data Science
 2022 — 2023
-
-Worked with analytics, experimentation and
-marketing-oriented data products.
+Contmatic Phoenix
+Data Science Junior · Growth & Marketing Analytics
 ```
 
----
-
-### Rocketseat
+EN copy:
 
 ```text
-Rocketseat
-Data Science
-2021 — 2022
-
-Worked with BI, forecasting and decision-oriented
-analytics using Python and R.
+Worked across experimentation, segmentation, churn/LTV, funnels and
+campaign analytics on a base of ~1M leads and ~60k users. A series of
+data-driven optimizations contributed to ~11% higher conversion and ~20%
+lower CAC.
 ```
 
+Metadata: `Python · SQL · Experimentation · Growth Analytics`
+
+Evidence constraints: the +11%/-20% results came from a *series* of
+optimizations — do not attribute them to a single A/B test or model.
+
 ---
+
+### 04 — Rocketseat
+
+```text
+2021 — 2022
+Rocketseat
+Data Science Junior · Growth & Customer Analytics
+```
+
+EN copy:
+
+```text
+Applied data science to segmentation, retention, cohorts and growth
+analytics across 60k+ paying students. A decision-tree segmentation
+initiative contributed to ~15% higher course-purchase conversion.
+```
+
+Metadata: `Python · R · SQL · Customer Analytics`
+
+Evidence constraints (ADR-012): do **not** mention Developer Market
+Research, CNN Brasil, persona research, the 5,000+ responses / ~50
+interviews figures, or the ~20% representation finding here — that
+research already has its own narrative home in Case Studies. Experience
+communicates the broader professional role at Rocketseat only.
+
+---
+
+## Global constraints
+
+- **AI Engineering is not claimed as professional experience.** No `LLM` /
+  `RAG` / `Agents` / `LangChain` / `AI Engineering` tags on any Experience
+  entry — the portfolio's AI Engineering positioning is sustained by
+  personal/technical projects (Selected Work, Case Studies), not by
+  employment history. Experience shows the professional foundation that
+  supports that evolution (analytics, statistics, machine learning,
+  experimentation, data products, automation, decision support, data
+  pipelines), not AI Engineering itself.
+- No project/case-study duplication (ADR-012) — see per-company evidence
+  constraints above.
+- No PII (phone, personal email) or private résumé material — ADR-011.
 
 ## Regra
 

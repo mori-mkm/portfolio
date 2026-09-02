@@ -28,6 +28,14 @@ import type { Locale } from "@/lib/i18n";
  * Selected Work and into Case Studies, and why the Developer Market
  * Research / CNN Brasil case study is deliberately hedged (no unverified
  * authorship or figures beyond what the user confirmed).
+ *
+ * `experience` (M1-05): company/role/period are historical-fact fields —
+ * kept identical across EN/PT (not translated) per the user's explicit
+ * instruction not to silently alter an official job title. Source: the
+ * user's private master résumé (never committed — ADR-011). Per ADR-012,
+ * none of these entries reproduce the Selected Work / Case Studies content
+ * already featured elsewhere (no CNN/research detail under Rocketseat, no
+ * Employee Attrition metrics under Banco BV).
  */
 
 export type NavItem = {
@@ -103,6 +111,23 @@ export type CaseStudiesContent = {
   studies: CaseStudy[];
 };
 
+export type ExperienceItem = {
+  /** Company, role and period are treated as identity facts, not prose — kept identical across locales (see ADR-007 / M1-05 notes). */
+  period: string;
+  company: string;
+  role: string;
+  description: string;
+  metadata: string;
+};
+
+export type ExperienceContent = {
+  eyebrow: string;
+  headlineLine1: string;
+  headlineLine2: string;
+  intro: string;
+  items: ExperienceItem[];
+};
+
 type HomeContent = {
   brand: string;
   nav: NavItem[];
@@ -147,6 +172,7 @@ type HomeContent = {
   };
   selectedWork: SelectedWorkContent;
   caseStudies: CaseStudiesContent;
+  experience: ExperienceContent;
 };
 
 export const homeContent: Record<Locale, HomeContent> = {
@@ -340,6 +366,47 @@ export const homeContent: Record<Locale, HomeContent> = {
         },
       ],
     },
+    experience: {
+      eyebrow: "04 / EXPERIENCE",
+      headlineLine1: "Where I've worked",
+      headlineLine2: "and what I've built.",
+      intro:
+        "Professional experience across finance, consulting and technology — applying analytics, machine learning, experimentation and data products to real business problems.",
+      items: [
+        {
+          period: "2025 — 2026",
+          company: "Banco BV",
+          role: "People Analytics Analyst Pleno · Data Analytics",
+          description:
+            "Built and evolved analytics, forecasting and decision-support products covering a workforce of 4,000+ employees and serving multiple levels of leadership. Worked across SQL Server, Power BI, Python and Databricks.",
+          metadata: "SQL Server · Power BI · Python · Databricks",
+        },
+        {
+          period: "2024 — 2025",
+          company: "BIP Consulting",
+          role: "People Analytics · Data Analytics",
+          description:
+            "Took ownership of People Analytics operations and redesigned monthly international reporting, reducing consolidation from about one week to one day. Built ETL and automation flows with Power Automate, Python and Power Query.",
+          metadata: "Python · Power Query · Power Automate · ETL",
+        },
+        {
+          period: "2022 — 2023",
+          company: "Contmatic Phoenix",
+          role: "Data Science Junior · Growth & Marketing Analytics",
+          description:
+            "Worked across experimentation, segmentation, churn/LTV, funnels and campaign analytics on a base of ~1M leads and ~60k users. A series of data-driven optimizations contributed to ~11% higher conversion and ~20% lower CAC.",
+          metadata: "Python · SQL · Experimentation · Growth Analytics",
+        },
+        {
+          period: "2021 — 2022",
+          company: "Rocketseat",
+          role: "Data Science Junior · Growth & Customer Analytics",
+          description:
+            "Applied data science to segmentation, retention, cohorts and growth analytics across 60k+ paying students. A decision-tree segmentation initiative contributed to ~15% higher course-purchase conversion.",
+          metadata: "Python · R · SQL · Customer Analytics",
+        },
+      ],
+    },
   },
 
   pt: {
@@ -529,6 +596,47 @@ export const homeContent: Record<Locale, HomeContent> = {
           visual: "research",
           externalHref: "https://lnkd.in/p/djifF6qh",
           externalLabel: "Assistir cobertura",
+        },
+      ],
+    },
+    experience: {
+      eyebrow: "04 / EXPERIÊNCIA",
+      headlineLine1: "Onde trabalhei",
+      headlineLine2: "e o que construí.",
+      intro:
+        "Experiência profissional em finanças, consultoria e tecnologia — aplicando analytics, machine learning, experimentação e produtos de dados a problemas reais de negócio.",
+      items: [
+        {
+          period: "2025 — 2026",
+          company: "Banco BV",
+          role: "People Analytics Analyst Pleno · Data Analytics",
+          description:
+            "Desenvolvi e evoluí produtos analíticos, forecasting e soluções de apoio à decisão cobrindo uma força de trabalho de mais de 4.000 colaboradores e diferentes níveis de liderança. Atuei com SQL Server, Power BI, Python e Databricks.",
+          metadata: "SQL Server · Power BI · Python · Databricks",
+        },
+        {
+          period: "2024 — 2025",
+          company: "BIP Consulting",
+          role: "People Analytics · Data Analytics",
+          description:
+            "Assumi a operação de People Analytics e redesenhei o reporting internacional mensal, reduzindo a consolidação de cerca de uma semana para um dia. Estruturei fluxos de ETL e automação com Power Automate, Python e Power Query.",
+          metadata: "Python · Power Query · Power Automate · ETL",
+        },
+        {
+          period: "2022 — 2023",
+          company: "Contmatic Phoenix",
+          role: "Data Science Junior · Growth & Marketing Analytics",
+          description:
+            "Atuei com experimentação, segmentação, churn/LTV, funis e análise de campanhas sobre uma base de cerca de 1 milhão de leads e 60 mil usuários. Uma série de otimizações orientadas por dados contribuiu para cerca de 11% de aumento na conversão e 20% de redução no CAC.",
+          metadata: "Python · SQL · Experimentation · Growth Analytics",
+        },
+        {
+          period: "2021 — 2022",
+          company: "Rocketseat",
+          role: "Data Science Junior · Growth & Customer Analytics",
+          description:
+            "Apliquei ciência de dados em segmentação, retenção, coortes e Growth Analytics sobre uma base de mais de 60 mil alunos pagantes. Uma iniciativa de segmentação com árvore de decisão contribuiu para cerca de 15% de aumento na conversão de compra de cursos.",
+          metadata: "Python · R · SQL · Customer Analytics",
         },
       ],
     },
