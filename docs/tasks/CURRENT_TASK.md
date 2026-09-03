@@ -4,197 +4,291 @@
 
 ## Task
 
-ID: M1-07A
-Title: Header tablet overflow fix
+ID: M1-08
+Title: Real contact form + Writing deferral (+ security update: Turnstile, atomic email quota, key rename)
 Status: done
 
 ## Goal
 
-Eliminate the pre-existing 18px horizontal overflow caused by `Header.tsx`
-at exactly 768px viewport width (discovered and left unfixed as
-out-of-scope in M1-07), by finding the true root cause and choosing the
-correct breakpoint — not by masking the symptom.
+Implement a production-oriented bilingual Contact section with real
+server-side persistence (Supabase) and email notification (Resend), with
+independent partial-failure handling, while deferring Writing until
+genuine published content exists (no fake articles, no placeholders).
+
+**Revised mid-task**: the production Supabase project was created/modified
+after the first implementation pass, requiring reconciliation — see
+`docs/DECISIONS.md` ADR-015 (supersedes ADR-014). The env var renamed to
+`SUPABASE_SECRET_KEY` (current `sb_secret_...` format), Cloudflare
+Turnstile became a required production gate (fails closed), and an atomic
+daily email-notification quota (20/day) was added as a hard cost/abuse
+safety cap independent of per-IP rate limiting.
 
 ## Scope
 
 IN:
 
-- `src/components/layout/Header.tsx` only
-- root-cause diagnosis (measured, not guessed)
-- breakpoint fix for desktop-nav visibility
-- accessibility re-verification (keyboard, ARIA)
-- visual verification across the required viewport matrix, EN + PT
-- harness state update (remove the fixed pitfall, record the lesson)
+- #contact (renumbered 07, since Writing is deferred out of V1)
+- real contact form (name/email/phone required, message optional)
+- POST /api/contact: validate -> honeypot -> Turnstile -> independent
+  (Supabase persist) / (atomic quota reserve -> Resend) channels
+- Supabase persistence (server-only, RLS enabled, no browser access)
+- atomic daily email quota (`reserve_contact_email_slot` RPC, 20/day)
+- Cloudflare Turnstile server-side verification, fail-closed in production
+- Resend email notification (independent of DB success/failure)
+- EN/PT, responsive, accessible
+- Writing removed from nav, marked deferred in docs (not implemented)
+- docs/CONTACT_SETUP.md (20-step order)
+- .env.example (7 placeholders, no values)
+- planning doc updates (PORTFOLIO_SPEC §19/Contact, HOME_WIREFRAME, CONTEXT_MAP)
+- new ADR-015 (supersedes ADR-014)
+- body-size guard (10KB) before JSON.parse
 
 OUT:
 
-- Writing (M1-08)
-- Capabilities content/section
-- any other Home section's content
-- new dependencies
-- general Header refactor
-- new ADR (small responsive fix, not an architectural decision)
+- /writing route, article cards, "coming soon" placeholders
+- Footer (later milestone)
+- in-memory/Next.js-middleware IP rate limiting (Vercel WAF instead —
+  documented as an external, manually-configured production step)
+- admin dashboard
+- React Hook Form / Zod / Yup / toast / captcha / Turnstile-React-wrapper
+  libraries (official Cloudflare script + `next/script` only)
+- new testing framework
+- SUPABASE_SERVICE_ROLE_KEY (renamed; must not remain in active code/docs)
 
-## Root cause
+## External integration status
 
-`Header.tsx`'s desktop nav (brand + 7 nav items with `gap-7` + language
-switcher + Resume link) was gated to appear at Tailwind's built-in `md:`
-breakpoint (768px), but the actual rendered content needs more horizontal
-space than that at zero gap between the three flex groups. Measured via
-Playwright at a wide, unconstrained viewport (1600px, where nothing is
-being compressed):
+**CODE COMPLETE — EXTERNAL END-TO-END TEST PENDING.**
 
-- EN: brand ~104px + nav ~599px + switcher+resume ~148px + 64px container
-  padding ≈ **915px minimum**, zero breathing room.
-- PT: brand ~104px + nav ~625px (longer labels: "Estudos de Caso",
-  "Experiência") + switcher+resume ~154px + 64px padding ≈ **947px
-  minimum**, zero breathing room.
+No Supabase, Resend, or Turnstile credentials exist in this environment
+(no `.env`/`.env.local` file, confirmed). The route handler was verified
+to behave correctly in that exact state — both in `next dev` (development,
+Turnstile bypass logged and allowed) and `next start` (production, ran a
+real production build and server, confirmed Turnstile **fails closed**:
+the server log shows exactly `contact: rejected — Turnstile not
+configured in production (failing closed)` and, critically, **no**
+`database persistence failed`/`notification email not sent` log lines for
+that same request — proof the request was stopped at the Turnstile gate
+and never reached Supabase/quota/Resend at all, not just coincidentally
+producing the same status code). Neither integration was faked as
+succeeding.
 
-At exactly 768px, the desktop nav was structurally guaranteed to overflow
-for both locales — this was never a rendering fluke, it's arithmetic.
+Also verified live: honeypot still short-circuits before the Turnstile
+check even in production mode (confirmed via server log — no new
+Turnstile log line for a honeypot-triggered request); the client-side
+Turnstile gating logic (submit button disabled until a token exists) was
+verified live using Cloudflare's own public test site key
+(`1x00000000000000000000AA`, not a real credential — Cloudflare publishes
+this specifically for testing) with `NEXT_PUBLIC_TURNSTILE_SITE_KEY` set
+temporarily via an inline shell env var (never written to a file): the
+submit button was confirmed `disabled` before a token exists. Full live
+widget *rendering* (the actual Cloudflare-hosted iframe) could not be
+confirmed — this sandbox has no outbound network access to
+`challenges.cloudflare.com` (a Playwright `networkidle` wait against it
+timed out after 30s; this is an environment/network limitation, not a
+code defect — the gating logic itself was still verified independent of
+whether the remote script loads).
 
-## Fix
-
-Changed the breakpoint that gates desktop-nav-visibility from `md:`
-(768px) to the named `lg:` (1024px) Tailwind breakpoint, on exactly 4
-class strings in `Header.tsx`:
-
-1. Desktop `<nav>`: `hidden items-center gap-7 md:flex` → `... lg:flex`
-2. Language-switcher/Resume `<div>`: `hidden items-center gap-6 md:flex`
-   → `... lg:flex`
-3. Mobile toggle `<button>`: `... md:hidden` → `... lg:hidden`
-4. Mobile menu overlay `<div id="mobile-menu">`: `... md:hidden` →
-   `... lg:hidden`, **plus** one necessary side-effect fix: `md:top-[72px]`
-   added to the same className.
-
-**Why 1024 (`lg:`), not 900**: the task brief explicitly warned against
-blindly copying the site's existing ~900px "complex layouts break"
-convention. Measurement confirmed 900px would in fact still be too narrow
-for PT (~947px minimum with zero gap — would overflow or look completely
-cramped at 900). 1024px was chosen because it's the smallest **named**
-Tailwind breakpoint that comfortably clears both locales' true minimum
-with real breathing room (~75-110px of slack, split across two gaps ≈
-35-55px each — comfortable, not excessive). A named breakpoint was
-deliberately preferred over a hand-tuned arbitrary `min-[Npx]:` value
-(e.g. `min-[950px]:`) because M1-07 independently discovered a real
-Tailwind cascade-ordering bug: an arbitrary variant isn't guaranteed to be
-emitted after a named one in the generated stylesheet, so it can silently
-lose the cascade to a named variant touching the same property at the
-same viewport width. Reusing `lg:` avoids that entire class of risk.
-
-**Why the `md:top-[72px]` addition was necessary, not scope creep**: the
-mobile menu overlay's fixed `top-16` (64px) offset was previously only
-ever visible below 768px, where the header is always `h-16` (64px) tall —
-no mismatch existed. Moving the mobile-menu-active range up to 1023px
-means the overlay can now appear in the 768–1023px band, where the
-header's own (unrelated, untouched) `md:h-[72px]` rule makes it 72px
-tall. Without this addition, the overlay would sit 8px too high in that
-band. This is a direct, required consequence of the breakpoint change
-itself, not an unrelated refactor — confirmed necessary by visual
-inspection of the opened overlay at 900px.
+Live Supabase row persistence, live atomic quota reservation, and live
+Resend email delivery have **not** been end-to-end tested — there is
+nothing to point at as proof, because nothing was actually sent anywhere.
+`docs/CONTACT_SETUP.md` has the exact 20 remaining steps (create Supabase
+project, apply both migrations in order, retrieve the current
+`SUPABASE_SECRET_KEY`, create Resend account/API key, create a Cloudflare
+Turnstile site, configure all 7 variables locally and in Vercel, configure
+the Vercel WAF rule for `/api/contact`, then run one real submission and
+confirm the row + email + quota row all show up correctly).
 
 ## Verification
 
 ```bash
-npm run verify   # PASS — run 2x (after implementation, and again during
-                  # the reviewer's independent re-run)
+npm run verify   # PASS — run 4x across both implementation passes
 git diff --check # PASS
-git diff -- package.json package-lock.json  # empty — no new dependency
-git diff --stat  # exactly 1 file, 4 lines changed (+4/-4):
-                  # src/components/layout/Header.tsx
+git diff -- package.json  # only @supabase/supabase-js + resend (no new
+                            # dependency added for Turnstile — official
+                            # Cloudflare script + next/script only)
 ```
 
-Manual visual + measured review (headless Chromium via Playwright against
-`npm run dev` — no interactive browser available in this environment).
-This task required the full requested viewport matrix, not just the usual
-4 combos:
+Backend behavior verified directly against both `npm run dev` (development
+mode) and `npm run start` (a real production build/server), via `curl`,
+server-log inspection, and Playwright — not just code review:
 
-| viewport | EN overflow | PT overflow | nav mode |
-|---|---|---|---|
-| 1440 | 0px | 0px | desktop |
-| 1024 | 0px | 0px | desktop |
-| 900 | 0px | 0px | compact |
-| 820 | 0px | 0px | compact |
-| 768 | 0px | 0px | compact |
-| 700 | 0px | 0px | compact |
-| 600 | 0px | 0px | compact |
-| 390 | 0px | 0px | compact |
-| 360 | 0px | 0px | compact |
+- Valid payload, no credentials configured, **development** mode →
+  Turnstile bypass logged and allowed through, reaches the independent
+  channels, both unconfigured → `503 contact_unavailable` (not a fake
+  200).
+- Valid payload, no credentials configured, **production** mode (real
+  `next start`) → Turnstile **fails closed**, `503 contact_unavailable`,
+  confirmed via server log to have never reached Supabase/quota/Resend.
+- Invalid payload (name "A", email "not-an-email", phone "123") → `400`
+  with per-field messages, no PII echoed back — confirmed to run *before*
+  the honeypot/Turnstile checks (validate is first in the pipeline).
+- Honeypot (`website`) filled, valid-looking data → `200 {"ok":true}`
+  immediately, in both development AND production mode — confirmed via
+  server log that no Turnstile check (let alone DB/quota/email) ran for
+  that request.
+- Invalid `locale` ("fr") → `400`.
+- International phone with symbols (`+55 (11) 91234-5678`) → passed
+  validation (reached the 503 stage, not a 400) — confirms no
+  Brazil-only/country-specific format is enforced.
+- Oversized payload (~15KB, a padded `message` field) → `413`, confirmed
+  rejected before `JSON.parse` runs (body-size guard).
+- Full form fill + submit (Playwright, development mode) → real
+  `POST /api/contact` request observed, resolves to the error UI state:
+  visible warning-colored message AND a separate always-mounted
+  `role="status" aria-live="polite"` sr-only region both receive the
+  error text. Form field values are preserved on error (not reset),
+  button re-enables for retry.
+- Accessibility (Playwright): all 4 fields have correctly associated
+  `<label for>`; `autocomplete` is `name`/`email`/`tel` on the three
+  required fields; message `<textarea>` has no `required` attribute
+  (confirmed optional) and `maxlength="2000"`; honeypot input is
+  `display:none` (via a `hidden` wrapper), wrapper `aria-hidden="true"`,
+  input `tabindex="-1"`; Tab from the name field skips straight to email
+  (honeypot never receives keyboard focus).
+- Not captured via automated screenshot: the transient
+  `disabled + "Sending..."` button state on a *successful/erroring* fetch
+  round-trip specifically — it resolves in well under 100ms locally with
+  no integrations configured. The *Turnstile-gated* disabled state (no
+  token yet) WAS captured live (see External integration status above),
+  which is the more security-relevant of the two "why is this button
+  disabled" states.
 
-`document.documentElement.scrollWidth - clientWidth` measured directly at
-every cell above — 0px everywhere, both locales. `nav mode` measured via
-`getComputedStyle` on the primary nav (`display !== 'none'` = desktop).
+Manual visual review (headless Chromium via Playwright against
+`npm run dev`) at the exact matrix the task specified, re-run after the
+security update to confirm no regression from the Turnstile integration
+(which correctly renders nothing when unconfigured):
 
-Header screenshotted specifically (not just full-page) at 1440/1024/900/
-768/390 for both locales and visually inspected: desktop nav renders with
-real, comfortable breathing room at 1024px for both EN and PT (not
-cramped, and the 1024 threshold has genuine content-fit justification,
-not just an oversized safety margin); compact "MENU" toggle appears
-cleanly at 900px and below with no clipping or premature-collapse
-awkwardness. Full-page `/en` and `/pt` at 1440/390 also re-screenshotted
-to confirm no regression to any other Home section (Hero through
-Capabilities) — 0px overflow, visually unchanged.
+- `/en` 1440, 1024, 768, 390, 360 — all 0px horizontal overflow
+- `/pt` 1440, 1024, 768, 390, 360 — all 0px horizontal overflow
 
-Keyboard accessibility re-verified with Playwright (this range — 768 to
-1023px — was newly exercised by the fix, so worth confirming explicitly,
-not just assuming unchanged JS still works): Menu button is focusable and
-reachable via Tab; `Enter` opens the overlay (`aria-expanded` toggles to
-`true`, `#mobile-menu` becomes visible); `Escape` closes it (`#mobile-menu`
-visibility returns to hidden). Opened overlay screenshotted at 900px:
-no gap or overlap under the header bar (confirms the `md:top-[72px]` fix),
-all nav items + language switcher + GitHub/LinkedIn/Resume links present
-and correctly positioned, "MENU"/"CLOSE" toggle text swaps correctly.
+(10 combinations, all 0px, both before and after the security update.)
+Screenshotted and visually confirmed: left column (supporting copy +
+LinkedIn/GitHub/Resume, no Email link) / right column (form) split on
+desktop, single-column stack on mobile, no card/shadow/rounded-box
+treatment, thin underline field borders, no Turnstile widget visible
+(correct — unconfigured in this environment), PT copy fits without
+overflow at every width checked.
 
 ## Evidence / notes
 
-- **Root cause was measured, not guessed** — per the task's explicit
-  instruction not to blindly assume the breakpoint or copy the site's
-  existing ~900px convention. The measurement itself (see Root cause
-  above) is what ruled out 900px as genuinely too narrow for PT, not an
-  assumption.
-- **Not masked**: no `overflow-x-hidden`/`overflow-hidden` added anywhere,
-  no `scale-` transform, no font-size reduction on nav text (`text-[15px]`
-  unchanged), no `whitespace-nowrap`-plus-clipping trick, no
-  `overflow-x-hidden` on any ancestor. The fix changes when the desktop
-  nav is allowed to render, not how it's rendered — a genuine elimination
-  of the cause, not a visual cover-up.
-- **No nav items removed, none abbreviated**: `nav` array in
-  `src/content/home.ts` is completely untouched (`git diff` on that file
-  is empty) — the component reads it via `nav.map(...)`, so there was
-  never a hardcoded list in `Header.tsx` to accidentally trim. "Case
-  Studies" still reads in full, both locales.
-- **No "Capabilities"/"Capacidades" nav item added** — explicitly
-  forbidden by the task brief; confirmed by the same empty `home.ts` diff.
-- **Isolated, minimal diff**: exactly one file changed
-  (`src/components/layout/Header.tsx`), 4 lines (+4/-4). No other section
-  component, no content file, no planning doc, no global CSS was touched
-  — matches the task's explicit "prefer the smallest safe change" /
-  "não fazer refactor geral" instruction. Component structure (props,
-  state, both `useEffect` hooks, JSX nesting) identical apart from the 4
-  className edits.
-- **No new ADR** — per the task's own instruction, this is a small
-  responsive fix, not a durable architectural decision.
-- Reviewer self-review (`.claude/agents/reviewer.md`) ran against the
-  full diff with the task's own 10 review questions plus explicit
-  re-verification of every claim in this note (diff content, ARIA
-  attributes, absence of masking techniques, absence of nav-array
-  changes, dependency diff): verdict **PASS**, zero findings at any
-  severity. Independently re-ran `npm run verify` — PASS.
+- **Env var renamed everywhere**: grepped the full repo for
+  `SUPABASE_SERVICE_ROLE_KEY` — the only remaining hits are inside
+  historical/explanatory text (ADR-014's own "superseded, here's what
+  changed" note, ADR-015's explicit rename explanation, `CONTEXT_MAP.md`'s
+  "not X, use Y" pointer) — zero hits in actual runtime code, `.env.example`,
+  or `CONTACT_SETUP.md`. `src/lib/supabase/admin.ts` now reads
+  `SUPABASE_SECRET_KEY`.
+- **`service_role` (lowercase, the Postgres role name) is legitimately
+  still present** in `supabase/migrations/20260903_add_contact_email_daily_quota.sql`
+  (`grant execute on function ... to service_role;`) — this is the actual
+  Supabase built-in Postgres role the secret key authenticates as, not a
+  leftover reference to the old env var name. Correct and necessary.
+- **Migration ordering bug caught before it shipped**: the task's own
+  suggested filename (`20260902_add_contact_email_daily_quota.sql`) would
+  have sorted *before* `20260902_create_contact_messages.sql`
+  lexicographically (`a` < `c`), meaning Supabase would try to run the
+  quota migration's `ALTER TABLE contact_messages` before that table
+  existed. Fixed by bumping the date prefix to `20260903` — the standard,
+  robust fix (each migration gets its own distinct date), not a
+  same-day-alphabetical-ordering trick. Documented in ADR-015 as a lesson
+  for future migrations.
+- **Turnstile fail-closed verified live, not just by code reading**: see
+  External integration status above — a real `next start` production
+  server was run specifically to test this, since `next dev` always forces
+  development mode regardless of `NODE_ENV`.
+- **Suppression vs. failure correctly distinguished**: `notification_status`
+  now supports `pending`/`sent`/`failed`/`suppressed`. Traced the exact
+  logic in `route.ts`: quota-exhausted → `{status: "suppressed"}` →
+  stored as `"suppressed"`, `notification_error = null` (not treated as
+  an error). `200 {ok:true}` still returned whenever the DB insert
+  succeeded, regardless of email outcome — a suppressed notification
+  never causes a false `503` as long as the contact itself was stored.
+- **Independent channels preserved through the added complexity**: traced
+  that `persistContact` and `attemptNotification` (which internally does
+  reserve-quota-then-maybe-send) are still started via a single
+  `Promise.allSettled` — neither's failure/outcome gates the other being
+  attempted. The *sequential* part of the flow (Turnstile before
+  everything, quota-reserve before Resend-send within the email channel)
+  is a different axis from independence and doesn't contradict it.
+- **No PII in logs**: all `console.error`/`console.warn` call sites in
+  `route.ts` and `turnstile.ts` pass only `sanitizeError(...)`-wrapped
+  strings or static messages — never the raw `contact` object.
+- **No HTML injection surface**: notification email remains plain-text
+  only (`text:` field, no `html:` field anywhere).
+- **RLS confirmed correct on both tables**: `contact_messages` (unchanged
+  from the first pass) and the new `contact_email_quota` — both RLS
+  enabled, zero policies, explicit `revoke all ... from anon, authenticated`
+  on the quota table and on the RPC function itself (`revoke all on
+  function reserve_contact_email_slot(integer) from public, anon,
+  authenticated; grant execute ... to service_role`).
+- **Quota reservation is genuinely atomic**: the RPC's `UPDATE
+  contact_email_quota SET used = used + 1 WHERE quota_date =
+  v_today AND used < p_limit` is a single statement — Postgres
+  acquires a row lock on that day's row during the UPDATE, serializing
+  concurrent callers. Not implemented as a separate
+  SELECT-count-then-conditionally-write, which would have a race window.
+- **No new dependency for Turnstile**: loaded via Cloudflare's official
+  `challenges.cloudflare.com/turnstile/v0/api.js` through `next/script`
+  (a built-in Next.js component), with an explicit `window.turnstile.render()`
+  call (not the auto-render `data-sitekey` div) specifically so the widget
+  can be `.reset()` after a failed submission (tokens are single-use/
+  short-lived) — confirmed via `git diff -- package.json`, still only
+  `@supabase/supabase-js` and `resend`.
+- **Vercel WAF documented, not falsely claimed active**: `docs/CONTACT_SETUP.md`
+  step 16 explicitly says "it is not active until you actually configure
+  it here" — this repository has no way to verify or enforce an external
+  platform firewall rule from code.
+- **Body-size guard**: 10KB cap, checked via `Content-Length` header
+  first (fast rejection) then the actual decoded byte length (defense in
+  depth against a missing/spoofed header) — both before `JSON.parse`.
+  Documented rationale (generous for the largest realistic payload:
+  message ≤2000 chars + other fields + a Turnstile token) in the route's
+  own comment and ADR-015.
+- **Repo-wide secret grep, precise patterns**: `sb_secret_[A-Za-z0-9]`
+  and `re_[A-Za-z0-9]{10,}` (not just the bare prefixes, which would
+  false-positive on the intentional `sb_secret_...` format-illustration
+  text in `.env.example`/`CONTACT_SETUP.md`/ADR-015) — zero real-looking
+  hits anywhere in the repo.
+- Reviewer self-review (first pass, before this security update) ran
+  against the original diff with a 25-question security checklist:
+  verdict **PASS**, 0 BLOCKER/MAJOR, 2 NOTE (no body-size cap — now
+  addressed above; a cosmetic mis-tagged validation-error field name on
+  an unreachable edge case — unchanged, still low-priority). This
+  update's own verification (Turnstile fail-closed, migration ordering,
+  atomic quota, key rename) was performed directly by the implementer via
+  live `curl`/Playwright/server-log evidence as detailed above, not yet
+  re-reviewed by a fresh reviewer pass at the time of this report.
 
 ## Final result
 
-- Changed: `src/components/layout/Header.tsx` only — 4 breakpoint class
-  renames (`md:` → `lg:` on the desktop-nav-visibility gates) + 1
-  necessary side-effect fix (`md:top-[72px]` on the mobile overlay, to
-  match the header's own height at that breakpoint).
-- Verification: `npm run verify` PASS (run 2x, incl. the reviewer's own
-  independent re-run). `git diff --check` PASS. `package.json`/
-  `package-lock.json` unchanged. Reviewer self-review PASS (0 findings).
-  Manual visual + measured check across the full required 9-viewport ×
-  2-locale matrix (18 combinations) — 0px overflow at every one.
-  Keyboard accessibility (Tab focus, Enter to open, Escape to close, ARIA
-  state) re-verified for the newly-exercised 768-1023px range.
-- Not done (out of scope for this fix, unchanged): Writing (M1-08),
-  Capabilities, any other Home section's content — all confirmed to not
-  independently cause overflow (measured 0px across the full matrix
-  above), but none were edited.
+- Changed (cumulative across both implementation passes): `src/content/home.ts`
+  (Writing removed from nav, `contact` content block), `src/app/[locale]/page.tsx`
+  (wires `Contact` in), `.gitignore` (`!.env.example`), `docs/DECISIONS.md`
+  (ADR-014 marked superseded, new ADR-015), `docs/planning/PORTFOLIO_SPEC.md`
+  §19 (Writing deferred) + §20 (Contact renumbered 07, ADR-015 architecture),
+  `docs/planning/HOME_WIREFRAME.md` §28 (Writing deferral) + §30 (Contact
+  layout incl. Turnstile widget position), `docs/CONTEXT_MAP.md` (Writing/
+  Contact entries, ADR-015 pointer), `package.json`/`package-lock.json`
+  (2 dependencies total), `src/lib/supabase/admin.ts` (key rename),
+  `src/app/api/contact/route.ts` (rewritten flow), `src/components/forms/ContactForm.tsx`
+  (Turnstile widget), `.env.example` (7 variables), `docs/CONTACT_SETUP.md`
+  (rewritten, 20-step order).
+- New: `src/components/sections/Contact.tsx`, `src/lib/contact/validate.ts`,
+  `src/lib/contact/turnstile.ts`, `src/lib/contact/quota.ts`,
+  `supabase/migrations/20260902_create_contact_messages.sql`,
+  `supabase/migrations/20260903_add_contact_email_daily_quota.sql`.
+- Verification: `npm run verify` PASS (run 4x total). `git diff --check`
+  PASS. Manual visual check: `/en`/`/pt` at 1440/1024/768/390/360, 0px
+  horizontal overflow at every combination, both before and after the
+  security update. Backend behavior verified via curl + Playwright +
+  server-log inspection against both a development server and a real
+  production server (`next start`) — not just code review, and not just
+  the development-mode behavior.
+- Not done (explicitly, not silently): live Supabase/Resend/Turnstile
+  end-to-end test with real credentials — none exist in this environment.
+  Live Turnstile widget *rendering* specifically also unconfirmed (no
+  outbound network to Cloudflare's CDN in this sandbox) even though the
+  surrounding gating logic was verified live with Cloudflare's public test
+  key. See "External integration status" above and `docs/CONTACT_SETUP.md`
+  for the exact remaining steps, including the Vercel WAF rule which is
+  pure external configuration this repo cannot verify.

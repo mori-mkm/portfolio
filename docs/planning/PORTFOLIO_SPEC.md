@@ -1974,27 +1974,42 @@ project provides concrete evidence, not before.
 
 </details>
 
-# 19. 07 / Writing
+# 19. Writing
 
-## Heading
+**Status: DEFERRED FROM V1 (M1-08, 2026-09-02).**
+
+**Reason:** no genuine published articles exist yet.
+
+**Rule:** do not manufacture articles for portfolio completeness — no
+placeholder posts, no fake dates, no draft titles rendered on Home, no
+"Coming soon" section. This is the same evidence-before-prominence
+discipline already applied elsewhere (ADR-007) — Writing is content that
+doesn't exist yet, not a section that's merely unstyled.
+
+**Code state:** the `/writing` route and Writing section are **not
+implemented** — not hidden-but-present, not stubbed. `#writing` does not
+exist anywhere in the Home DOM, and "Writing"/"Artigos" was removed from
+both locale nav arrays in `src/content/home.ts` (M1-08). Because Writing
+sat between Research & Recognition and Contact in the original section
+numbering, Contact was renumbered `07 / CONTACT` (was planned as `08`) so
+the visitor never sees a missing section number — see §20 below.
+
+**Future:** restore Writing once at least one genuine article is
+published. At that point, treat this section's original heading/article-
+row spec below as the starting point (still valid content design, just
+never implemented), and renumber whatever follows it again.
+
+## Heading (for future reference — not implemented)
 
 ```text
-07 / WRITING
+0X / WRITING
 
 Notes on data, machine learning and AI systems.
 ```
 
 ---
 
-## V1
-
-A seção pode existir mesmo com 0–2 artigos.
-
-Se não houver artigo publicado no lançamento, é aceitável ocultá-la temporariamente da Home e manter a rota preparada.
-
-Não criar artigos artificiais apenas para preencher a página.
-
----
+## Primeiros artigos recomendados (para quando houver conteúdo real)
 
 ## Primeiros artigos recomendados
 
@@ -2054,14 +2069,26 @@ Read →
 
 ---
 
-# 20. 08 / Contact
+# 20. 07 / Contact
+
+**Renumbered by M1-08**: was planned as `08 / Contact`, behind Writing.
+Writing is deferred (§19) and not implemented, so Contact moved up to
+`07` — the visitor never sees a missing section number.
 
 ## Heading
 
 ```text
-08 / CONTACT
+07 / CONTACT
 
 Let's build something useful.
+```
+
+PT-BR:
+
+```text
+07 / CONTATO
+
+Vamos construir algo útil.
 ```
 
 ---
@@ -2070,15 +2097,25 @@ Let's build something useful.
 
 ```text
 I'm interested in opportunities and conversations around
-Data Science, Machine Learning and AI Engineering.
+Data Science, Machine Learning and Applied AI.
+```
+
+PT-BR:
+
+```text
+Tenho interesse em oportunidades e conversas sobre
+Ciência de Dados, Machine Learning e IA Aplicada.
 ```
 
 ---
 
 ## Links
 
+Reuses `content.externalLinks` — no URL duplicated in Contact's own
+content. No `Email` link (the form replaces the need to publish a
+personal address; `CONTACT_NOTIFICATION_EMAIL` stays server-only).
+
 ```text
-Email
 LinkedIn ↗
 GitHub ↗
 Resume ↗
@@ -2086,22 +2123,62 @@ Resume ↗
 
 ---
 
-## Formulário
+## Formulário — decisão revisada (M1-08, atualizada no mesmo dia por ADR-015)
 
-Não é obrigatório na V1.
+A decisão original deste documento ("links diretos > formulário, não
+obrigatório na V1") foi **substituída**: um formulário real é parte da V1.
 
-Preferência:
+Motivo da mudança: o produto passou a exigir um canal de contato que não
+dependa de o visitante já ter uma conta GitHub/LinkedIn aberta, e que
+persista o contato mesmo que o e-mail de notificação falhe.
 
-**links diretos > formulário**
+Arquitetura implementada (M1-08, **ADR-015** em `docs/DECISIONS.md` —
+substitui a versão original documentada em ADR-014, que assumia um nome de
+variável diferente e não incluía Turnstile/quota):
 
-Formulário adiciona:
+```text
+Browser (widget Turnstile real, renderizado só se configurado)
+  ↓
+POST /api/contact  (Next.js Route Handler, src/app/api/contact/route.ts)
+  ↓
+validação server-side (autoritativa)
+  ↓
+honeypot (sucesso falso silencioso se acionado)
+  ↓
+verificação Cloudflare Turnstile (server-side, Siteverify) — bloqueia
+tudo abaixo se falhar; production falha fechado se não configurado
+  ↓
+dois canais independentes (Promise.allSettled, não encadeados):
 
-- backend;
-- spam;
-- falhas;
-- manutenção.
+  A) Supabase Postgres  → persiste em contact_messages (RLS on, zero
+     políticas públicas, SUPABASE_SECRET_KEY — sb_secret_..., server-only,
+     src/lib/supabase/admin.ts)
 
-Pode entrar posteriormente.
+  B) cota diária + Resend → reserva atômica de vaga
+     (reserve_contact_email_slot(20), RPC) e só então envia notificação
+     em texto puro com Reply-To = e-mail do visitante; vaga esgotada =
+     "suppressed", não "failed" — o contato continua salvo
+```
+
+Sucesso é retornado ao visitante se o insert no Supabase **OU** o e-mail
+foi realmente enviado. `503 contact_unavailable` só quando nenhum dos dois
+aconteceu (inclui: insert falhou E (cota esgotada OU e-mail falhou OU
+Resend não configurado)). Nenhum detalhe de infraestrutura chega ao
+cliente ou aos logs junto com PII.
+
+Camadas de proteção anti-spam, da primeira à última: validação server-side
++ honeypot (`website`) + **Cloudflare Turnstile** (verificado server-side,
+falha fechado em produção se não configurado) + **Vercel WAF** (5
+requisições/IP/10min — configuração externa, documentada mas não ativa
+até ser configurada manualmente) + **cota diária de e-mail** (20/dia,
+reserva atômica via RPC — protege mesmo contra ataque distribuído entre
+muitos IPs). Nenhuma camada individual é "rate limiting distribuído de
+nível enterprise" — juntas formam uma linha de base razoável para um
+formulário de contato de portfólio pessoal.
+
+Full field list, states (idle/submitting/success/error) and setup
+instructions: `docs/CONTACT_SETUP.md` and
+`src/components/forms/ContactForm.tsx`.
 
 ---
 

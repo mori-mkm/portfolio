@@ -59,6 +59,15 @@ import type { Locale } from "@/lib/i18n";
  * Observability, FastAPI, PySpark, CI/CD, and cloud infra — all omitted
  * silently (no "coming soon"/"planned" labels, this section is not a
  * roadmap). Closer AI is not used as evidence for any of the above.
+ *
+ * `nav` / `contact` (M1-08): "Writing" removed from both locale nav
+ * arrays — Writing is deferred (no genuine published articles exist yet;
+ * see PORTFOLIO_SPEC.md §19). Contact is renumbered 07 (was planned as
+ * 08, behind Writing) so the visitor never sees a missing section number.
+ * The actual submit wiring (POST /api/contact, Supabase + Resend, ADR-014
+ * in docs/DECISIONS.md) lives in `src/app/api/contact/route.ts` and
+ * `src/components/forms/ContactForm.tsx` — this content object only
+ * supplies copy, never the destination email or any credential.
  */
 
 export type NavItem = {
@@ -189,6 +198,30 @@ export type CapabilitiesContent = {
   groups: CapabilityGroup[];
 };
 
+export type ContactFieldContent = {
+  /** Full literal label text, e.g. "NAME *" / "MESSAGE — OPTIONAL". */
+  label: string;
+  placeholder: string;
+};
+
+export type ContactContent = {
+  eyebrow: string;
+  headlineLine1: string;
+  headlineLine2: string;
+  supportingCopy: string;
+  fields: {
+    name: ContactFieldContent;
+    email: ContactFieldContent;
+    phone: ContactFieldContent;
+    message: ContactFieldContent;
+  };
+  submitLabel: string;
+  submittingLabel: string;
+  success: { heading: string; body: string };
+  error: { heading: string; body: string };
+  privacyCopy: string;
+};
+
 type HomeContent = {
   brand: string;
   nav: NavItem[];
@@ -236,6 +269,7 @@ type HomeContent = {
   experience: ExperienceContent;
   researchRecognition: ResearchRecognitionContent;
   capabilities: CapabilitiesContent;
+  contact: ContactContent;
 };
 
 export const homeContent: Record<Locale, HomeContent> = {
@@ -247,7 +281,6 @@ export const homeContent: Record<Locale, HomeContent> = {
       { label: "Case Studies", href: "#case-studies" },
       { label: "Experience", href: "#experience" },
       { label: "Research", href: "#research" },
-      { label: "Writing", href: "#writing" },
       { label: "Contact", href: "#contact" },
     ],
     languageSwitcher: {
@@ -567,6 +600,30 @@ export const homeContent: Record<Locale, HomeContent> = {
         },
       ],
     },
+    contact: {
+      eyebrow: "07 / CONTACT",
+      headlineLine1: "Let's build",
+      headlineLine2: "something useful.",
+      supportingCopy:
+        "I'm interested in opportunities and conversations around Data Science, Machine Learning and Applied AI.",
+      fields: {
+        name: { label: "NAME *", placeholder: "Jane Doe" },
+        email: { label: "EMAIL *", placeholder: "jane@example.com" },
+        phone: { label: "PHONE *", placeholder: "+1 555 123 4567" },
+        message: { label: "MESSAGE — OPTIONAL", placeholder: "How can I help?" },
+      },
+      submitLabel: "Send message",
+      submittingLabel: "Sending...",
+      success: {
+        heading: "MESSAGE SENT",
+        body: "Thanks — I'll get back to you soon.",
+      },
+      error: {
+        heading: "I couldn't send your message right now.",
+        body: "Please try again in a moment.",
+      },
+      privacyCopy: "I'll use these details only to reply to your contact.",
+    },
   },
 
   pt: {
@@ -577,7 +634,6 @@ export const homeContent: Record<Locale, HomeContent> = {
       { label: "Estudos de Caso", href: "#case-studies" },
       { label: "Experiência", href: "#experience" },
       { label: "Pesquisa", href: "#research" },
-      { label: "Artigos", href: "#writing" },
       { label: "Contato", href: "#contact" },
     ],
     languageSwitcher: {
@@ -896,6 +952,30 @@ export const homeContent: Record<Locale, HomeContent> = {
           ],
         },
       ],
+    },
+    contact: {
+      eyebrow: "07 / CONTATO",
+      headlineLine1: "Vamos construir",
+      headlineLine2: "algo útil.",
+      supportingCopy:
+        "Tenho interesse em oportunidades e conversas sobre Ciência de Dados, Machine Learning e IA Aplicada.",
+      fields: {
+        name: { label: "NOME *", placeholder: "Jane Doe" },
+        email: { label: "EMAIL *", placeholder: "jane@example.com" },
+        phone: { label: "TELEFONE *", placeholder: "+55 11 91234-5678" },
+        message: { label: "MENSAGEM — OPCIONAL", placeholder: "Como posso ajudar?" },
+      },
+      submitLabel: "Enviar mensagem",
+      submittingLabel: "Enviando...",
+      success: {
+        heading: "MENSAGEM ENVIADA",
+        body: "Obrigado pelo contato — responderei em breve.",
+      },
+      error: {
+        heading: "Não foi possível enviar sua mensagem agora.",
+        body: "Tente novamente em instantes.",
+      },
+      privacyCopy: "Usarei estes dados apenas para responder ao seu contato.",
     },
   },
 };

@@ -2202,101 +2202,31 @@ only the exact px threshold differs from this original wireframe note.
 
 ---
 
-# 28. 07 / Writing
+# 28. Writing — DEFERRED, not implemented (M1-08)
 
-Anchor:
+Anchor `#writing` does **not** exist anywhere in the Home DOM. "Writing" /
+"Artigos" was removed from both locale `nav` arrays in
+`src/content/home.ts` — not hidden via CSS, not present-but-unlinked, not
+rendered as a "Coming soon" placeholder. There is no `/writing` route.
 
-```text
-#writing
-```
+This is a straightforward instance of ADR-007 (evidence before
+prominence): the content doesn't exist yet, so the section isn't built
+yet. See `PORTFOLIO_SPEC.md` §19 for the full rationale and the article/
+copy ideas kept as reference for whenever Writing is eventually restored.
 
-If there are no published articles at launch:
-
-- keep component implemented;
-- omit section from Home;
-- omit Writing from nav;
-- retain `/writing` route only when useful.
-
-Do not show:
-
-```text
-Coming soon
-```
-
-as a large empty section.
+The `## 28.1 Header` / `## 28.2 Desktop rows` / `## 28.3 Article row` /
+`# 29. Writing mobile` layout notes that used to live in this file are
+still valid future design reference — see git history before this edit,
+or `PORTFOLIO_SPEC.md` §19 — not reproduced here since they describe a
+section that isn't built.
 
 ---
 
-## 28.1 Header
+# 30. 07 / Contact
 
-```text
-07 / WRITING
-
-Notes on data,
-machine learning and AI systems.
-```
-
----
-
-## 28.2 Desktop rows
-
-Example:
-
-```text
-SEP 2026       8 MIN
-
-Building an auditable economic indicator
-from public data
-
-Methodology, data vintages and the engineering
-decisions behind Steel Indicator.
-
-Read →
-```
-
-Full list:
-
-```text
-┌──────────────────────────────────────────────────────────────────────────┐
-│ SEP 2026   8 MIN    Building an auditable economic indicator...       → │
-├──────────────────────────────────────────────────────────────────────────┤
-│ SEP 2026   6 MIN    What I learned building a procurement...          → │
-├──────────────────────────────────────────────────────────────────────────┤
-│ ...                                                                      │
-└──────────────────────────────────────────────────────────────────────────┘
-```
-
----
-
-## 28.3 Article row
-
-Desktop columns:
-
-```text
-2 columns date/read time
-8 columns title/description
-2 columns CTA
-```
-
----
-
-# 29. Writing mobile
-
-```text
-SEP 2026 · 8 MIN
-
-Building an auditable economic indicator
-from public data
-
-Methodology, data vintages and the engineering
-decisions behind Steel Indicator.
-
-Read →
-```
-
----
-
-# 30. 08 / Contact
+**Renumbered by M1-08**: was `08 / Contact` behind Writing. Writing is
+deferred (§28) and not implemented, so this is now the last numbered Home
+section before Footer.
 
 Anchor:
 
@@ -2304,32 +2234,55 @@ Anchor:
 #contact
 ```
 
-This should be visually simple but memorable.
+**Formulário real é V1** (revisado em M1-08, arquitetura de segurança
+atualizada no mesmo dia por ADR-015) — a nota original deste arquivo dizia
+"Do not use contact form in V1" / "links diretos > formulário"; essa
+decisão foi substituída. Ver `PORTFOLIO_SPEC.md` §20 e `docs/DECISIONS.md`
+**ADR-015** (não ADR-014, superada) para a arquitetura completa (Next.js
+Route Handler → validação → honeypot → Cloudflare Turnstile → Supabase +
+cota diária de e-mail + Resend, canais independentes). O widget Turnstile
+aparece entre o campo MESSAGE e o botão de envio na wireframe abaixo,
+renderizado apenas quando `NEXT_PUBLIC_TURNSTILE_SITE_KEY` está
+configurado — nunca um CAPTCHA falso.
 
 ---
 
 ## 30.1 Desktop composition
 
-Full-width large block.
+Editorial split, not a full-width link list.
+
+```text
+LEFT  4/12 columns: heading context + external links
+RIGHT 8/12 columns: form
+```
 
 Wireframe:
 
 ```text
 ┌──────────────────────────────────────────────────────────────────────────┐
-│ 08 / CONTACT                                                             │
+│ 07 / CONTACT                                                             │
 │                                                                          │
-│ Let's build                                                              │
-│ something useful.                                                        │
+│ Let's build                          NAME *                             │
+│ something useful.                    [___________________________]     │
 │                                                                          │
-│ I'm interested in opportunities and conversations around                 │
-│ Data Science, Machine Learning and AI Engineering.                       │
+│ I'm interested in opportunities      EMAIL *                            │
+│ and conversations around Data        [___________________________]     │
+│ Science, Machine Learning and        PHONE *                            │
+│ Applied AI.                          [___________________________]     │
 │                                                                          │
-│ Email ↗                                                                  │
-│ LinkedIn ↗                                                               │
-│ GitHub ↗                                                                 │
-│ Resume ↗                                                                 │
+│ LinkedIn ↗                           MESSAGE — OPTIONAL                 │
+│ GitHub ↗                             [___________________________]     │
+│ Resume ↗                             [___________________________]     │
+│                                                                          │
+│                                       [ Turnstile widget, if configured]│
+│                                       [ Send message ]                  │
+│                                       I'll use these details only to    │
+│                                       reply to your contact.            │
 └──────────────────────────────────────────────────────────────────────────┘
 ```
+
+No Email link — the form replaces the need to publish a personal address;
+`CONTACT_NOTIFICATION_EMAIL` stays server-only (never a public `mailto:`).
 
 ---
 
@@ -2340,42 +2293,48 @@ Let's build
 something useful.
 ```
 
-Font:
-
-```text
-64–76px
-```
-
-Max width:
-
-```text
-800px
-```
+Same `SectionHeading` component/type-scale as every other Home section —
+no bespoke 64-76px treatment introduced for this one section (the
+original draft suggested a larger custom size; implementation reuses the
+shared heading component for visual consistency instead).
 
 ---
 
-## 30.3 Contact links
-
-Do not use contact form in V1.
-
-Links displayed as large rows:
+## 30.3 Contact links (left column)
 
 ```text
-Email                    ↗
 LinkedIn                 ↗
 GitHub                   ↗
 Resume                   ↗
 ```
 
-Each row:
+Reuses `content.externalLinks` — no URL duplicated in Contact's own
+content object.
 
-```text
-border-top
-padding: 22–28px 0
-font-size: 20–24px
-```
+Each row: `border-top` (+ `border-bottom` after the last row, via
+`divide-y` + `border-y` on the containing list — not per-row classes),
+`py-5`, `text-[17px]`.
 
-Last row may have border-bottom.
+---
+
+## 30.4 Form (right column)
+
+Real `<label>` per field (placeholder is never the only label). Fields,
+in order: NAME * (required), EMAIL * (required), PHONE * (required,
+`type="tel"`, no forced country format), MESSAGE — OPTIONAL (`<textarea>`,
+`maxLength=2000`). A hidden honeypot field (`website`) is present but
+invisible/unreachable — see `PORTFOLIO_SPEC.md` §20.
+
+States: idle → submitting (button disabled, "Sending..."/"Enviando...") →
+success (form replaced by an inline confirmation, fields effectively
+"reset" since the form unmounts) or error (form stays, inline message,
+retry allowed). No modal, no toast, no confetti, no redirect — matches
+the rest of the site's restrained interaction language (ADR-008).
+
+Field style: no floating card, no shadow, no rounded box — a thin
+`border-b` underline per field (`border-[var(--border)]`, focus state
+`border-[var(--text-primary)]`), matching "thin borders + typography"
+rather than a generic SaaS form look.
 
 ---
 

@@ -410,3 +410,98 @@ Negative / trade-off: no Steel methodology topics duplicated here; no Banco BV w
 
 - `docs/planning/PORTFOLIO_SPEC.md` §16, `HOME_WIREFRAME.md` §24-25, `PROJECT_CONTENT.md` (new Research & Recognition block), and `docs/CONTEXT_MAP.md` updated to match (M1-06).
 - Before adding a fourth Research & Recognition item later (e.g. UFSCar teaching), check ADR-012's exclusivity rule and confirm it doesn't already have a narrative home.
+
+---
+
+### ADR-014 — Contact form backend: Supabase + Resend, independent delivery channels
+
+**Date:** 2026-09-02
+**Status:** superseded by ADR-015 (2026-09-02, same day — the production Supabase project changed key model and added quota/Turnstile infrastructure before this ADR was ever acted on outside code review). Kept for history; do not implement against this version — see ADR-015 for the current architecture (env var name `SUPABASE_SECRET_KEY` not `SUPABASE_SERVICE_ROLE_KEY`, Turnstile gate, email quota, revised status semantics).
+
+**Context**
+
+Through M1-07 this project was a static content site — no backend, no database, no third-party services beyond static external links (GitHub/LinkedIn/a Google Doc resume). M1-08 introduces a real contact form: the product decision is that direct links alone (the pre-M1-08 plan) are no longer sufficient, and a working form with server-side persistence and email notification is part of V1. This is the first backend/infrastructure decision in the project and materially changes what "the app" depends on to function (external services, environment configuration, a database schema) — worth recording explicitly rather than leaving implicit in the code.
+
+**Decision**
+
+Browser submits to `POST /api/contact` (a Next.js Route Handler) — never directly to Supabase. The handler validates server-side (authoritative; client-side HTML constraints are UX only), then attempts two delivery channels **independently**, not chained:
+
+1. **Supabase Postgres** (`contact_messages` table, RLS enabled, zero public/anonymous policies — every read/write goes through the service-role key, server-only, never `NEXT_PUBLIC_*`) for persistence.
+2. **Resend** for an immediate plain-text email notification, Reply-To set to the visitor's submitted email.
+
+Both are started via `Promise.allSettled`, not `await`ed sequentially with an early return — a failure in one must never skip or block an attempt at the other. The visitor sees success (`200 {ok:true}`) if *either* channel got the message through; only `503 {ok:false, error:"contact_unavailable"}` when *both* fail. No infrastructure error detail (Supabase/Resend internals, stack traces, API keys) is ever returned to the client or logged alongside the submitted PII (name/email/phone/message) — server logs record only a sanitized error class/message.
+
+Both integrations resolve their client lazily at request time (`getSupabaseAdmin()` / `new Resend(...)` inside the handler), never at module import time — the app must build and boot with zero environment variables configured; the route simply returns `contact_unavailable` until they're set (see `docs/CONTACT_SETUP.md`).
+
+Baseline anti-spam only in V1: server validation + a honeypot field (`website`) + strict length limits. No rate limiting, no Redis/Upstash, no CAPTCHA. Cloudflare Turnstile is the documented next hardening step if bot traffic becomes a real problem — the form is structured so a token field could be added later without a rewrite, but no Turnstile credentials or widget exist yet.
+
+**Alternatives considered**
+
+- Browser → Supabase directly (client-side insert with the anon key) — rejected: would require a public INSERT policy, is harder to rate-limit/validate consistently, and doesn't allow attempting the email notification from the same trusted context.
+- Chain the two channels (`await db insert; if success, await email send`) — rejected: makes email delivery depend on database availability. Supabase Free projects can pause after inactivity; a paused database must never silently swallow a real contact attempt that email could still have delivered.
+- Add rate limiting (Upstash/Redis) now — rejected for V1: the task scope explicitly deferred this; baseline validation + honeypot is the documented interim boundary, not a claim of enterprise-grade protection.
+
+**Consequences**
+
+Positive: a real, working contact channel; no single external outage silently loses a contact attempt (as long as at least one of the two channels is healthy); secrets never reach the browser bundle (service-role key and Resend API key are read only in server-only modules); the app remains deployable/buildable without any of these credentials configured, so onboarding a new environment doesn't require secrets up front.
+Negative / trade-off: two new external service dependencies (Supabase, Resend) and two new npm dependencies (`@supabase/supabase-js`, `resend`); a `notification_status` field on `contact_messages` can end up `pending` if the app crashes between the initial insert and the follow-up status update (acceptable — the message itself is still safely persisted, only the bookkeeping field is stale); spam protection is intentionally minimal for V1, documented as a known gap, not silently ignored.
+
+**Verification / follow-up**
+
+- `supabase/migrations/20260902_create_contact_messages.sql`, `src/lib/supabase/admin.ts`, `src/lib/contact/validate.ts`, `src/app/api/contact/route.ts`, `src/components/forms/ContactForm.tsx`, `docs/CONTACT_SETUP.md` (M1-08).
+- `docs/tasks/CURRENT_TASK.md` records whether external credentials were actually configured and an end-to-end test performed, or whether this is code-complete with external setup still pending — do not read this ADR as proof the integration was live-tested.
+- If Turnstile is added later, record that as its own decision (new consequences: a new dependency, a new required env var, a UX change to the form) rather than silently expanding this ADR.
+
+---
+
+### ADR-015 — Contact form hardening: key rename, Turnstile, atomic daily email quota
+
+**Date:** 2026-09-02
+**Status:** accepted (supersedes ADR-014)
+
+**Context**
+
+The production Supabase project was created (and independently modified) after ADR-014 was written and implemented. Three things changed on the real infrastructure before this repository could be considered a match for it: (1) this Supabase project's API key model uses the current `sb_secret_...` key format under the name `SUPABASE_SECRET_KEY`, not the legacy `service_role` JWT naming ADR-014 assumed; (2) the production database already has an atomic daily email-notification quota (`contact_email_quota` table + `reserve_contact_email_slot()` RPC) as a hard cost/abuse safety cap; (3) Cloudflare Turnstile is now part of the production security design, not a "later" item. This ADR reconciles the repository with the real architecture and records the revised partial-failure semantics that follow from adding a quota step into what was previously a simple two-channel independence model.
+
+**Decision**
+
+Env var rename: `SUPABASE_SERVICE_ROLE_KEY` → `SUPABASE_SECRET_KEY` everywhere (code, `.env.example`, docs). No `SUPABASE_SERVICE_ROLE_KEY` reference should remain in active V1 code or documentation.
+
+Request flow, in this exact order — each step gates the next:
+
+```
+validate request (authoritative server-side validation)
+  -> honeypot (silent fake success if triggered, no further processing)
+    -> Cloudflare Turnstile verification (server-side, against Cloudflare
+       Siteverify) — must pass before ANY of: Supabase insert, quota
+       reservation, Resend call
+      -> Supabase persistence  \
+      -> email quota + Resend   } attempted independently (Promise.allSettled)
+```
+
+Turnstile (`src/lib/contact/turnstile.ts`): verified server-side, token supplied by a real Cloudflare-rendered widget (`NEXT_PUBLIC_TURNSTILE_SITE_KEY`, client-safe by design — Turnstile site keys are meant to be public, unlike the secret key) loaded via Cloudflare's official script (no CAPTCHA-wrapper dependency). **Fails closed in production**: if `TURNSTILE_SECRET_KEY` is unset while `NODE_ENV === "production"`, every submission is rejected (`503 contact_unavailable`) — verification is never silently skipped. In non-production, a missing secret is an explicit, logged, documented bypass so local development doesn't require real Turnstile credentials. The honeypot (`website`) is kept — Turnstile supplements it, does not replace it.
+
+Email delivery is now itself a two-step **independent** channel: reserve an atomic daily quota slot (`reserve_contact_email_slot(20)`, a single `UPDATE ... WHERE used < limit` — a row-lock-based atomic reservation, never a separate "count then insert" which has a race window) and only call Resend if a slot was actually reserved. Quota exhaustion produces `notification_status = "suppressed"`, a fourth status value alongside `pending`/`sent`/`failed` — **suppression is not failure**. A suppressed notification means Matheus won't get an immediate email for that one contact, but the contact itself is still safely stored if the (fully independent) Supabase insert succeeded — nothing about the visitor's submission is lost, only the immediate email nudge is skipped once 20 notifications have already gone out that UTC day. `200 {ok:true}` is returned whenever the DB insert succeeded OR the email was actually sent — `503 contact_unavailable` only when neither happened (this includes: DB failed AND (quota exhausted OR email failed OR email unconfigured)).
+
+External, provider-independent hardening: a Vercel WAF rate limit (5 requests/IP/10min) on `/api/contact`, configured directly in Vercel — not implemented as in-memory Next.js middleware (would not survive serverless cold starts/multiple instances, and duplicates infrastructure Vercel already provides). Documented as a manual production setup step in `docs/CONTACT_SETUP.md` — never claimed as "active" until actually configured.
+
+Request body-size guard: reject bodies over 10KB (`Content-Length` header check, then an actual byte-length check on the read body as defense-in-depth against a missing/spoofed header) before `JSON.parse` — a public POST endpoint should not fully parse an arbitrarily large payload before any field-level validation runs.
+
+**Alternatives considered**
+
+- Keep `SUPABASE_SERVICE_ROLE_KEY` as an alias/fallback alongside `SUPABASE_SECRET_KEY` — rejected: the task was explicit that no `SUPABASE_SERVICE_ROLE_KEY` reference should remain in active V1 code; a dual-name fallback is exactly the kind of silent complexity that invites using the wrong one later.
+- Implement the daily quota as `SELECT count(*) FROM contact_email_quota WHERE ...` followed by a conditional `INSERT`/`UPDATE` in application code — rejected: classic TOCTOU race condition, two concurrent requests can both read a count under the limit and both proceed, silently exceeding the cap. The atomic RPC (single `UPDATE ... WHERE ... RETURNING`-equivalent via `FOUND`) closes that window using Postgres's own row locking.
+- In-memory/Next.js-middleware IP rate limiting instead of Vercel WAF — rejected per the task's explicit instruction: serverless functions don't share memory across instances/cold starts, so an in-process limiter is not actually effective at the scale this matters, and Vercel already provides this as platform infrastructure.
+- Treat quota-exhausted the same as a failed email (`notification_status = "failed"`) — rejected: conflates "the system couldn't send" with "the system deliberately chose not to send because a safety cap was hit" — these have different operational meanings (the latter is expected/healthy behavior at high volume, the former indicates a real problem worth investigating).
+
+**Consequences**
+
+Positive: production-realistic security posture (bot verification, hard cost cap, correct key naming) before any real traffic hits the form; the atomic quota RPC makes the daily cap correct under concurrency without adding a rate-limiting dependency; suppression is honestly distinguished from failure in the data model, so a future admin view (not built yet) could report "20 emails sent, 3 suppressed" without conflating that with "3 broken."
+Negative / trade-off: the request flow is more complex (one more sequential gate, one more independent-channel sub-step) — documented here specifically so a future change to the failure-handling logic doesn't accidentally re-simplify it back to ADR-014's simpler-but-now-inaccurate model; Turnstile adds a third external service dependency and one more client-side script load (mitigated: loaded only when configured, `next/script` with `afterInteractive`, no new npm dependency); the Vercel WAF rule is external configuration this repository cannot verify or enforce from code — `docs/CONTACT_SETUP.md` must not be read as proof it's actually been set up.
+
+**Verification / follow-up**
+
+- `supabase/migrations/20260903_add_contact_email_daily_quota.sql` (note the date bump from `20260902` — Supabase orders migrations lexicographically by filename, and `20260902_add...` would have sorted *before* `20260902_create...` alphabetically, which would break since this migration's `ALTER TABLE contact_messages` requires that table to already exist. Always verify new migration filenames sort after their dependencies, don't assume same-day-prefix + alphabetical-suffix will work out).
+- `src/lib/supabase/admin.ts` (key rename), `src/lib/contact/turnstile.ts`, `src/lib/contact/quota.ts`, `src/app/api/contact/route.ts` (rewritten flow), `src/components/forms/ContactForm.tsx` (Turnstile widget), `.env.example`, `docs/CONTACT_SETUP.md` (M1-08 security update).
+- `docs/tasks/CURRENT_TASK.md` records the actual external-integration status — do not read this ADR as proof any of Turnstile/Supabase/Resend/the Vercel WAF rule were live-verified end-to-end.
+- Before relying on this in production: confirm the Vercel WAF rule is actually configured (not just documented), and run one real submission that exercises Turnstile, persistence, quota reservation, and Resend delivery together.

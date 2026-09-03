@@ -62,13 +62,20 @@ Note: group is "Applied AI", not "AI Engineering" (evidence boundary — see SPE
 
 ## Writing
 
-Read: SPEC §17 (Research vs Writing), SPEC §19 (07 / Writing), WIREFRAME §28-29 (07 / Writing + mobile)
-Likely code: `src/app/[locale]/writing/` (not created yet)
+**Status: DEFERRED, not implemented (M1-08)** — no genuine published articles exist yet; do not manufacture content to fill this section. No `#writing` anchor, no nav item, no `/writing` route exist in the codebase.
+Read: SPEC §17 (Research vs Writing), SPEC §19 (Writing — deferral rationale + future reference copy), WIREFRAME §28 (deferral note, points back to SPEC §19 for the original layout design)
+Likely code when restored: `src/components/sections/Writing.tsx` (not created yet) — a Home section, not necessarily a route; re-plan before implementing.
 
-## Contact / Footer
+## Contact
 
-Read: SPEC §20-21 (08 / Contact, Footer), WIREFRAME §30-31 (08 / Contact, Footer)
-Likely code: `src/components/sections/Contact.tsx`, `src/components/layout/Footer.tsx` (not created yet)
+Read: SPEC §20 (07 / Contact — renumbered M1-08, security-updated same day by ADR-015), WIREFRAME §30 (07 / Contact — desktop/mobile form layout incl. Turnstile widget placement)
+Code: `src/components/sections/Contact.tsx` (Server Component), `src/components/forms/ContactForm.tsx` (the one Client Component — also renders the Turnstile widget), `src/app/api/contact/route.ts` (Route Handler — validate → honeypot → Turnstile → independent Supabase/quota+Resend channels), `src/lib/contact/validate.ts`, `src/lib/contact/turnstile.ts`, `src/lib/contact/quota.ts`, `src/lib/supabase/admin.ts`, `supabase/migrations/20260902_create_contact_messages.sql` + `supabase/migrations/20260903_add_contact_email_daily_quota.sql` (apply both, in that order), `src/content/home.ts` (`contact` block)
+Note: backend architecture is `docs/DECISIONS.md` **ADR-015** (not ADR-014, which it supersedes — ADR-014 used a different Supabase key env var name and had no Turnstile/quota) — read it before changing the route handler's failure-handling logic. Env var is `SUPABASE_SECRET_KEY`, not `SUPABASE_SERVICE_ROLE_KEY`. Setup/credentials: `docs/CONTACT_SETUP.md` (no secrets in that file — names only).
+
+## Footer
+
+Read: SPEC §21 (Footer), WIREFRAME §31 (Footer)
+Likely code: `src/components/layout/Footer.tsx` (not created yet) — a later milestone, not M1-08.
 
 ## Internationalization (EN/PT)
 

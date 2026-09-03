@@ -8,6 +8,7 @@ import { CaseStudies } from "@/components/sections/CaseStudies";
 import { Experience } from "@/components/sections/Experience";
 import { ResearchRecognition } from "@/components/sections/ResearchRecognition";
 import { Capabilities } from "@/components/sections/Capabilities";
+import { Contact } from "@/components/sections/Contact";
 import { homeContent } from "@/content/home";
 import { isValidLocale } from "@/lib/i18n";
 
@@ -118,6 +119,31 @@ export default async function HomePage({
           headlineLine2={content.capabilities.headlineLine2}
           supportingCopy={content.capabilities.supportingCopy}
           groups={content.capabilities.groups}
+        />
+        <Contact
+          eyebrow={content.contact.eyebrow}
+          headlineLine1={content.contact.headlineLine1}
+          headlineLine2={content.contact.headlineLine2}
+          supportingCopy={content.contact.supportingCopy}
+          fields={content.contact.fields}
+          submitLabel={content.contact.submitLabel}
+          submittingLabel={content.contact.submittingLabel}
+          success={content.contact.success}
+          error={content.contact.error}
+          privacyCopy={content.contact.privacyCopy}
+          locale={locale}
+          linkedin={{
+            label: content.externalLinks.linkedin,
+            href: content.externalLinks.linkedinHref,
+          }}
+          github={{
+            label: content.externalLinks.github,
+            href: content.externalLinks.githubHref,
+          }}
+          resume={{
+            label: content.externalLinks.resume,
+            href: content.externalLinks.resumeHref,
+          }}
         />
       </main>
     </>
