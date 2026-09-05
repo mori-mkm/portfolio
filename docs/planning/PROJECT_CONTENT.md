@@ -99,8 +99,13 @@ Developer Market Research / CNN Brasil
 Procurement Intelligence is a Selected Work-only flagship — no duplicate
 Case Study (avoids repeating the same project across Home sections).
 
-Application Job and Employee Attrition Prediction remain Selected Work
-projects in V1, not Case Studies.
+Employee Attrition Prediction remains a Selected Work project, not a Case
+Study.
+
+**Updated 2026-09-05 — ADR-016:** Application Job was removed from Selected
+Work entirely (not moved to Case Studies, not replaced). Current Selected
+Work is Procurement Intelligence + Employee Attrition Prediction only. See
+`docs/DECISIONS.md` ADR-016 and §34-42 below (kept as historical record).
 
 ---
 
@@ -1452,6 +1457,14 @@ reduzindo a superfície de orquestração legada.
 
 # 34. PROJECT / 03 — Application Job
 
+> **REMOVED from the site (ADR-016, 2026-09-05).** Application Job was
+> taken out of Selected Work entirely, with no replacement project — see
+> `docs/DECISIONS.md` ADR-016. No `/projects/application-job` page was ever
+> implemented (no such route exists in `src/app`), so this was already
+> unbuilt project-page planning content, not live copy. §34-42 below are
+> kept as a historical record of that planning; do not implement a project
+> page from this content without a new decision reinstating the project.
+
 ## 34.1 Identity
 
 ```yaml
@@ -2185,6 +2198,13 @@ Future projects can be inserted based on positioning.
 
 Do not automatically sort by date.
 
+> **Note (ADR-016, 2026-09-05):** §52-53 above predate Application Job's
+> removal from Selected Work (and also predate Steel Indicator's ADR-012
+> move to Case Studies — a separate, pre-existing inconsistency out of
+> scope for this change). Current Selected Work is Procurement Intelligence
+> + Employee Attrition Prediction only; no `/projects` index route exists
+> in `src/app`.
+
 ---
 
 # 54. Project index copy
@@ -2620,24 +2640,6 @@ explícita.
 
 ---
 
-## Application Job
-
-EN:
-
-```text
-A local AI-assisted workflow for tailoring job applications from verified
-career evidence using structured generation and application tracking.
-```
-
-PT:
-
-```text
-Um workflow local assistido por IA para personalizar candidaturas a partir
-de evidências profissionais verificadas, geração estruturada e tracking.
-```
-
----
-
 ## Attrition
 
 EN:
@@ -2702,12 +2704,6 @@ public/
     │   ├── history.webp
     │   └── vintage-governance.svg
     │
-    ├── application-job/
-    │   ├── cover.svg
-    │   ├── workflow.svg
-    │   ├── resume-preview.webp
-    │   └── tracking-preview.webp
-    │
     └── employee-attrition-prediction/
         ├── cover.webp
         ├── evaluation.webp
@@ -2742,7 +2738,6 @@ content/
 │   ├── projects/
 │   │   ├── procurement-intelligence.mdx
 │   │   ├── steel-indicator.mdx
-│   │   ├── application-job.mdx
 │   │   └── employee-attrition-prediction.mdx
 │   │
 │   └── case-studies/
@@ -2753,7 +2748,6 @@ content/
     ├── projects/
     │   ├── procurement-intelligence.mdx
     │   ├── steel-indicator.mdx
-    │   ├── application-job.mdx
     │   └── employee-attrition-prediction.mdx
     │
     └── case-studies/
@@ -2788,15 +2782,6 @@ export const projectRegistry = {
     github: "https://github.com/mori-mkm/steel-indicator",
     featured: true,
     caseStudy: true,
-  },
-
-  "application-job": {
-    index: "03",
-    status: "active",
-    year: 2026,
-    github: "https://github.com/mori-mkm/application-job",
-    featured: true,
-    caseStudy: false,
   },
 
   "employee-attrition-prediction": {
@@ -2834,14 +2819,6 @@ test count
 ADR count
 latest methodology
 publication structure
-```
-
-## Application Job
-
-```text
-generation engine
-features
-workflow
 ```
 
 ## Attrition
@@ -3022,12 +2999,6 @@ Steel:
 ACTIVE
 ```
 
-Application Job:
-
-```text
-ACTIVE
-```
-
 Attrition:
 
 ```text
@@ -3074,7 +3045,7 @@ It is an internal editorial principle.
 |---|---:|---:|---:|---:|---:|
 | Procurement Intelligence | Yes | Yes | Yes | Yes | Yes |
 | Steel Indicator | Yes | Yes | Yes | No | Yes |
-| Application Job | Yes | Yes | No | No | Medium |
+| Application Job (removed, ADR-016) | No | Yes | No | No | Medium |
 | Employee Attrition | Yes | Yes | No | No | Low |
 | AI Closer | Later | Later | Later | Later | Target: High |
 | DemandVision | Later | Later | Maybe | Later | Target: High |
@@ -3085,7 +3056,10 @@ It is an internal editorial principle.
 
 Updated by M1-04 (ADR-012, Home content exclusivity): Steel Indicator moved
 out of Selected Work into Case Studies (§81) — a named project/study now has
-one primary Home section, not two. Selected Work is three projects, not four.
+one primary Home section, not two. Selected Work was three projects, not four.
+
+**Updated by ADR-016 (2026-09-05):** Application Job removed from Selected
+Work entirely, no replacement. Selected Work is now two projects.
 
 ```text
 02 / SELECTED WORK
@@ -3098,10 +3072,6 @@ Procurement Intelligence
 Machine Learning · Data Product
 
 02
-Application Job
-AI Automation · Productivity System
-
-03
 Employee Attrition Prediction
 Machine Learning · People Analytics
 ```
@@ -3121,10 +3091,6 @@ Procurement Intelligence
 Machine Learning · Produto de Dados
 
 02
-Application Job
-Automação com IA · Sistema de Produtividade
-
-03
 Employee Attrition Prediction
 Machine Learning · People Analytics
 ```
@@ -3193,13 +3159,6 @@ Before launch:
 - [ ] Proxy limitation visible.
 - [ ] Vintage language accurate.
 - [ ] Public sources accurately described.
-
-## Application Job
-
-- [ ] GitHub link opens.
-- [ ] No claim of hosted application.
-- [ ] No implication that AI invents CV evidence.
-- [ ] Claude Code usage accurately described.
 
 ## Attrition
 

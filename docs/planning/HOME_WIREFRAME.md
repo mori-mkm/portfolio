@@ -1432,38 +1432,11 @@ Avoid showing terminal output as primary cover.
 
 ---
 
-# 16. Project 03 — Application Job
+# 16. Project 03 — Application Job (REMOVED, ADR-016)
 
-Layout:
-
-```text
-5 columns text
-7 columns visual
-```
-
-Preferred visual:
-
-```text
-workflow diagram
-```
-
-Not Excel screenshot unless carefully designed.
-
-Wireframe visual concept:
-
-```text
-JOB DESCRIPTION
-      +
-CAREER EVIDENCE
-      ↓
-AI GENERATION
-      ↓
-STRUCTURED JSON
-      ↓
-ATS RESUME
-      +
-APPLICATION TRACKING
-```
+> Removed from Selected Work 2026-09-05, no replacement — see
+> `docs/DECISIONS.md` ADR-016. This section's wireframe content is kept as
+> a historical record, not a current layout to implement.
 
 ---
 
@@ -2429,8 +2402,7 @@ No complex sitemap.
 │                                529 tests · immutable vintages             │
 │                                Case Study → GitHub ↗                     │
 │                                                                          │
-│ PROJECT / 03                                                             │
-│ Application Job                  [ workflow visual ]                      │
+│ PROJECT / 03 — REMOVED (ADR-016, see docs/DECISIONS.md)                  │
 │                                                                          │
 │                         PROJECT / 04                                     │
 │ [ model evaluation ]            Employee Attrition Prediction            │
@@ -2808,12 +2780,6 @@ For each flagship project, assets should be selected in this priority:
 2. architecture;
 3. methodology/vintage visualization;
 4. report page.
-
-## Application Job
-
-1. system flow diagram;
-2. generated resume preview;
-3. application tracking structure.
 
 ## Attrition Prediction
 
@@ -3222,7 +3188,6 @@ Add:
 
 ```text
 Steel Indicator
-Application Job
 Attrition
 ```
 
@@ -3480,13 +3445,6 @@ Before visual-final phase, collect:
 [ ] historical chart
 [ ] architecture diagram
 [ ] methodology/vintage diagram
-```
-
-## Application Job
-
-```text
-[ ] workflow diagram
-[ ] document output preview
 ```
 
 ## Attrition

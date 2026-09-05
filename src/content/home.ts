@@ -80,11 +80,7 @@ export type Pillar = {
   description: string;
 };
 
-export type ProjectVisualKind =
-  | "procurement"
-  | "steel"
-  | "application-job"
-  | "attrition";
+export type ProjectVisualKind = "procurement" | "steel" | "attrition";
 
 export type ProjectProof = {
   value: string;
@@ -371,22 +367,6 @@ export const homeContent: Record<Locale, HomeContent> = {
         },
         {
           index: "02",
-          category: "AI AUTOMATION · PRODUCTIVITY SYSTEM",
-          title: "Application Job",
-          description:
-            "An AI-assisted workflow that turns job descriptions and verified career evidence into tailored applications.",
-          proof: [
-            { value: "STRUCTURED", label: "JSON output" },
-            { value: "ATS", label: "DOCX generation" },
-            { value: "TRACKED", label: "applications" },
-            { value: "LOCAL", label: "AI workflow" },
-          ],
-          stack: "Python · Claude Code · JSON Schema · DOCX",
-          visual: "application-job",
-          githubHref: "https://github.com/mori-mkm/application-job",
-        },
-        {
-          index: "03",
           category: "MACHINE LEARNING · PEOPLE ANALYTICS",
           title: "Employee Attrition Prediction",
           description:
@@ -724,22 +704,6 @@ export const homeContent: Record<Locale, HomeContent> = {
         },
         {
           index: "02",
-          category: "AUTOMAÇÃO COM IA · SISTEMA DE PRODUTIVIDADE",
-          title: "Application Job",
-          description:
-            "Um fluxo assistido por IA que transforma descrições de vagas e evidências profissionais verificadas em candidaturas personalizadas.",
-          proof: [
-            { value: "ESTRUTURADA", label: "saída JSON" },
-            { value: "ATS", label: "geração DOCX" },
-            { value: "RASTREADAS", label: "candidaturas" },
-            { value: "LOCAL", label: "workflow de IA" },
-          ],
-          stack: "Python · Claude Code · JSON Schema · DOCX",
-          visual: "application-job",
-          githubHref: "https://github.com/mori-mkm/application-job",
-        },
-        {
-          index: "03",
           category: "MACHINE LEARNING · PEOPLE ANALYTICS",
           title: "Employee Attrition Prediction",
           description:

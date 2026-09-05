@@ -374,6 +374,7 @@ Negative / trade-off: Selected Work is one project shorter (3 instead of 4) — 
 - `docs/planning/PROJECT_CONTENT.md` §2, §17, §57-58, §79-82 and `PORTFOLIO_SPEC.md` §10.2-10.3, §13.2 updated to match (M1-04).
 - Before adding any new named project/study to any Home section later, check it isn't already featured elsewhere on Home.
 - M1-06 added Research & Recognition (ADR-013) — Wavelet thesis, FarmIA, Retail Sales Forecasting. None of these, nor the CNN research figures above, are duplicated across sections.
+- **Superseded in part by ADR-016 (2026-09-05):** Application Job was removed from Selected Work entirely (not reassigned to another section). The "Current allocation" list above is a historical record of the allocation as decided on 2026-09-01 — see ADR-016 for the current Selected Work membership.
 
 ---
 
@@ -505,3 +506,42 @@ Negative / trade-off: the request flow is more complex (one more sequential gate
 - `src/lib/supabase/admin.ts` (key rename), `src/lib/contact/turnstile.ts`, `src/lib/contact/quota.ts`, `src/app/api/contact/route.ts` (rewritten flow), `src/components/forms/ContactForm.tsx` (Turnstile widget), `.env.example`, `docs/CONTACT_SETUP.md` (M1-08 security update).
 - `docs/tasks/CURRENT_TASK.md` records the actual external-integration status — do not read this ADR as proof any of Turnstile/Supabase/Resend/the Vercel WAF rule were live-verified end-to-end.
 - Before relying on this in production: confirm the Vercel WAF rule is actually configured (not just documented), and run one real submission that exercises Turnstile, persistence, quota reservation, and Resend delivery together.
+
+---
+
+### ADR-016 — Application Job removed from Selected Work
+
+**Date:** 2026-09-05
+**Status:** accepted
+
+**Context**
+
+The user asked to remove the "Application Job" project from Selected Work entirely, with no replacement project for now. This supersedes the Selected Work membership recorded under ADR-012 ("Current allocation": Procurement Intelligence, Application Job, Employee Attrition Prediction).
+
+**Decision**
+
+Selected Work now contains exactly 2 projects:
+
+```text
+01 Procurement Intelligence
+02 Employee Attrition Prediction
+```
+
+Application Job is not reassigned to Case Studies or any other Home section — it is fully removed from the site, not relocated. Its GitHub repository (`mori-mkm/application-job`) is unaffected; only the Home page reference is removed.
+
+**Alternatives considered**
+
+- Replace Application Job with a placeholder or a third project — rejected per explicit instruction: no invented content, no filler project.
+- Leave a 3-slot layout with a gap — rejected: `SelectedWork.tsx`'s `reverse={index % 2 === 1}` alternation and spacing already work correctly for any project count; an empty slot would be a fabricated gap, not a real constraint.
+
+**Consequences**
+
+Positive: Selected Work no longer references a project the user wants removed; `ProjectVisualKind` and `ProjectVisual.tsx` no longer carry orphaned `"application-job"` cases.
+Negative / trade-off: `PORTFOLIO_SPEC.md` §18.1/§18.2 previously cited Application Job as the (Selected Work) evidence source for the "Applied AI"/"Automation" capability claims; those claims are generic skill labels in `src/content/home.ts` (not literal project references), so no rendered content changes, but the spec's rationale text was updated to stop citing a Selected Work section that no longer carries that project. If a future project is added to Capabilities/Selected Work, re-check that rationale is still accurate.
+
+**Verification / follow-up**
+
+- `src/content/home.ts` (EN + PT `selectedWork.projects`, `ProjectVisualKind`), `src/components/ui/ProjectVisual.tsx` (orphaned `"application-job"` STAGES/CONTAINER_HEIGHT entries removed).
+- `docs/planning/PROJECT_CONTENT.md`, `docs/planning/PORTFOLIO_SPEC.md`, `docs/planning/HOME_WIREFRAME.md` updated to drop Application Job from current-state Selected Work listings; project-page content written for Application Job (hero/flow/evidence/limitations copy) kept as historical planning record, annotated as no longer applicable rather than deleted.
+- `npm run verify` (lint + build) passed after the code change.
+- Before adding a new Selected Work project later, update this ADR's "Decision" list rather than leaving it stale.

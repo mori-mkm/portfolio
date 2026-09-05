@@ -17,12 +17,6 @@ import type { ProjectVisualKind } from "@/content/home";
 const STAGES: Record<ProjectVisualKind, string[]> = {
   procurement: ["5.7M+ RAW RECORDS", "BRONZE", "SILVER", "GOLD", "ML + STREAMLIT"],
   steel: ["PUBLIC SOURCES", "INDEX ENGINE", "METHODOLOGY", "IMMUTABLE VINTAGE", "REPORT"],
-  "application-job": [
-    "JOB DESCRIPTION + EVIDENCE",
-    "CLAUDE CODE",
-    "STRUCTURED JSON",
-    "ATS DOCX + TRACKING",
-  ],
   attrition: ["DATA", "LOGISTIC REGRESSION", "SMOTE", "THRESHOLD", "5-FOLD CV"],
 };
 
@@ -33,7 +27,6 @@ const STAT: Partial<Record<ProjectVisualKind, { value: string; label: string }>>
 const CONTAINER_HEIGHT: Record<ProjectVisualKind, string> = {
   procurement: "min-h-[300px] md:min-h-[420px]",
   steel: "min-h-[300px] md:min-h-[420px]",
-  "application-job": "min-h-[260px] md:min-h-[340px]",
   attrition: "min-h-[220px] md:min-h-[300px]",
 };
 

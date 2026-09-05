@@ -799,48 +799,10 @@ GitHub ↗
 
 ---
 
-### 03 — Application Job
-
-Categoria:
-
-```text
-AI AUTOMATION · PRODUCTIVITY SYSTEM
-```
-
-Título:
-
-```text
-Application Job
-```
-
-Descriptor:
-
-```text
-An AI-assisted workflow that turns job descriptions
-and verified career evidence into tailored applications.
-```
-
-Proof points:
-
-```text
-Structured JSON output
-ATS-oriented DOCX generation
-Application tracking
-Local AI workflow
-```
-
-Stack:
-
-```text
-Python · Claude Code · JSON Schema · DOCX · Excel
-```
-
-Links:
-
-```text
-Project →
-GitHub ↗
-```
+> **Removed (ADR-016, 2026-09-05):** "Application Job" was here as project 03.
+> It has been removed from Selected Work entirely (no replacement) — see
+> `docs/DECISIONS.md` ADR-016. Kept out of this list rather than rewritten as
+> if it never existed; do not re-add this content without a new decision.
 
 ---
 
@@ -1814,8 +1776,9 @@ stays as-is; this section has no nav entry.
 The Hero can position the direction ("Data Scientist & AI Engineer"), but
 Capabilities must be precise about evidence available *today*. The
 portfolio has public evidence of LLM-assisted workflows, structured
-output/JSON Schema, prompt/context design and AI automation — mainly
-through Application Job (Selected Work). It does not yet have public
+output/JSON Schema, prompt/context design and AI automation from past
+project work (Application Job's public GitHub repo, no longer featured in
+Selected Work as of ADR-016). It does not yet have public
 evidence of RAG, agentic/multi-agent systems, AI evaluation systems, LLM
 observability, or production AI services at a maturity worth featuring as
 a capability. So the group is **Applied AI**, not **AI Engineering** — this
@@ -1895,7 +1858,8 @@ Rationale: Git/GitHub (public projects + the portfolio itself), Docker
 (Steel Indicator), Testing (Procurement + Steel's public test suites),
 MLflow (Procurement Intelligence), APIs (experience/projects/technical
 background), Streamlit (Procurement Intelligence's live app), Automation
-(Application Job + professional experience).
+(professional experience; Application Job previously evidenced this too but
+is no longer featured in Selected Work — see ADR-016).
 
 **Deferred until public evidence exists:** FastAPI, CI/CD, Kubernetes,
 Terraform, AWS, GCP, Cloud Architecture, Microservices, Monitoring,
@@ -3829,6 +3793,13 @@ Trade-offs
 03 Application Job
 04 Employee Attrition Prediction
 ```
+
+> Nota (ADR-016, 2026-09-05): Application Job foi removido do Selected Work
+> e não foi substituído. A lista acima é o registro histórico da hierarquia
+> planejada no lançamento; o Selected Work atual (`src/content/home.ts`)
+> contém apenas 01 Procurement Intelligence e 02 Employee Attrition
+> Prediction. (A posição do Steel Indicator aqui também já reflete o plano
+> pré-ADR-012, não a alocação atual — fora do escopo desta correção.)
 
 ## Direção futura
 
