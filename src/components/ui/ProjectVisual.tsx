@@ -7,14 +7,15 @@ import type { ProjectVisualKind } from "@/content/home";
  * already stands alone), so the whole diagram is aria-hidden rather than
  * duplicated as accessible text.
  *
- * All four kinds render through the SAME vertical stage-pipeline anatomy —
+ * All kinds render through the SAME vertical stage-pipeline anatomy —
  * Attrition must not diverge into a different diagram shape (M1-04 fix: it
  * previously used a one-off horizontal chip layout, which read as a broken/
- * inconsistent anatomy relative to the other three). Its lower prominence
+ * inconsistent anatomy relative to the others). Its lower prominence
  * comes only from CONTAINER_HEIGHT and the `compact` spacing below, never
  * from a different structure.
  */
 const STAGES: Record<ProjectVisualKind, string[]> = {
+  datalab: ["PROBLEM + DATASET", "LANGGRAPH", "DE · ANALYTICS · DS", "INDEPENDENT REVIEW", "EVENTS + CONTROL PLANE"],
   procurement: ["5.7M+ RAW RECORDS", "BRONZE", "SILVER", "GOLD", "ML + STREAMLIT"],
   steel: ["PUBLIC SOURCES", "INDEX ENGINE", "METHODOLOGY", "IMMUTABLE VINTAGE", "REPORT"],
   attrition: ["DATA", "LOGISTIC REGRESSION", "SMOTE", "THRESHOLD", "5-FOLD CV"],
@@ -25,6 +26,7 @@ const STAT: Partial<Record<ProjectVisualKind, { value: string; label: string }>>
 };
 
 const CONTAINER_HEIGHT: Record<ProjectVisualKind, string> = {
+  datalab: "min-h-[300px] md:min-h-[420px]",
   procurement: "min-h-[300px] md:min-h-[420px]",
   steel: "min-h-[300px] md:min-h-[420px]",
   attrition: "min-h-[220px] md:min-h-[300px]",

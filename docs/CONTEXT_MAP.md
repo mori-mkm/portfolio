@@ -28,7 +28,7 @@ Likely code: `src/components/sections/About.tsx` (not created yet), `src/content
 ## Selected Work (Home section)
 
 Read: SPEC §10 (02 / Selected Work), SPEC §11 (Project Card), WIREFRAME §12-20 (Selected Work + per-project wireframes + mobile)
-Content: CONTENT §1 (V1 Project Portfolio) for which 4 projects are in scope; per-project sections start at CONTENT §8 (Procurement Intelligence), §20 (Steel Indicator) — grep the project name for its block, don't read all projects for a one-project task.
+Content: current order is CONTENT §79-80 (01 DataLab OS, 02 Procurement Intelligence, 03 Employee Attrition — ADR-017); CONTENT §1 summarizes the current allocation. Per-project sections: CONTENT §93 (DataLab OS), §8 (Procurement Intelligence), §43 (Employee Attrition) — grep the project name for its block, don't read all projects for a one-project task.
 Likely code: `src/components/sections/SelectedWork.tsx` (not created yet), project card component, `src/content/home.ts`
 
 ## Project pages (`/[locale]/projects/[slug]`)
@@ -58,7 +58,7 @@ Note: the pre-ADR-012 4-topic Research draft (Economic Index Construction, Shapl
 
 Read: SPEC §18 (06 / Capabilities — finalized M1-07, ADR-007 applied), WIREFRAME §26-27 (06 / Capabilities + mobile)
 Code: `src/components/sections/Capabilities.tsx`, `src/content/home.ts`
-Note: group is "Applied AI", not "AI Engineering" (evidence boundary — see SPEC §18.1). The old speculative item list (RAG, Agentic Systems, FastAPI, PySpark, CI/CD) is obsolete — kept only in a collapsed historical note in SPEC §18, do not implement it. No Header nav item was added for this section.
+Note: group is "Applied AI", not "AI Engineering" (evidence boundary — see SPEC §18.1). The old speculative item list is obsolete — kept only in a collapsed historical note in SPEC §18, do not implement it. Since ADR-017, Agent Orchestration / LangGraph / AI Observability / FastAPI are rendered (DataLab OS evidence); RAG, PySpark, CI/CD are still unsupported. No Header nav item was added for this section.
 
 ## Writing
 

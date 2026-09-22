@@ -545,3 +545,50 @@ Negative / trade-off: `PORTFOLIO_SPEC.md` §18.1/§18.2 previously cited Applica
 - `docs/planning/PROJECT_CONTENT.md`, `docs/planning/PORTFOLIO_SPEC.md`, `docs/planning/HOME_WIREFRAME.md` updated to drop Application Job from current-state Selected Work listings; project-page content written for Application Job (hero/flow/evidence/limitations copy) kept as historical planning record, annotated as no longer applicable rather than deleted.
 - `npm run verify` (lint + build) passed after the code change.
 - Before adding a new Selected Work project later, update this ADR's "Decision" list rather than leaving it stale.
+- **Superseded in part by ADR-017 (2026-09-22):** DataLab OS added as Selected Work `01`; the two projects above are now `02` and `03`. The "Decision" list above is the historical 2026-09-05 membership — see ADR-017 for the current one.
+
+---
+
+### ADR-017 — DataLab OS becomes the flagship Selected Work project
+
+**Date:** 2026-09-22
+**Status:** accepted
+
+**Context**
+
+The user published `mori-mkm/datalab-os` (README status: **PoC v0.2**) and asked for it to lead Selected Work. Until now the portfolio had no public evidence for agent orchestration, LangGraph, AI observability or FastAPI — `PORTFOLIO_SPEC.md` §18.1 and the `capabilities` comment in `src/content/home.ts` explicitly deferred those. The DataLab OS README (verified 2026-09-22) documents: a compiled LangGraph graph of department subgraphs (Data Engineering, Analytics, Data Science) plus an independent Review Lead that can return APPROVED/REJECTED (including its own target-leakage check); deterministic agents calling real pandas/scikit-learn functions; typed `ExecutionEvent`s on an in-process Event Bus, persisted append-only to `events.jsonl` + `run.json` and replayable; FastAPI + SSE (`/api/runs`, `/api/graph`); a Next.js + React Flow Control Plane that only observes; optional Ollama narration with a deterministic fallback; zero paid APIs; 118 backend tests, 97 frontend tests, clean lint and production build. Separately, the Application Job repo (`mori-mkm/application-job`), the only public evidence cited for three Applied AI capability items, now returns 404.
+
+**Decision**
+
+Selected Work contains exactly 3 projects:
+
+```text
+01 DataLab OS
+02 Procurement Intelligence
+03 Employee Attrition Prediction
+```
+
+DataLab OS lives in Selected Work only (ADR-012) — not also a Case Study. It gets a non-compact `"datalab"` pipeline visual (same editorial diagram anatomy as the others, no screenshots/GIF), a GitHub link and no Live Demo (no public deployment exists). Copy calls it what the README calls it — an observable, local-first agent system / PoC — and never production-ready, fully autonomous, parallel, self-organizing or dynamically spawning agents (the README's "Current limitations" rule these out).
+
+Capabilities (still titled "Applied AI", not "AI Engineering"):
+- Applied AI: `LLM Applications, Agent Orchestration, LangGraph, AI Observability, AI Automation` — adds the three DataLab-backed items; drops `AI-assisted Workflows`, `Structured Outputs`, `Prompt & Context Engineering` (their only public evidence was the now-unavailable Application Job repo).
+- Engineering: adds `FastAPI`.
+- Still excluded (DataLab does not prove them): RAG, Vector Databases, LangChain, CrewAI, dynamic/parallel multi-agent systems, AI (LLM) Evaluation, CI/CD, cloud infrastructure.
+
+**Alternatives considered**
+
+- Add DataLab OS to Case Studies as well — rejected: violates ADR-012.
+- Replace Employee Attrition to keep 2 projects — rejected per instruction (no project replaced).
+- Embed the repo's `docs/assets/demo.gif` — rejected for now: heavy animated media, breaks the Home's editorial visual language, and would require a `ProjectFeature` change. Reserved for a future `/projects/datalab-os` page.
+- Rename the Capabilities group to "AI Engineering" — rejected: one PoC doesn't yet justify the broader label; the Hero already carries the direction.
+
+**Consequences**
+
+Positive: the "AI Engineering" positioning in Hero/About now has a public, reviewable project behind it; Capabilities no longer lists items whose only evidence is unavailable.
+Negative / trade-off: the flagship is a PoC with no live demo, so its proof points are engineering evidence (tests, architecture) rather than outcomes. If the DataLab OS README changes its test counts or limitations, the Home copy must be re-synced.
+
+**Verification / follow-up**
+
+- `src/content/home.ts` (EN + PT `selectedWork`, `capabilities`, `ProjectVisualKind`), `src/components/ui/ProjectVisual.tsx`.
+- `PROJECT_CONTENT.md` §2, §52-53 note, §78-80 and new §93 (DataLab OS content + claim boundaries); `PORTFOLIO_SPEC.md` §10.2-10.3, §18.1-18.2, §56; `HOME_WIREFRAME.md` §12-13, §26.2, §36, §59; `CONTEXT_MAP.md`.
+- `npm run verify` passed; visual check at 1440px/390px, EN/PT.

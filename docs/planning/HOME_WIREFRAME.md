@@ -1234,9 +1234,14 @@ solve real problems.
 Supporting line:
 
 ```text
-A selection of machine learning systems,
-AI workflows and data products.
+A selection of AI systems, machine learning
+systems and data products.
 ```
+
+Updated by ADR-017 (2026-09-22) — was "machine learning systems, AI
+workflows and data products"; changed so the line also covers the DataLab
+OS agent system without marketing language. PT: "Uma seleção de sistemas
+de IA, machine learning e produtos de dados."
 
 ---
 
@@ -1284,6 +1289,19 @@ IMAGE | TEXT
 ```
 
 This creates rhythm while preserving consistency.
+
+**Current implementation (ADR-017, 2026-09-22)** — 3 projects, alternation
+driven by `reverse={index % 2 === 1}` in `SelectedWork.tsx`:
+
+```text
+01 DataLab OS                     TEXT  | VISUAL   (flagship, non-compact)
+02 Procurement Intelligence       VISUAL | TEXT
+03 Employee Attrition Prediction  TEXT  | VISUAL   (compact visual)
+```
+
+§14-17 below are the original per-project wireframes (pre-ADR-012/016/017
+numbering); DataLab OS has no dedicated wireframe section — it uses the
+§13/§20 pattern unchanged. Copy: `PROJECT_CONTENT.md` §93.
 
 ---
 
@@ -2057,6 +2075,11 @@ see `PORTFOLIO_SPEC.md` §18.1 for why. Final V1 items also replace the
 speculative list below (no RAG/Agentic Systems/FastAPI/PySpark/CI-CD —
 deferred until public evidence exists).
 
+**Updated by ADR-017 (2026-09-22):** DataLab OS now backs Agent
+Orchestration, LangGraph, AI Observability and FastAPI; three Applied AI
+items lost their only public evidence and were dropped. Wireframe below
+shows the current items. RAG/PySpark/CI-CD remain deferred.
+
 Four columns.
 
 ```text
@@ -2073,12 +2096,13 @@ Wireframe (final V1 content):
 │ APPLIED AI        │ MACHINE LEARNING  │ DATA              │ ENGINEERING       │
 │                   │                   │                   │                   │
 │ LLM Applications  │ Regression        │ Python            │ Git & GitHub      │
-│ AI-assisted...    │ Classification    │ SQL               │ Docker            │
-│ Structured...     │ Gradient Boosting │ Pandas            │ Testing           │
-│ Prompt & Context  │ Forecasting       │ Power BI          │ MLflow            │
-│   Engineering     │ Survival Analysis │ Data Modeling     │ APIs              │
-│ AI Automation     │ Experimentation   │ Data Pipelines    │ Streamlit         │
-│                   │ Model Evaluation  │ Data Quality      │ Automation        │
+│ Agent             │ Classification    │ SQL               │ Docker            │
+│   Orchestration   │ Gradient Boosting │ Pandas            │ Testing           │
+│ LangGraph         │ Forecasting       │ Power BI          │ MLflow            │
+│ AI Observability  │ Survival Analysis │ Data Modeling     │ APIs              │
+│ AI Automation     │ Experimentation   │ Data Pipelines    │ FastAPI           │
+│                   │ Model Evaluation  │ Data Quality      │ Streamlit         │
+│                   │                   │                   │ Automation        │
 └───────────────────┴───────────────────┴───────────────────┴───────────────────┘
 ```
 
@@ -2379,50 +2403,47 @@ No complex sitemap.
 │                                                                          │
 │ 02 / SELECTED WORK                                      View all →       │
 │                                                                          │
-│ Systems designed to                                                     │
+│ Systems designed to                                                      │
 │ solve real problems.                                                     │
 │                                                                          │
 │ PROJECT / 01                                                             │
-│ MACHINE LEARNING · DATA PRODUCT                                          │
+│ AI ENGINEERING · AGENT ORCHESTRATION                                     │
 │                                                                          │
-│ Procurement Intelligence        ┌─────────────────────────────────────┐   │
-│                                 │                                     │   │
-│ A spend and price intelligence  │           DASHBOARD                 │   │
-│ platform built on 5.7M+...      │                                     │   │
-│                                 └─────────────────────────────────────┘   │
-│ 5.7M+      124                                                           │
-│ Case Study → Live Demo ↗ GitHub ↗                                       │
+│ DataLab OS                      ┌─────────────────────────────────────┐  │
+│                                 │                                     │  │
+│ A local-first, observable Data  │         PIPELINE DIAGRAM            │  │
+│ Science agent system...         │                                     │  │
+│                                 └─────────────────────────────────────┘  │
+│ LANGGRAPH   118   97   REVIEW                                            │
+│ GitHub ↗                                                                 │
 │                                                                          │
 │                         PROJECT / 02                                     │
-│ ┌──────────────────────────────┐ DATA ENGINEERING · ECONOMIC INTEL.      │
+│ ┌──────────────────────────────┐ MACHINE LEARNING · DATA PRODUCT         │
 │ │                              │                                         │
-│ │ REPORT / ARCHITECTURE        │ Steel Indicator                         │
+│ │ PIPELINE DIAGRAM             │ Procurement Intelligence                │
 │ │                              │                                         │
-│ └──────────────────────────────┘ A reproducible and auditable...         │
-│                                529 tests · immutable vintages             │
-│                                Case Study → GitHub ↗                     │
+│ └──────────────────────────────┘ A spend and price intelligence...       │
+│                                5.7M+ · 124 tests                         │
+│                                Live Demo ↗ GitHub ↗                      │
 │                                                                          │
-│ PROJECT / 03 — REMOVED (ADR-016, see docs/DECISIONS.md)                  │
-│                                                                          │
-│                         PROJECT / 04                                     │
-│ [ model evaluation ]            Employee Attrition Prediction            │
+│ PROJECT / 03                                                             │
+│ MACHINE LEARNING · PEOPLE ANALYTICS                                      │
+│ Employee Attrition Prediction   [ compact pipeline diagram ]             │
 │                                                                          │
 ├──────────────────────────────────────────────────────────────────────────┤
 │                                                                          │
 │ 03 / CASE STUDIES                                                        │
 │                                                                          │
 │ The reasoning behind                                                     │
-│ the systems.                                                             │
+│ the work.                                                                │
 │                                                                          │
-│ ┌──────────────────────────────┐  ┌──────────────────────────────┐        │
-│ │ CASE STUDY / 01              │  │ CASE STUDY / 02              │        │
-│ │ Procurement Intelligence     │  │ Steel Indicator               │        │
-│ │                              │  │                               │        │
-│ │ 5.7M+ transactions           │  │ 529 tests                     │        │
-│ │ Bronze → Silver → Gold       │  │ Immutable vintages            │        │
-│ │                              │  │                               │        │
-│ │ Read →                       │  │ Read →                        │        │
-│ └──────────────────────────────┘  └──────────────────────────────┘        │
+│ CASE STUDY / 01                                                          │
+│ Steel Indicator                                                          │
+│ ...                                                                      │
+│                                                                          │
+│ CASE STUDY / 02                                                          │
+│ Developer Market Research                                                │
+│ ...                                                                      │
 │                                                                          │
 ├──────────────────────────────────────────────────────────────────────────┤
 │                                                                          │
@@ -2632,42 +2653,45 @@ Reference:
 │ View all projects →        │
 │                            │
 │ PROJECT / 01               │
-│ MACHINE LEARNING · DATA    │
-│ PRODUCT                    │
+│ AI ENGINEERING · AGENT     │
+│ ORCHESTRATION              │
 │                            │
-│ Procurement Intelligence   │
+│ DataLab OS                 │
 │                            │
 │ description                │
 │                            │
 │ ┌────────────────────────┐ │
-│ │ dashboard              │ │
+│ │ pipeline diagram       │ │
 │ └────────────────────────┘ │
 │                            │
-│ 5.7M+          124         │
-│ transactions   tests       │
+│ LANGGRAPH      118         │
+│ 97             REVIEW      │
 │                            │
 │ stack                      │
 │                            │
-│ Case Study →               │
-│ Live Demo ↗                │
 │ GitHub ↗                   │
 │                            │
 │ PROJECT / 02               │
-│ Steel Indicator            │
+│ Procurement Intelligence   │
+│ ...                        │
+│                            │
+│ PROJECT / 03               │
+│ Employee Attrition         │
+│ Prediction                 │
 │ ...                        │
 │                            │
 ├────────────────────────────┤
 │ 03 / CASE STUDIES          │
 │                            │
 │ The reasoning behind       │
-│ the systems.               │
+│ the work.                  │
 │                            │
 │ CASE STUDY / 01            │
-│ Procurement Intelligence   │
+│ Steel Indicator            │
 │ ...                        │
 │                            │
 │ CASE STUDY / 02            │
-│ Steel Indicator            │
+│ Developer Market Research  │
 ├────────────────────────────┤
 │ 04 / EXPERIENCE            │
 │                            │
@@ -2766,6 +2790,12 @@ Do not add unnecessary custom breakpoints unless layout actually breaks.
 # 36. Project visual priorities
 
 For each flagship project, assets should be selected in this priority:
+
+## DataLab OS
+
+1. editorial pipeline diagram (current Home visual);
+2. real Control Plane recording (`docs/assets/demo.gif` in the DataLab OS
+   repo) — future `/projects/datalab-os` page only, not Home.
 
 ## Procurement Intelligence
 
@@ -3428,6 +3458,13 @@ Never lorem ipsum.
 # 59. Asset TODO list
 
 Before visual-final phase, collect:
+
+## DataLab OS
+
+```text
+[x] demo recording exists (datalab-os repo: docs/assets/demo.gif) — for a future project page
+[ ] static Control Plane screenshot (if ever wanted on Home)
+```
 
 ## Procurement Intelligence
 

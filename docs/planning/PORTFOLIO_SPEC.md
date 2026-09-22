@@ -697,6 +697,10 @@ Atualizado no M1-04 (ADR-012, `docs/DECISIONS.md`): Steel Indicator saiu de
 Selected Work e passou a viver exclusivamente em Case Studies — um projeto
 nomeado tem uma única seção primária na Home.
 
+Atualizado em 2026-09-22 (ADR-017): Selected Work atual = **3 projetos** —
+01 DataLab OS (flagship), 02 Procurement Intelligence, 03 Employee Attrition
+Prediction. DataLab OS não aparece em Case Studies.
+
 Não mostrar todo o GitHub.
 
 ---
@@ -706,7 +710,8 @@ Não mostrar todo o GitHub.
 Esta subseção é o rascunho original (4 projetos, incluindo Steel e o link
 "Case Study →" em Procurement). A ordem e a composição **finais** estão em
 `PROJECT_CONTENT.md` §79-80 (Selected Work) e §81-82/§2/§57-58 (Case
-Studies) — consulte esses para a Home implementada.
+Studies) — consulte esses para a Home implementada. O flagship atual
+(DataLab OS, ADR-017) está em `PROJECT_CONTENT.md` §93.
 
 ### 01 — Procurement Intelligence
 
@@ -1774,17 +1779,18 @@ stays as-is; this section has no nav entry.
 ## 18.1 Why "Applied AI", not "AI Engineering"
 
 The Hero can position the direction ("Data Scientist & AI Engineer"), but
-Capabilities must be precise about evidence available *today*. The
-portfolio has public evidence of LLM-assisted workflows, structured
-output/JSON Schema, prompt/context design and AI automation from past
-project work (Application Job's public GitHub repo, no longer featured in
-Selected Work as of ADR-016). It does not yet have public
-evidence of RAG, agentic/multi-agent systems, AI evaluation systems, LLM
-observability, or production AI services at a maturity worth featuring as
-a capability. So the group is **Applied AI**, not **AI Engineering** — this
-can evolve once Closer AI (or another public project) supplies that
-evidence; Closer AI is not used as evidence for any of it today (its
-repository has no implemented project evidence yet).
+Capabilities must be precise about evidence available *today*.
+
+**Updated by ADR-017 (2026-09-22):** DataLab OS (public repo, PoC v0.2)
+now provides public evidence of agent orchestration, LangGraph, AI
+observability (typed, persisted, replayable execution events) and FastAPI.
+The earlier evidence for AI-assisted workflows, structured outputs and
+prompt/context engineering (the Application Job repo, ADR-016) is no
+longer publicly available, so those items were dropped. There is still no
+public evidence of RAG, vector databases, dynamic/parallel multi-agent
+systems, LLM evaluation systems or production AI services. The group stays
+**Applied AI**, not **AI Engineering** — one PoC does not yet justify the
+broader label. Closer AI is not used as evidence for any of it.
 
 ---
 
@@ -1794,16 +1800,18 @@ repository has no implemented project evidence yet).
 
 ```text
 LLM Applications
-AI-assisted Workflows
-Structured Outputs
-Prompt & Context Engineering
+Agent Orchestration
+LangGraph
+AI Observability
 AI Automation
 ```
 
+Agent Orchestration / LangGraph / AI Observability: DataLab OS (ADR-017).
+
 Deferred until public evidence exists (omit silently — no "coming soon"/
 "planned" labels, this section is not a roadmap): RAG, Retrieval-Augmented
-Generation, Agentic Systems, Multi-Agent Systems, LangChain, LangGraph,
-CrewAI, Vector Databases, AI Evaluation, AI Observability.
+Generation, dynamic/parallel Multi-Agent Systems, LangChain, CrewAI,
+Vector Databases, AI Evaluation.
 
 ### 02 — Machine Learning
 
@@ -1850,6 +1858,7 @@ Docker
 Testing
 MLflow
 APIs
+FastAPI
 Streamlit
 Automation
 ```
@@ -1861,7 +1870,9 @@ background), Streamlit (Procurement Intelligence's live app), Automation
 (professional experience; Application Job previously evidenced this too but
 is no longer featured in Selected Work — see ADR-016).
 
-**Deferred until public evidence exists:** FastAPI, CI/CD, Kubernetes,
+FastAPI: DataLab OS's backend API + SSE (ADR-017).
+
+**Deferred until public evidence exists:** CI/CD, Kubernetes,
 Terraform, AWS, GCP, Cloud Architecture, Microservices, Monitoring,
 Observability.
 
@@ -3800,6 +3811,9 @@ Trade-offs
 > contém apenas 01 Procurement Intelligence e 02 Employee Attrition
 > Prediction. (A posição do Steel Indicator aqui também já reflete o plano
 > pré-ADR-012, não a alocação atual — fora do escopo desta correção.)
+>
+> Atualização (ADR-017, 2026-09-22): Selected Work atual = 01 DataLab OS,
+> 02 Procurement Intelligence, 03 Employee Attrition Prediction.
 
 ## Direção futura
 

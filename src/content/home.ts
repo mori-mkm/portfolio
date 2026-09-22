@@ -27,7 +27,12 @@ import type { Locale } from "@/lib/i18n";
  * ADR-012 (Home content exclusivity) for why Steel Indicator moved out of
  * Selected Work and into Case Studies, and why the Developer Market
  * Research / CNN Brasil case study is deliberately hedged (no unverified
- * authorship or figures beyond what the user confirmed).
+ * authorship or figures beyond what the user confirmed). ADR-017: DataLab
+ * OS is Selected Work's flagship (`01`), Selected Work only — never also a
+ * Case Study. Every DataLab claim is backed by the public
+ * mori-mkm/datalab-os README (PoC v0.2); no demoHref (no public
+ * deployment), and none of its README "Current limitations" are contradicted
+ * (sequential/deterministic execution, no production hardening).
  *
  * `experience` (M1-05): company/role/period are historical-fact fields —
  * kept identical across EN/PT (not translated) per the user's explicit
@@ -51,14 +56,16 @@ import type { Locale } from "@/lib/i18n";
  * `capabilities` (M1-07): synthesis layer, not a new evidence source — an
  * application of ADR-007 (evidence before prominence) to the current
  * public-project/experience evidence, not a new architectural decision
- * (no ADR-014). Group is "Applied AI", not "AI Engineering" — the public
- * evidence today supports LLM-assisted workflows / structured outputs /
- * prompt engineering, not RAG / agentic systems / evals as *mature*
- * capabilities. Deliberately excludes RAG, Agentic Systems, Multi-Agent
- * Systems, LangChain/LangGraph/CrewAI, Vector Databases, AI Evaluation, AI
- * Observability, FastAPI, PySpark, CI/CD, and cloud infra — all omitted
- * silently (no "coming soon"/"planned" labels, this section is not a
- * roadmap). Closer AI is not used as evidence for any of the above.
+ * (no ADR-014). Group is "Applied AI", not "AI Engineering". Updated by
+ * ADR-017: DataLab OS's public repo now evidences Agent Orchestration,
+ * LangGraph, AI Observability (typed, replayable event stream) and FastAPI,
+ * so those were added; AI-assisted Workflows / Structured Outputs /
+ * Prompt & Context Engineering were dropped (their only public evidence,
+ * the Application Job repo, is no longer public). Still deliberately
+ * excludes RAG, Multi-Agent/dynamic agent systems, LangChain/CrewAI,
+ * Vector Databases, AI Evaluation, PySpark, CI/CD, and cloud infra — all
+ * omitted silently (no "coming soon"/"planned" labels, this section is not
+ * a roadmap). Closer AI is not used as evidence for any of the above.
  *
  * `nav` / `contact` (M1-08): "Writing" removed from both locale nav
  * arrays — Writing is deferred (no genuine published articles exist yet;
@@ -80,7 +87,7 @@ export type Pillar = {
   description: string;
 };
 
-export type ProjectVisualKind = "procurement" | "steel" | "attrition";
+export type ProjectVisualKind = "datalab" | "procurement" | "steel" | "attrition";
 
 export type ProjectProof = {
   value: string;
@@ -344,12 +351,28 @@ export const homeContent: Record<Locale, HomeContent> = {
       headlineLine1: "Systems designed to",
       headlineLine2: "solve real problems.",
       supportingCopy:
-        "A selection of machine learning systems, AI workflows and data products.",
+        "A selection of AI systems, machine learning systems and data products.",
       githubLabel: "GitHub",
       demoLabel: "Live Demo",
       projects: [
         {
           index: "01",
+          category: "AI ENGINEERING · AGENT ORCHESTRATION",
+          title: "DataLab OS",
+          description:
+            "A local-first, observable Data Science agent system built with LangGraph, covering profiling, EDA, modeling and independent methodological review.",
+          proof: [
+            { value: "LANGGRAPH", label: "orchestration" },
+            { value: "118", label: "backend tests" },
+            { value: "97", label: "frontend tests" },
+            { value: "REVIEW", label: "independent gate" },
+          ],
+          stack: "Python · LangGraph · FastAPI · Next.js · React Flow",
+          visual: "datalab",
+          githubHref: "https://github.com/mori-mkm/datalab-os",
+        },
+        {
+          index: "02",
           category: "MACHINE LEARNING · DATA PRODUCT",
           title: "Procurement Intelligence",
           description:
@@ -366,7 +389,7 @@ export const homeContent: Record<Locale, HomeContent> = {
           demoHref: "https://procurement-intelligence-mkm.streamlit.app/",
         },
         {
-          index: "02",
+          index: "03",
           category: "MACHINE LEARNING · PEOPLE ANALYTICS",
           title: "Employee Attrition Prediction",
           description:
@@ -536,9 +559,9 @@ export const homeContent: Record<Locale, HomeContent> = {
           title: "APPLIED AI",
           items: [
             "LLM Applications",
-            "AI-assisted Workflows",
-            "Structured Outputs",
-            "Prompt & Context Engineering",
+            "Agent Orchestration",
+            "LangGraph",
+            "AI Observability",
             "AI Automation",
           ],
         },
@@ -574,6 +597,7 @@ export const homeContent: Record<Locale, HomeContent> = {
             "Testing",
             "MLflow",
             "APIs",
+            "FastAPI",
             "Streamlit",
             "Automation",
           ],
@@ -681,12 +705,28 @@ export const homeContent: Record<Locale, HomeContent> = {
       headlineLine1: "Sistemas construídos para",
       headlineLine2: "resolver problemas reais.",
       supportingCopy:
-        "Uma seleção de sistemas de machine learning, workflows de IA e produtos de dados.",
+        "Uma seleção de sistemas de IA, machine learning e produtos de dados.",
       githubLabel: "GitHub",
       demoLabel: "Demo",
       projects: [
         {
           index: "01",
+          category: "ENGENHARIA DE IA · ORQUESTRAÇÃO DE AGENTES",
+          title: "DataLab OS",
+          description:
+            "Um sistema local-first e observável de agentes para Data Science, construído com LangGraph e cobrindo profiling, EDA, modelagem e revisão metodológica independente.",
+          proof: [
+            { value: "LANGGRAPH", label: "orquestração" },
+            { value: "118", label: "testes backend" },
+            { value: "97", label: "testes frontend" },
+            { value: "REVIEW", label: "gate independente" },
+          ],
+          stack: "Python · LangGraph · FastAPI · Next.js · React Flow",
+          visual: "datalab",
+          githubHref: "https://github.com/mori-mkm/datalab-os",
+        },
+        {
+          index: "02",
           category: "MACHINE LEARNING · PRODUTO DE DADOS",
           title: "Procurement Intelligence",
           description:
@@ -703,7 +743,7 @@ export const homeContent: Record<Locale, HomeContent> = {
           demoHref: "https://procurement-intelligence-mkm.streamlit.app/",
         },
         {
-          index: "02",
+          index: "03",
           category: "MACHINE LEARNING · PEOPLE ANALYTICS",
           title: "Employee Attrition Prediction",
           description:
@@ -873,9 +913,9 @@ export const homeContent: Record<Locale, HomeContent> = {
           title: "APPLIED AI",
           items: [
             "LLM Applications",
-            "Workflows assistidos por IA",
-            "Saídas estruturadas",
-            "Prompt & Context Engineering",
+            "Orquestração de Agentes",
+            "LangGraph",
+            "Observabilidade de IA",
             "Automação com IA",
           ],
         },
@@ -911,6 +951,7 @@ export const homeContent: Record<Locale, HomeContent> = {
             "Testes",
             "MLflow",
             "APIs",
+            "FastAPI",
             "Streamlit",
             "Automação",
           ],

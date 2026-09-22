@@ -49,23 +49,24 @@ PROMINENCE
 
 # 1. V1 Project Portfolio
 
-Official V1 order:
+Current Home allocation (ADR-012, ADR-016, ADR-017):
 
 ```text
-PROJECT / 01
-Procurement Intelligence
+SELECTED WORK
+01 DataLab OS
+02 Procurement Intelligence
+03 Employee Attrition Prediction
 
-PROJECT / 02
-Steel Indicator
-
-PROJECT / 03
-Application Job
-
-PROJECT / 04
-Employee Attrition Prediction
+CASE STUDIES
+01 Steel Indicator
+02 Developer Market Research
 ```
 
 This order is editorial, not chronological.
+
+> Historical — original V1 plan (pre-ADR-012), kept for record:
+> PROJECT / 01 Procurement Intelligence, PROJECT / 02 Steel Indicator,
+> PROJECT / 03 Application Job, PROJECT / 04 Employee Attrition Prediction.
 
 ---
 
@@ -106,6 +107,11 @@ Study.
 Work entirely (not moved to Case Studies, not replaced). Current Selected
 Work is Procurement Intelligence + Employee Attrition Prediction only. See
 `docs/DECISIONS.md` ADR-016 and §34-42 below (kept as historical record).
+
+**Updated 2026-09-22 — ADR-017:** DataLab OS added as Selected Work `01`
+(flagship). Current Selected Work: 01 DataLab OS, 02 Procurement
+Intelligence, 03 Employee Attrition Prediction. DataLab OS is Selected
+Work-only — no Case Study (ADR-012). Content and claim boundaries: §93.
 
 ---
 
@@ -2204,6 +2210,11 @@ Do not automatically sort by date.
 > scope for this change). Current Selected Work is Procurement Intelligence
 > + Employee Attrition Prediction only; no `/projects` index route exists
 > in `src/app`.
+>
+> **Update (ADR-017, 2026-09-22):** current Selected Work is 01 DataLab OS
+> (flagship, non-compact visual), 02 Procurement Intelligence, 03 Employee
+> Attrition Prediction (compact visual). Steel Indicator is Case Study 01
+> (with Developer Market Research as 02), not Selected Work.
 
 ---
 
@@ -3043,6 +3054,7 @@ It is an internal editorial principle.
 
 | Project | Home | Project Page | Case Study | Demo | Strong Architecture |
 |---|---:|---:|---:|---:|---:|
+| DataLab OS (ADR-017) | Yes | Later | No | No (GIF in repo) | Yes |
 | Procurement Intelligence | Yes | Yes | Yes | Yes | Yes |
 | Steel Indicator | Yes | Yes | Yes | No | Yes |
 | Application Job (removed, ADR-016) | No | Yes | No | No | Medium |
@@ -3061,17 +3073,26 @@ one primary Home section, not two. Selected Work was three projects, not four.
 **Updated by ADR-016 (2026-09-05):** Application Job removed from Selected
 Work entirely, no replacement. Selected Work is now two projects.
 
+**Updated by ADR-017 (2026-09-22):** DataLab OS added as `01` (flagship).
+Selected Work is now three projects.
+
 ```text
 02 / SELECTED WORK
 
 Systems designed to
 solve real problems.
 
+A selection of AI systems, machine learning systems and data products.
+
 01
+DataLab OS
+AI Engineering · Agent Orchestration
+
+02
 Procurement Intelligence
 Machine Learning · Data Product
 
-02
+03
 Employee Attrition Prediction
 Machine Learning · People Analytics
 ```
@@ -3086,11 +3107,17 @@ Machine Learning · People Analytics
 Sistemas construídos para
 resolver problemas reais.
 
+Uma seleção de sistemas de IA, machine learning e produtos de dados.
+
 01
+DataLab OS
+Engenharia de IA · Orquestração de Agentes
+
+02
 Procurement Intelligence
 Machine Learning · Produto de Dados
 
-02
+03
 Employee Attrition Prediction
 Machine Learning · People Analytics
 ```
@@ -3538,3 +3565,103 @@ Claims to avoid: "production forecasting system", "deployed ML product",
   (ADR-012); never duplicated here.
 
 **End of PROJECT_CONTENT.md**
+
+---
+
+# 93. PROJECT / 01 — DataLab OS (ADR-017)
+
+Added 2026-09-22. Selected Work flagship (`01`), Selected Work only — no
+Case Study (ADR-012). Source of every claim: the public README of
+https://github.com/mori-mkm/datalab-os (status badge: **PoC v0.2**),
+verified 2026-09-22. Re-sync this section if that README changes.
+
+## 93.1 Home copy — EN
+
+```text
+PROJECT / 01
+AI ENGINEERING · AGENT ORCHESTRATION
+
+DataLab OS
+
+A local-first, observable Data Science agent system built with LangGraph,
+covering profiling, EDA, modeling and independent methodological review.
+
+LANGGRAPH  orchestration
+118        backend tests
+97         frontend tests
+REVIEW     independent gate
+
+Python · LangGraph · FastAPI · Next.js · React Flow
+
+GitHub ↗
+```
+
+## 93.2 Home copy — PT
+
+```text
+PROJECT / 01
+ENGENHARIA DE IA · ORQUESTRAÇÃO DE AGENTES
+
+DataLab OS
+
+Um sistema local-first e observável de agentes para Data Science,
+construído com LangGraph e cobrindo profiling, EDA, modelagem e revisão
+metodológica independente.
+
+LANGGRAPH  orquestração
+118        testes backend
+97         testes frontend
+REVIEW     gate independente
+
+Python · LangGraph · FastAPI · Next.js · React Flow
+
+GitHub ↗
+```
+
+No Live Demo link — there is no public deployment.
+
+## 93.3 Verified facts (README)
+
+- Compiled LangGraph graph of department subgraphs: Data Engineering
+  (profiling, data quality), Analytics (EDA, hypotheses), Data Science
+  (baseline modeling, model evaluation), then an independent Review Lead.
+- Specialized, deterministic agents calling real pandas / scikit-learn
+  functions.
+- Review Lead re-derives its own checks and can mark a run APPROVED or
+  REJECTED, including an independent target-leakage check.
+- Typed `ExecutionEvent`s on an in-process Event Bus; append-only
+  `events.jsonl` + `run.json`; historical replay.
+- FastAPI + SSE (runs and graph topology APIs); Next.js + React Flow
+  Control Plane that only observes the backend.
+- Local-first, zero paid APIs; optional Ollama narration with a labeled
+  deterministic fallback.
+- 118 backend tests, 97 frontend tests, clean lint, clean frontend
+  production build.
+
+## 93.4 Claim boundaries (do not cross)
+
+README "Current limitations": sequential, deterministic execution; no
+parallel departments; no dynamic agent spawning; no runtime re-planning of
+the graph; tabular binary classification only, validated on small
+synthetic/sample datasets; no production hardening (no auth, no
+multi-tenancy, no retry/pause/resume).
+
+Never describe it as: production-ready, deployed production system,
+enterprise multi-agent system, fully autonomous, self-organizing,
+self-improving, parallel multi-agent organization, emergent collaboration,
+or autonomous AI organization.
+
+Safe vocabulary: agent system, agent orchestration, LangGraph
+orchestration, local-first, observable, independent review, typed event
+stream, Control Plane, deterministic analytical tools, proof of concept.
+
+## 93.5 Visual
+
+Home uses the shared editorial pipeline diagram (`ProjectVisual`
+`"datalab"`, non-compact): `PROBLEM + DATASET → LANGGRAPH → DE · ANALYTICS
+· DS → INDEPENDENT REVIEW → EVENTS + CONTROL PLANE` — an editorial
+rendering of the README architecture diagram, not a new claim.
+
+The repo also has a real demo recording (`docs/assets/demo.gif`). Not used
+on Home (heavy animated media, off the editorial visual language); reserved
+for a future `/projects/datalab-os` page.
