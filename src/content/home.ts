@@ -314,7 +314,7 @@ export const homeContent: Record<Locale, HomeContent> = {
         "https://docs.google.com/document/d/1FgSxRx5DYYqcSQD_zA0kodYHP4BQUKToKZcNI36Nd14/edit?usp=sharing",
     },
     hero: {
-      eyebrow: "DATA SCIENCE · AI ENGINEERING",
+      eyebrow: "AI ENGINEERING · DATA SCIENCE",
       name: "Matheus Mori",
       headlineLine1: "AI Engineer",
       headlineLine2: "& Data Scientist",
@@ -641,7 +641,7 @@ export const homeContent: Record<Locale, HomeContent> = {
     footer: {
       headlineLine1: "Build. Evaluate.",
       headlineLine2: "Observe. Improve.",
-      role: "Data Scientist & AI Engineer",
+      role: "AI Engineer & Data Scientist",
       location: "São Paulo, Brazil",
       backToTop: "Back to top",
     },
@@ -675,7 +675,7 @@ export const homeContent: Record<Locale, HomeContent> = {
         "https://docs.google.com/document/d/1FgSxRx5DYYqcSQD_zA0kodYHP4BQUKToKZcNI36Nd14/edit?usp=sharing",
     },
     hero: {
-      eyebrow: "DATA SCIENCE · ENGENHARIA DE IA",
+      eyebrow: "ENGENHARIA DE IA · DATA SCIENCE",
       name: "Matheus Mori",
       headlineLine1: "Engenheiro de IA",
       headlineLine2: "& Cientista de Dados",
@@ -1002,7 +1002,7 @@ export const homeContent: Record<Locale, HomeContent> = {
     footer: {
       headlineLine1: "Construir. Avaliar.",
       headlineLine2: "Observar. Melhorar.",
-      role: "Cientista de Dados & Engenheiro de IA",
+      role: "Engenheiro de IA & Cientista de Dados",
       location: "São Paulo, Brasil",
       backToTop: "Voltar ao topo",
     },
