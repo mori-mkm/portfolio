@@ -592,3 +592,40 @@ Negative / trade-off: the flagship is a PoC with no live demo, so its proof poin
 - `src/content/home.ts` (EN + PT `selectedWork`, `capabilities`, `ProjectVisualKind`), `src/components/ui/ProjectVisual.tsx`.
 - `PROJECT_CONTENT.md` §2, §52-53 note, §78-80 and new §93 (DataLab OS content + claim boundaries); `PORTFOLIO_SPEC.md` §10.2-10.3, §18.1-18.2, §56; `HOME_WIREFRAME.md` §12-13, §26.2, §36, §59; `CONTEXT_MAP.md`.
 - `npm run verify` passed; visual check at 1440px/390px, EN/PT.
+
+---
+
+### ADR-018 — Dark editorial visual identity
+
+**Date:** 2026-09-24
+**Status:** accepted
+
+**Context**
+
+The user asked for a dark, editorial, minimal-tech, product-focused redesign (visual-language reference only: allm4.com — no copied copy, marks, assets or components), positioning AI Engineer / Data Scientist. The V1 spec (PORTFOLIO_SPEC §23.1/§23.3) made light the primary theme and dark a future opt-in.
+
+**Decision**
+
+- Dark becomes the only theme. Tokens in `src/app/globals.css` (ADR-004 still holds): `--background #11110F`, `--background-secondary #151512`, `--surface #1A1A17`, `--surface-hover #20201C`, text `#F1F0EB / #A09F98 / #85847E`, borders `rgba(255,255,255,.10/.16)`, accent `#5B7CFF` (+ hover/active/soft/border), radius 6/8/12, `--gutter`, `--section-y`, `--container-max 1360px`, clamp-based display/section/title type, motion easing/durations.
+- Two deliberate deviations from the user's palette, for WCAG AA: `--text-muted` is `#85847E` (the requested `#6F6E68` is 3.7:1 on the background), and primary-button text is dark (`--accent-contrast`) because light text on `#5B7CFF` is 3.6:1.
+- Accent is reserved for section/item numbers, CTAs, arrows, hover/focus and the final pipeline stage (~10% of the UI).
+- Shared classes (`.section`, `.container-x`, `.eyebrow`, `.heading-*`, `.lead`, `.link-arrow`, `.btn-*`) replace repeated utility strings.
+- Selected Work: the alternating text|visual rows (M1-03, ADR-017's alternation) are replaced by one editorial block per project: header (label, title | description, stack, link), full-width visual panel, proof row. No real screenshots exist, so the panel keeps the evidence-based pipeline diagram (ADR-007); a future screenshot replaces `ProjectVisual` in the same slot.
+- Header: brand, 5 section links, language, "Contact →" CTA. Resume moved out of the desktop header (hero secondary CTA, Experience, Contact, mobile menu, footer). GitHub moved out of the hero.
+- New Footer (PORTFOLIO_SPEC §21): closing statement, role, location, LinkedIn/GitHub/Resume, back to top. No email (same rule as Contact).
+- Motion: CSS only (hero load fade, scroll-driven `.reveal` where `animation-timeline` is supported), off under `prefers-reduced-motion`. No new dependency.
+
+**Alternatives considered**
+
+- Keep light theme with a dark opt-in — rejected: the user explicitly asked for dark as the identity.
+- Framer Motion for reveals — rejected: not installed; CSS covers fades.
+
+**Consequences**
+
+Positive: stronger, product-like presentation; tokens centralized.
+Negative / trade-off: PORTFOLIO_SPEC §23 light palette and HOME_WIREFRAME's alternating Selected Work layout are now historical for visuals; scroll reveals are static in browsers without scroll-driven animations.
+
+**Verification / follow-up**
+
+- `npm run verify` + `node --test` pass; Playwright: 0px overflow at 1440/1024/820/768/390/360, EN + PT; keyboard focus, mobile menu, Contact CTA checked.
+- Pre-redesign version preserved at git tag `pre-dark-editorial`.

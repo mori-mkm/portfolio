@@ -1,8 +1,8 @@
 /**
  * Hero — SPEC §8 / HOME_WIREFRAME §8-9.
  * Server Component: no interactivity of its own, all links are plain anchors.
- * Primary CTA and nav-adjacent links point to sections that don't exist yet
- * (#projects) — inert until those ship (see BACKLOG M1-03+), not a bug.
+ * ADR-018: bottom-anchored display headline, one primary + one secondary
+ * CTA (GitHub moved out of the hero; it stays in Contact, Footer, mobile menu).
  */
 type HeroProps = {
   eyebrow: string;
@@ -15,7 +15,6 @@ type HeroProps = {
   primaryCtaHref: string;
   scrollCue: string;
   scrollCueHref: string;
-  github: { label: string; href: string };
   resume: { label: string; href: string };
 };
 
@@ -30,67 +29,50 @@ export function Hero({
   primaryCtaHref,
   scrollCue,
   scrollCueHref,
-  github,
   resume,
 }: HeroProps) {
   return (
-    <section className="relative mx-auto flex min-h-[70vh] max-w-[var(--container-max)] flex-col justify-center px-5 py-20 md:min-h-[calc(82vh-72px)] md:px-8 md:py-0">
-      <p className="font-mono text-xs uppercase tracking-[0.08em] text-[var(--text-secondary)] mb-8">
-        {eyebrow}
-      </p>
+    <section className="container-x relative flex min-h-[calc(92svh-var(--header-h))] flex-col justify-end pt-24 pb-20 md:min-h-[calc(100svh-var(--header-h))] md:pb-28">
+      <div className="intro">
+        <p className="eyebrow">
+          {name}
+          <span className="text-[var(--text-muted)]"> / </span>
+          <span className="text-[var(--accent)]">{eyebrow}</span>
+        </p>
 
-      <p className="mb-5 text-lg font-medium text-[var(--text-primary)] md:mb-7 md:text-xl">
-        {name}
-      </p>
+        <h1 className="heading-display mt-8 md:mt-10">
+          {headlineLine1}
+          <br />
+          {headlineLine2}
+        </h1>
 
-      <h1 className="max-w-[900px] text-[44px] font-semibold leading-[0.98] tracking-[-0.03em] text-[var(--text-primary)] md:text-[76px] md:leading-[1.0] md:tracking-[-0.04em] lg:text-[88px]">
-        {headlineLine1}
-        <br />
-        {headlineLine2}
-      </h1>
+        <div className="mt-10 flex flex-col gap-10 md:mt-14 lg:flex-row lg:items-end lg:justify-between">
+          <div className="max-w-[560px]">
+            <p className="whitespace-pre-line text-[20px] leading-[1.35] text-[var(--text-primary)] md:text-[24px]">
+              {descriptor}
+            </p>
+            <p className="mt-5 text-base leading-[1.6] text-[var(--text-secondary)] md:text-[17px]">
+              {supportingCopy}
+            </p>
+          </div>
 
-      <p className="mt-8 max-w-[720px] whitespace-pre-line text-[23px] leading-[1.2] text-[var(--text-primary)] md:mt-11 md:text-[30px]">
-        {descriptor}
-      </p>
-
-      <p className="mt-6 max-w-[620px] text-base leading-[1.55] text-[var(--text-secondary)] md:mt-6 md:text-lg">
-        {supportingCopy}
-      </p>
-
-      <div className="mt-9 flex flex-col gap-4 sm:flex-row sm:items-center sm:gap-8">
-        <a
-          href={primaryCtaHref}
-          className="inline-flex w-full items-center justify-center bg-[var(--text-primary)] px-6 py-3 text-[15px] font-medium text-[var(--background)] transition-opacity hover:opacity-90 sm:w-auto"
-        >
-          {primaryCta}
-        </a>
-        <div className="flex items-center gap-6">
-          <a
-            href={github.href}
-            target="_blank"
-            rel="noreferrer"
-            className="text-[15px] text-[var(--text-secondary)] hover:text-[var(--text-primary)]"
-          >
-            {github.label} ↗
-          </a>
-          <a
-            href={resume.href}
-            target="_blank"
-            rel="noreferrer"
-            className="text-[15px] text-[var(--text-secondary)] hover:text-[var(--text-primary)]"
-          >
-            {resume.label} ↗
-          </a>
+          <div className="flex flex-col gap-3 sm:flex-row">
+            <a href={primaryCtaHref} className="btn btn-primary">
+              {primaryCta} <span aria-hidden="true">→</span>
+            </a>
+            <a href={resume.href} target="_blank" rel="noreferrer" className="btn btn-secondary">
+              {resume.label} <span aria-hidden="true">↗</span>
+            </a>
+          </div>
         </div>
       </div>
 
       <a
         href={scrollCueHref}
-        className="mt-16 hidden font-mono text-xs uppercase tracking-[0.08em] text-[var(--text-muted)] md:absolute md:bottom-10 md:right-8 md:mt-0 md:block"
+        className="eyebrow absolute top-8 right-[var(--gutter)] hidden text-[var(--text-muted)] transition-colors hover:text-[var(--accent)] md:block"
       >
         ↓ {scrollCue}
       </a>
     </section>
   );
 }
-

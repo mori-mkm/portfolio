@@ -19,14 +19,15 @@ export function CaseStudies({
   return (
     <section
       id="case-studies"
-      className="mx-auto max-w-[var(--container-max)] px-5 py-20 md:px-8 md:py-32"
+      className="section"
     >
-      <SectionHeading eyebrow={eyebrow} lines={[headlineLine1, headlineLine2]} />
-      <p className="mt-6 max-w-[var(--reading-max)] text-lg leading-[1.55] text-[var(--text-secondary)] md:mt-8 md:text-xl">
-        {supportingCopy}
-      </p>
+      <SectionHeading
+        eyebrow={eyebrow}
+        lines={[headlineLine1, headlineLine2]}
+        intro={supportingCopy}
+      />
 
-      <div className="mt-16 flex flex-col gap-20 md:mt-24 md:gap-28">
+      <div className="mt-20 flex flex-col gap-28 md:mt-32 md:gap-[160px]">
         {studies.map((study) => (
           <CaseStudyFeature key={study.index} study={study} githubLabel={githubLabel} />
         ))}

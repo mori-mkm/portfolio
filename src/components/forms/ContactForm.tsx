@@ -216,7 +216,7 @@ export function ContactForm({
         <div className="flex flex-col gap-2">
           <label
             htmlFor="contact-message"
-            className="font-mono text-xs uppercase tracking-[0.08em] text-[var(--text-muted)]"
+            className="eyebrow text-[var(--text-muted)]"
           >
             {fields.message.label}
           </label>
@@ -226,7 +226,7 @@ export function ContactForm({
             rows={5}
             maxLength={2000}
             placeholder={fields.message.placeholder}
-            className="resize-none border-0 border-b border-[var(--border)] bg-transparent py-2 text-[17px] text-[var(--text-primary)] outline-none placeholder:text-[var(--text-muted)] focus:border-[var(--text-primary)]"
+            className="resize-none border-0 border-b border-[var(--border)] bg-transparent py-2 text-[17px] text-[var(--text-primary)] outline-none placeholder:text-[var(--text-muted)] focus:border-[var(--accent)]"
           />
         </div>
 
@@ -242,7 +242,7 @@ export function ContactForm({
           <button
             type="submit"
             disabled={submitDisabled}
-            className="inline-flex w-fit items-center justify-center bg-[var(--text-primary)] px-6 py-3 text-[15px] font-medium text-[var(--background)] transition-opacity hover:opacity-90 disabled:opacity-60"
+            className="btn btn-primary w-fit"
           >
             {status === "submitting" ? submittingLabel : submitLabel}
           </button>
@@ -283,7 +283,7 @@ function Field({
 }) {
   return (
     <div className="flex flex-col gap-2">
-      <label htmlFor={id} className="font-mono text-xs uppercase tracking-[0.08em] text-[var(--text-muted)]">
+      <label htmlFor={id} className="eyebrow text-[var(--text-muted)]">
         {label}
       </label>
       <input
@@ -295,7 +295,7 @@ function Field({
         minLength={minLength}
         maxLength={maxLength}
         placeholder={placeholder}
-        className="border-0 border-b border-[var(--border)] bg-transparent py-2 text-[17px] text-[var(--text-primary)] outline-none placeholder:text-[var(--text-muted)] focus:border-[var(--text-primary)]"
+        className="border-0 border-b border-[var(--border)] bg-transparent py-2 text-[17px] text-[var(--text-primary)] outline-none placeholder:text-[var(--text-muted)] focus:border-[var(--accent)]"
       />
     </div>
   );

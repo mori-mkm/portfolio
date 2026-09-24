@@ -225,6 +225,15 @@ export type ContactContent = {
   privacyCopy: string;
 };
 
+/** Footer (ADR-018, PORTFOLIO_SPEC §21) — closing statement + identity line; links reuse `externalLinks`. */
+export type FooterContent = {
+  headlineLine1: string;
+  headlineLine2: string;
+  role: string;
+  location: string;
+  backToTop: string;
+};
+
 type HomeContent = {
   brand: string;
   nav: NavItem[];
@@ -273,6 +282,7 @@ type HomeContent = {
   researchRecognition: ResearchRecognitionContent;
   capabilities: CapabilitiesContent;
   contact: ContactContent;
+  footer: FooterContent;
 };
 
 export const homeContent: Record<Locale, HomeContent> = {
@@ -306,8 +316,8 @@ export const homeContent: Record<Locale, HomeContent> = {
     hero: {
       eyebrow: "DATA SCIENCE · AI ENGINEERING",
       name: "Matheus Mori",
-      headlineLine1: "Data Scientist",
-      headlineLine2: "& AI Engineer",
+      headlineLine1: "AI Engineer",
+      headlineLine2: "& Data Scientist",
       descriptor:
         "Building production-oriented AI,\nmachine learning and data products.",
       supportingCopy:
@@ -628,6 +638,13 @@ export const homeContent: Record<Locale, HomeContent> = {
       },
       privacyCopy: "I'll use these details only to reply to your contact.",
     },
+    footer: {
+      headlineLine1: "Build. Evaluate.",
+      headlineLine2: "Observe. Improve.",
+      role: "Data Scientist & AI Engineer",
+      location: "São Paulo, Brazil",
+      backToTop: "Back to top",
+    },
   },
 
   pt: {
@@ -660,8 +677,8 @@ export const homeContent: Record<Locale, HomeContent> = {
     hero: {
       eyebrow: "DATA SCIENCE · ENGENHARIA DE IA",
       name: "Matheus Mori",
-      headlineLine1: "Cientista de Dados",
-      headlineLine2: "& Engenheiro de IA",
+      headlineLine1: "Engenheiro de IA",
+      headlineLine2: "& Cientista de Dados",
       descriptor:
         "Construindo produtos de IA,\nmachine learning e dados orientados à produção.",
       supportingCopy:
@@ -981,6 +998,13 @@ export const homeContent: Record<Locale, HomeContent> = {
         body: "Tente novamente em instantes.",
       },
       privacyCopy: "Usarei estes dados apenas para responder ao seu contato.",
+    },
+    footer: {
+      headlineLine1: "Construir. Avaliar.",
+      headlineLine2: "Observar. Melhorar.",
+      role: "Cientista de Dados & Engenheiro de IA",
+      location: "São Paulo, Brasil",
+      backToTop: "Voltar ao topo",
     },
   },
 };

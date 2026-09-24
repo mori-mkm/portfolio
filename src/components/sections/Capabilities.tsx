@@ -26,20 +26,20 @@ export function Capabilities({
   return (
     <section
       id="capabilities"
-      className="mx-auto max-w-[var(--container-max)] px-5 py-20 md:px-8 md:py-32"
+      className="section"
     >
-      <SectionHeading eyebrow={eyebrow} lines={[headlineLine1, headlineLine2]} />
-      {supportingCopy && (
-        <p className="mt-6 max-w-[var(--reading-max)] text-lg leading-[1.55] text-[var(--text-secondary)] md:mt-8 md:text-xl">
-          {supportingCopy}
-        </p>
-      )}
+      <SectionHeading
+        eyebrow={eyebrow}
+        lines={[headlineLine1, headlineLine2]}
+        intro={supportingCopy}
+      />
 
-      <div className="mt-16 grid grid-cols-1 gap-x-8 gap-y-10 border-t border-[var(--border)] pt-10 sm:grid-cols-2 lg:grid-cols-4 md:mt-20 md:pt-12">
+      <div className="mt-16 grid grid-cols-1 gap-x-10 gap-y-12 sm:grid-cols-2 lg:grid-cols-4 md:mt-24">
         {groups.map((group, index) => (
-          <div key={group.title}>
-            <h3 className="font-mono text-xs uppercase tracking-[0.08em] text-[var(--text-primary)] mb-5">
-              {String(index + 1).padStart(2, "0")} / {group.title}
+          <div key={group.title} className="reveal border-t border-[var(--border)] pt-6">
+            <h3 className="eyebrow mb-6 text-[var(--text-primary)]">
+              <span className="text-[var(--accent)]">{String(index + 1).padStart(2, "0")}</span> /{" "}
+              {group.title}
             </h3>
             <ul className="flex flex-col gap-2.5">
               {group.items.map((item) => (

@@ -2,93 +2,79 @@ import { ProjectVisual } from "@/components/ui/ProjectVisual";
 import type { SelectedProject } from "@/content/home";
 
 /**
- * One editorial project row — HOME_WIREFRAME §13-20.
- * DOM order is always header -> visual -> footer, matching the required
- * mobile order (§20). `reverse` only changes desktop CSS grid placement
- * (§14-17: text-left/visual-right alternating with visual-left/text-right),
- * so no JS reordering is needed.
+ * One editorial project block — ADR-018 (supersedes the M1-03 alternating
+ * text|visual rows). Same DOM order on every breakpoint:
+ * header (label, title | description, stack, links) -> full-width visual
+ * -> proof row. The visual is the dominant element; when real product
+ * screenshots exist they replace ProjectVisual in the same slot.
  */
 type ProjectFeatureProps = {
   project: SelectedProject;
-  reverse: boolean;
   githubLabel: string;
   demoLabel: string;
 };
 
-export function ProjectFeature({
-  project,
-  reverse,
-  githubLabel,
-  demoLabel,
-}: ProjectFeatureProps) {
-  const textCol = reverse ? "md:col-start-8" : "md:col-start-1";
-  const visualCol = reverse ? "md:col-start-1" : "md:col-start-6";
-
+export function ProjectFeature({ project, githubLabel, demoLabel }: ProjectFeatureProps) {
   return (
-    <article className="flex flex-col gap-8 md:grid md:grid-cols-12 md:items-start md:gap-x-10 md:gap-y-9">
-      <header className={`md:col-span-5 md:row-start-1 ${textCol}`}>
-        <p className="font-mono text-xs uppercase tracking-[0.08em] text-[var(--text-muted)] mb-3">
-          PROJECT / {project.index}
-        </p>
-        <p className="font-mono text-xs uppercase tracking-[0.08em] text-[var(--text-secondary)] mb-5">
-          {project.category}
-        </p>
-        <h3 className="text-[32px] font-medium leading-[1.05] tracking-[-0.02em] text-[var(--text-primary)] md:text-[48px] lg:text-[52px]">
-          {project.title}
-        </h3>
-        <p className="mt-6 max-w-[520px] text-lg leading-[1.5] text-[var(--text-secondary)] md:text-xl">
-          {project.description}
-        </p>
+    <article className="reveal">
+      <header className="grid gap-8 lg:grid-cols-12 lg:items-end lg:gap-x-10">
+        <div className="lg:col-span-7">
+          <p className="eyebrow">
+            <span className="text-[var(--accent)]">{project.index}</span>
+            <span className="text-[var(--text-muted)]"> / </span>
+            {project.category}
+          </p>
+          <h3 className="heading-title mt-6">{project.title}</h3>
+        </div>
+
+        <div className="lg:col-span-5">
+          <p className="text-[17px] leading-[1.6] text-[var(--text-secondary)] md:text-lg">
+            {project.description}
+          </p>
+          <p className="mt-5 font-mono text-[13px] leading-[1.6] text-[var(--text-muted)]">
+            {project.stack}
+          </p>
+          <div className="mt-7 flex flex-wrap items-center gap-x-8 gap-y-3">
+            {project.githubHref && (
+              <ProjectLink href={project.githubHref} label={githubLabel} />
+            )}
+            {project.demoHref && (
+              <ProjectLink href={project.demoHref} label={demoLabel} />
+            )}
+          </div>
+        </div>
       </header>
 
-      <div className={`md:col-span-7 md:row-span-2 md:row-start-1 ${visualCol}`}>
+      <div className="mt-10 md:mt-14">
         <ProjectVisual kind={project.visual} />
       </div>
 
-      <footer className={`md:col-span-5 md:row-start-2 ${textCol}`}>
-        <dl className="grid grid-cols-2 gap-x-6 gap-y-5 border-t border-[var(--border)] pt-6">
-          {project.proof.map((item) => (
-            <div key={item.label}>
-              <dt className="sr-only">{item.label}</dt>
-              <dd>
-                <span className="block break-words text-[24px] font-medium leading-[1.05] text-[var(--text-primary)] md:text-[30px]">
-                  {item.value}
-                </span>
-                <span className="mt-2 block font-mono text-[11px] uppercase tracking-[0.06em] text-[var(--text-muted)]">
-                  {item.label}
-                </span>
-              </dd>
-            </div>
-          ))}
-        </dl>
-
-        <p className="mt-7 text-sm text-[var(--text-secondary)]">{project.stack}</p>
-
-        <div className="mt-7 flex flex-wrap items-center gap-x-6 gap-y-3">
-          {project.demoHref && (
-            <ProjectLink href={project.demoHref} label={demoLabel} />
-          )}
-          {project.githubHref && (
-            <ProjectLink href={project.githubHref} label={githubLabel} />
-          )}
-        </div>
-      </footer>
+      <dl className="mt-8 grid grid-cols-2 gap-y-6 md:grid-cols-4">
+        {project.proof.map((item) => (
+          <div
+            key={item.label}
+            className="border-l border-[var(--border)] pl-4 md:pl-5"
+          >
+            <dt className="sr-only">{item.label}</dt>
+            <dd>
+              <span className="block break-words text-[22px] font-medium leading-[1.05] tracking-[-0.02em] text-[var(--text-primary)] md:text-[28px]">
+                {item.value}
+              </span>
+              <span className="eyebrow mt-2 block text-[11px] text-[var(--text-muted)]">
+                {item.label}
+              </span>
+            </dd>
+          </div>
+        ))}
+      </dl>
     </article>
   );
 }
 
 function ProjectLink({ href, label }: { href: string; label: string }) {
   return (
-    <a
-      href={href}
-      target="_blank"
-      rel="noopener noreferrer"
-      className="group inline-flex items-center gap-1.5 text-[15px] text-[var(--text-primary)] underline decoration-[var(--border-strong)] underline-offset-4 transition-colors hover:decoration-[var(--text-primary)]"
-    >
-      {label}
-      <span className="inline-block motion-safe:transition-transform motion-safe:duration-200 group-hover:translate-x-0.5">
-        ↗
-      </span>
+    <a href={href} target="_blank" rel="noopener noreferrer" className="link-arrow">
+      {label} <span aria-hidden="true">↗</span>
     </a>
   );
 }

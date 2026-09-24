@@ -25,23 +25,25 @@ export function ResearchRecognition({
   return (
     <section
       id="research"
-      className="mx-auto max-w-[var(--container-max)] px-5 py-20 md:px-8 md:py-32"
+      className="section"
     >
-      <SectionHeading eyebrow={eyebrow} lines={[headlineLine1, headlineLine2]} />
-      <p className="mt-6 max-w-[var(--reading-max)] text-lg leading-[1.55] text-[var(--text-secondary)] md:mt-8 md:text-xl">
-        {supportingCopy}
-      </p>
+      <SectionHeading
+        eyebrow={eyebrow}
+        lines={[headlineLine1, headlineLine2]}
+        intro={supportingCopy}
+      />
 
-      <ol className="mt-16 flex flex-col md:mt-20">
+      <ol className="mt-16 flex flex-col md:mt-24">
         {items.map((item) => (
           <li
             key={item.title}
-            className="border-t border-[var(--border)] py-9 md:py-12"
+            className="reveal border-t border-[var(--border)] py-10 md:py-14"
           >
-            <p className="font-mono text-xs uppercase tracking-[0.08em] text-[var(--text-muted)] mb-4">
-              {item.type === "research" ? "RESEARCH" : "RECOGNITION"} / {item.index}
+            <p className="eyebrow mb-5 text-[var(--text-muted)]">
+              {item.type === "research" ? "RESEARCH" : "RECOGNITION"} /{" "}
+              <span className="text-[var(--accent)]">{item.index}</span>
             </p>
-            <h3 className="max-w-[720px] text-[28px] font-medium leading-[1.1] tracking-[-0.02em] text-[var(--text-primary)] md:text-[36px]">
+            <h3 className="max-w-[820px] text-[28px] font-medium leading-[1.05] tracking-[-0.025em] text-[var(--text-primary)] md:text-[36px]">
               {item.title}
             </h3>
             <p className="mt-2 text-sm text-[var(--text-secondary)] md:text-[15px]">
@@ -51,25 +53,22 @@ export function ResearchRecognition({
               {item.description}
             </p>
             {item.evidence && (
-              <p className="mt-4 font-mono text-[13px] uppercase tracking-[0.06em] text-[var(--text-secondary)]">
+              <p className="eyebrow mt-4">
                 {item.evidence}
               </p>
             )}
 
             <div className="mt-5 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-              <p className="font-mono text-[13px] text-[var(--text-secondary)]">
+              <p className="font-mono text-[13px] text-[var(--text-muted)]">
                 {item.metadata}
               </p>
               <a
                 href={item.href}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="group inline-flex w-fit items-center gap-1.5 text-[15px] text-[var(--text-primary)] underline decoration-[var(--border-strong)] underline-offset-4 transition-colors hover:decoration-[var(--text-primary)]"
+                className="link-arrow"
               >
-                {item.linkLabel}
-                <span className="inline-block motion-safe:transition-transform motion-safe:duration-200 group-hover:translate-x-0.5">
-                  ↗
-                </span>
+                {item.linkLabel} <span aria-hidden="true">↗</span>
               </a>
             </div>
           </li>

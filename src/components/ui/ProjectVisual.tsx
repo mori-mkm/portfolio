@@ -11,8 +11,7 @@ import type { ProjectVisualKind } from "@/content/home";
  * Attrition must not diverge into a different diagram shape (M1-04 fix: it
  * previously used a one-off horizontal chip layout, which read as a broken/
  * inconsistent anatomy relative to the others). Its lower prominence
- * comes only from CONTAINER_HEIGHT and the `compact` spacing below, never
- * from a different structure.
+ * comes only from CONTAINER_HEIGHT, never from a different structure.
  */
 const STAGES: Record<ProjectVisualKind, string[]> = {
   datalab: ["PROBLEM + DATASET", "LANGGRAPH", "DE · ANALYTICS · DS", "INDEPENDENT REVIEW", "EVENTS + CONTROL PLANE"],
@@ -26,59 +25,59 @@ const STAT: Partial<Record<ProjectVisualKind, { value: string; label: string }>>
 };
 
 const CONTAINER_HEIGHT: Record<ProjectVisualKind, string> = {
-  datalab: "min-h-[300px] md:min-h-[420px]",
-  procurement: "min-h-[300px] md:min-h-[420px]",
-  steel: "min-h-[300px] md:min-h-[420px]",
-  attrition: "min-h-[220px] md:min-h-[300px]",
+  datalab: "min-h-[360px] lg:min-h-[480px]",
+  procurement: "min-h-[360px] lg:min-h-[480px]",
+  steel: "min-h-[360px] lg:min-h-[480px]",
+  attrition: "min-h-[300px] lg:min-h-[360px]",
 };
 
+/**
+ * ADR-018: full-width dark product panel. Stages read left-to-right on
+ * desktop (vertical on smaller screens); the final stage — the system's
+ * output — is the one accent-marked element.
+ */
 export function ProjectVisual({ kind }: { kind: ProjectVisualKind }) {
-  const compact = kind === "attrition";
+  const stages = STAGES[kind];
+  const stat = STAT[kind];
+
   return (
     <div
       aria-hidden="true"
-      className={`flex items-center justify-center overflow-hidden rounded-[10px] border border-[var(--border)] bg-[var(--background-soft)] px-6 ${compact ? "py-7" : "py-10"} motion-safe:transition-transform motion-safe:duration-300 hover:motion-safe:scale-[1.015] ${CONTAINER_HEIGHT[kind]}`}
+      className={`group/visual flex flex-col justify-center gap-10 overflow-hidden rounded-[var(--radius-lg)] border border-[var(--border)] bg-[var(--background-secondary)] px-6 py-12 md:px-12 ${CONTAINER_HEIGHT[kind]}`}
     >
-      <PipelineDiagram stages={STAGES[kind]} stat={STAT[kind]} compact={compact} />
-    </div>
-  );
-}
+      <ol className="mx-auto flex w-full max-w-[340px] flex-col items-stretch motion-safe:transition-transform motion-safe:duration-500 motion-safe:ease-[var(--ease)] motion-safe:group-hover/visual:scale-[1.01] lg:max-w-none lg:flex-row lg:items-center">
+        {stages.map((stage, i) => {
+          const last = i === stages.length - 1;
+          return (
+            <li key={stage} className="flex flex-col items-center lg:flex-1 lg:flex-row">
+              <div
+                className={`flex w-full flex-col gap-2 rounded-[var(--radius-md)] border px-4 py-3 lg:min-h-[96px] lg:justify-between lg:py-4 ${
+                  last
+                    ? "border-[var(--accent-border)] bg-[var(--accent-soft)]"
+                    : "border-[var(--border)] bg-[var(--surface)]"
+                }`}
+              >
+                <span className={`font-mono text-[11px] ${last ? "text-[var(--accent)]" : "text-[var(--text-muted)]"}`}>
+                  {String(i + 1).padStart(2, "0")}
+                </span>
+                <span className="font-mono text-[11px] uppercase leading-[1.4] tracking-[0.06em] text-[var(--text-secondary)]">
+                  {stage}
+                </span>
+              </div>
+              {!last && (
+                <span className="my-1.5 h-5 w-px bg-[var(--border-strong)] lg:mx-2 lg:my-0 lg:h-px lg:w-5 lg:shrink-0" />
+              )}
+            </li>
+          );
+        })}
+      </ol>
 
-function PipelineDiagram({
-  stages,
-  stat,
-  compact,
-}: {
-  stages: string[];
-  stat?: { value: string; label: string };
-  compact?: boolean;
-}) {
-  return (
-    <div
-      className={`flex w-full ${compact ? "max-w-[260px]" : "max-w-[320px]"} flex-col items-stretch`}
-    >
-      {stages.map((stage, i) => (
-        <div key={stage} className="flex flex-col items-center">
-          <div
-            className={`w-full rounded-md border border-[var(--border)] bg-[var(--surface)] text-center ${compact ? "px-3 py-2" : "px-4 py-3"}`}
-          >
-            <span className="font-mono text-[11px] uppercase tracking-[0.06em] text-[var(--text-secondary)]">
-              {stage}
-            </span>
-          </div>
-          {i < stages.length - 1 && (
-            <span className={`font-mono text-[var(--text-muted)] ${compact ? "my-1" : "my-2"}`}>
-              ↓
-            </span>
-          )}
-        </div>
-      ))}
       {stat && (
-        <div className="mt-5 text-center">
-          <span className="block text-[28px] font-medium leading-none text-[var(--text-primary)]">
+        <div className="text-center">
+          <span className="block text-[40px] font-medium leading-none tracking-[-0.03em] text-[var(--text-primary)] md:text-[56px]">
             {stat.value}
           </span>
-          <span className="mt-2 block font-mono text-[11px] uppercase tracking-[0.06em] text-[var(--text-muted)]">
+          <span className="eyebrow mt-3 block text-[11px] text-[var(--text-muted)]">
             {stat.label}
           </span>
         </div>

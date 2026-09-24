@@ -1,6 +1,7 @@
 import { notFound } from "next/navigation";
 
 import { Header } from "@/components/layout/Header";
+import { Footer } from "@/components/layout/Footer";
 import { Hero } from "@/components/sections/Hero";
 import { About } from "@/components/sections/About";
 import { SelectedWork } from "@/components/sections/SelectedWork";
@@ -58,10 +59,6 @@ export default async function HomePage({
           primaryCtaHref={content.hero.primaryCtaHref}
           scrollCue={content.hero.scrollCue}
           scrollCueHref={content.hero.scrollCueHref}
-          github={{
-            label: content.externalLinks.github,
-            href: content.externalLinks.githubHref,
-          }}
           resume={{
             label: content.externalLinks.resume,
             href: content.externalLinks.resumeHref,
@@ -146,6 +143,15 @@ export default async function HomePage({
           }}
         />
       </main>
+      <Footer
+        brand={content.brand}
+        content={content.footer}
+        links={[
+          { label: content.externalLinks.linkedin, href: content.externalLinks.linkedinHref },
+          { label: content.externalLinks.github, href: content.externalLinks.githubHref },
+          { label: content.externalLinks.resume, href: content.externalLinks.resumeHref },
+        ]}
+      />
     </>
   );
 }

@@ -11,9 +11,8 @@ import type { NavItem } from "@/content/home";
  * Client Component because it genuinely needs interaction state:
  * - sticky background/opacity change on scroll (§7.5)
  * - mobile menu open/close (§7.6)
- * Nav items besides "About" point to anchors that don't exist until later
- * milestones (Selected Work, Case Studies, etc. — see BACKLOG M1-03+);
- * that's expected, not a bug, until those sections ship.
+ * ADR-018: desktop shows brand, section links, language and a "Contact →"
+ * CTA only; Resume/GitHub/LinkedIn live in the mobile menu, hero and footer.
  */
 type HeaderProps = {
   locale: Locale;
@@ -38,6 +37,9 @@ export function Header({
 }: HeaderProps) {
   const [scrolled, setScrolled] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
+  // ADR-018: Contact renders as the header CTA, not as a regular nav item.
+  const contact = nav.find((item) => item.href === "#contact");
+  const links = nav.filter((item) => item !== contact);
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 8);
@@ -62,17 +64,18 @@ export function Header({
 
   return (
     <header
-      className={`sticky top-0 z-50 border-b transition-colors ${
-        scrolled
-          ? "border-[var(--border)] bg-[var(--background)]/90 backdrop-blur-sm"
+      id="top"
+      className={`sticky top-0 z-50 border-b transition-colors duration-300 ${
+        scrolled || menuOpen
+          ? "border-[var(--border)] bg-[var(--background)]/85 backdrop-blur-[6px]"
           : "border-transparent bg-transparent"
       }`}
     >
-      <div className="mx-auto flex h-16 max-w-[var(--container-max)] items-center justify-between px-5 md:h-[72px] md:px-8">
+      <div className="container-x flex h-[var(--header-h)] items-center justify-between gap-8">
         <button
           type="button"
           onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
-          className="font-mono text-sm font-semibold tracking-[0.02em] text-[var(--text-primary)]"
+          className="font-mono text-[13px] font-medium tracking-[0.08em] text-[var(--text-primary)] transition-colors hover:text-[var(--accent)]"
         >
           {brand.toUpperCase()}
         </button>
@@ -80,29 +83,26 @@ export function Header({
         {/* Desktop nav */}
         <nav
           aria-label="Primary"
-          className="hidden items-center gap-7 lg:flex"
+          className="hidden items-center gap-8 lg:flex"
         >
-          {nav.map((item) => (
+          {links.map((item) => (
             <a
               key={item.href}
               href={item.href}
-              className="text-[15px] text-[var(--text-secondary)] transition-colors hover:text-[var(--text-primary)]"
+              className="eyebrow transition-colors hover:text-[var(--accent)]"
             >
               {item.label}
             </a>
           ))}
         </nav>
 
-        <div className="hidden items-center gap-6 lg:flex">
+        <div className="hidden items-center gap-8 lg:flex">
           <LanguageSwitcher locale={locale} labels={languageSwitcher} />
-          <a
-            href={resume.href}
-            target="_blank"
-            rel="noreferrer"
-            className="text-[15px] text-[var(--text-secondary)] transition-colors hover:text-[var(--text-primary)]"
-          >
-            {resume.label} ↗
-          </a>
+          {contact && (
+            <a href={contact.href} className="link-arrow">
+              {contact.label} <span aria-hidden="true">→</span>
+            </a>
+          )}
         </div>
 
         {/* Mobile toggle */}
@@ -111,7 +111,7 @@ export function Header({
           onClick={() => setMenuOpen((open) => !open)}
           aria-expanded={menuOpen}
           aria-controls="mobile-menu"
-          className="font-mono text-sm uppercase tracking-[0.04em] text-[var(--text-primary)] lg:hidden"
+          className="eyebrow text-[var(--text-primary)] lg:hidden"
         >
           {menuOpen ? menuToggle.close : menuToggle.open}
         </button>
@@ -120,15 +120,15 @@ export function Header({
       {menuOpen && (
         <div
           id="mobile-menu"
-          className="fixed inset-x-0 top-16 bottom-0 z-40 overflow-y-auto bg-[var(--background)] px-5 py-8 md:top-[72px] lg:hidden"
+          className="fixed inset-x-0 top-[var(--header-h)] bottom-0 z-40 overflow-y-auto bg-[var(--background)] px-[var(--gutter)] py-10 lg:hidden"
         >
-          <nav aria-label="Primary" className="flex flex-col gap-5">
+          <nav aria-label="Primary" className="flex flex-col gap-4">
             {nav.map((item) => (
               <a
                 key={item.href}
                 href={item.href}
                 onClick={() => setMenuOpen(false)}
-                className="text-2xl text-[var(--text-primary)]"
+                className="text-[32px] leading-[1.1] tracking-[-0.02em] text-[var(--text-primary)] transition-colors hover:text-[var(--accent)]"
               >
                 {item.label}
               </a>
@@ -145,7 +145,7 @@ export function Header({
                 href={github.href}
                 target="_blank"
                 rel="noreferrer"
-                className="text-[15px] text-[var(--text-secondary)]"
+                className="eyebrow transition-colors hover:text-[var(--accent)]"
               >
                 {github.label} ↗
               </a>
@@ -153,7 +153,7 @@ export function Header({
                 href={linkedin.href}
                 target="_blank"
                 rel="noreferrer"
-                className="text-[15px] text-[var(--text-secondary)]"
+                className="eyebrow transition-colors hover:text-[var(--accent)]"
               >
                 {linkedin.label} ↗
               </a>
@@ -161,7 +161,7 @@ export function Header({
                 href={resume.href}
                 target="_blank"
                 rel="noreferrer"
-                className="text-[15px] text-[var(--text-secondary)]"
+                className="eyebrow transition-colors hover:text-[var(--accent)]"
               >
                 {resume.label} ↗
               </a>
@@ -181,10 +181,10 @@ function LanguageSwitcher({
   labels: { en: string; pt: string };
 }) {
   return (
-    <div className="flex items-center gap-1 text-[15px]" aria-label="Language">
+    <div className="eyebrow flex items-center gap-1.5" aria-label="Language">
       <Link
         href="/en"
-        className={locale === "en" ? "text-[var(--text-primary)]" : "text-[var(--text-muted)]"}
+        className={locale === "en" ? "text-[var(--text-primary)]" : "text-[var(--text-muted)] hover:text-[var(--accent)]"}
         aria-current={locale === "en" ? "true" : undefined}
       >
         {labels.en}
@@ -192,7 +192,7 @@ function LanguageSwitcher({
       <span className="text-[var(--text-muted)]">/</span>
       <Link
         href="/pt"
-        className={locale === "pt" ? "text-[var(--text-primary)]" : "text-[var(--text-muted)]"}
+        className={locale === "pt" ? "text-[var(--text-primary)]" : "text-[var(--text-muted)] hover:text-[var(--accent)]"}
         aria-current={locale === "pt" ? "true" : undefined}
       >
         {labels.pt}
