@@ -7,7 +7,7 @@ import type { Locale } from "@/lib/i18n";
  * Contact — PORTFOLIO_SPEC §20 / HOME_WIREFRAME §30, task M1-08.
  * Server Component: the interactive form state lives entirely in the
  * small Client Component below (ADR-005). Reuses `content.externalLinks`
- * (LinkedIn/GitHub/Resume) rather than duplicating URLs here — no Email
+ * (LinkedIn/GitHub) rather than duplicating URLs here — no Email
  * link, on purpose: the real form replaces the need to publish a personal
  * address (CONTACT_NOTIFICATION_EMAIL stays server-only).
  */
@@ -15,7 +15,6 @@ type ContactProps = ContactContent & {
   locale: Locale;
   linkedin: { label: string; href: string };
   github: { label: string; href: string };
-  resume: { label: string; href: string };
 };
 
 export function Contact({
@@ -32,20 +31,19 @@ export function Contact({
   locale,
   linkedin,
   github,
-  resume,
 }: ContactProps) {
-  const links = [linkedin, github, resume];
+  const links = [linkedin, github];
 
   return (
     <section
       id="contact"
-      className="mx-auto max-w-[var(--container-max)] px-5 py-20 md:px-8 md:py-32"
+      className="section"
     >
       <SectionHeading eyebrow={eyebrow} lines={[headlineLine1, headlineLine2]} />
 
-      <div className="mt-10 flex flex-col gap-12 md:mt-16 md:flex-row md:gap-16">
+      <div className="mt-12 flex flex-col gap-12 md:mt-20 md:flex-row md:gap-16">
         <div className="flex flex-col gap-8 md:w-1/3">
-          <p className="max-w-[360px] text-lg leading-[1.55] text-[var(--text-secondary)] md:text-xl">
+          <p className="lead max-w-[360px]">
             {supportingCopy}
           </p>
 
@@ -56,10 +54,10 @@ export function Contact({
                   href={link.href}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="group flex items-center justify-between py-5 text-[17px] text-[var(--text-primary)] transition-colors hover:text-[var(--text-secondary)]"
+                  className="group flex items-center justify-between py-5 text-[17px] text-[var(--text-primary)] transition-colors hover:text-[var(--accent-hover)]"
                 >
                   {link.label}
-                  <span className="inline-block motion-safe:transition-transform motion-safe:duration-200 group-hover:translate-x-0.5">
+                  <span aria-hidden="true" className="inline-block text-[var(--accent)] motion-safe:transition-transform motion-safe:duration-200 group-hover:translate-x-0.5">
                     ↗
                   </span>
                 </a>

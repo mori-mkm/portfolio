@@ -701,6 +701,13 @@ Atualizado em 2026-09-22 (ADR-017): Selected Work atual = **3 projetos** —
 01 DataLab OS (flagship), 02 Procurement Intelligence, 03 Employee Attrition
 Prediction. DataLab OS não aparece em Case Studies.
 
+Atualizado em 2026-11-03 (ADR-019): Selected Work atual = **4 projetos** —
+01 DataLab OS (flagship), 02 Empório AI Assistant, 03 Procurement
+Intelligence, 04 Employee Attrition Prediction. Empório é um case técnico
+de uma loja fictícia (não é cliente, não está em produção) e usa um
+screenshot real do produto no lugar do diagrama. Não aparece em Case
+Studies.
+
 Não mostrar todo o GitHub.
 
 ---
@@ -711,7 +718,8 @@ Esta subseção é o rascunho original (4 projetos, incluindo Steel e o link
 "Case Study →" em Procurement). A ordem e a composição **finais** estão em
 `PROJECT_CONTENT.md` §79-80 (Selected Work) e §81-82/§2/§57-58 (Case
 Studies) — consulte esses para a Home implementada. O flagship atual
-(DataLab OS, ADR-017) está em `PROJECT_CONTENT.md` §93.
+(DataLab OS, ADR-017) está em `PROJECT_CONTENT.md` §93; Empório AI
+Assistant (ADR-019) está em §94.
 
 ### 01 — Procurement Intelligence
 
@@ -1792,6 +1800,13 @@ systems, LLM evaluation systems or production AI services. The group stays
 **Applied AI**, not **AI Engineering** — one PoC does not yet justify the
 broader label. Closer AI is not used as evidence for any of it.
 
+**Updated by ADR-019 (2026-11-03):** Empório AI Assistant (public repo,
+technical case for a fictional store) provides public evidence of LLM
+evaluation: development scenarios, hand-reviewed runs, reserved validation,
+measured model/config and retrieval comparisons, explicit limitations. AI
+Evaluation is therefore rendered. Its BM25/embeddings runs are retrieval
+experiments, not a RAG architecture — RAG stays excluded.
+
 ---
 
 ## 18.2 Final V1 groups (rendered)
@@ -1802,16 +1817,18 @@ broader label. Closer AI is not used as evidence for any of it.
 LLM Applications
 Agent Orchestration
 LangGraph
+AI Evaluation
 AI Observability
 AI Automation
 ```
 
 Agent Orchestration / LangGraph / AI Observability: DataLab OS (ADR-017).
+AI Evaluation: Empório AI Assistant (ADR-019).
 
 Deferred until public evidence exists (omit silently — no "coming soon"/
 "planned" labels, this section is not a roadmap): RAG, Retrieval-Augmented
 Generation, dynamic/parallel Multi-Agent Systems, LangChain, CrewAI,
-Vector Databases, AI Evaluation.
+Vector Databases.
 
 ### 02 — Machine Learning
 
@@ -3396,6 +3413,11 @@ O portfólio pode aprofundar o storytelling sem duplicar o README inteiro.
 
 # 45. Resume
 
+> **Estado atual (ADR-020, 2026-11-03):** o site não exibe nenhum link,
+> botão ou CTA de Resume/Currículo (Hero, Header/menu mobile, Experience,
+> Contact e Footer). LinkedIn e GitHub permanecem. O texto abaixo é o
+> plano V1 original, mantido como histórico — não implementar.
+
 ## V1
 
 Botão de Resume deve apontar para PDF estável.
@@ -3814,6 +3836,10 @@ Trade-offs
 >
 > Atualização (ADR-017, 2026-09-22): Selected Work atual = 01 DataLab OS,
 > 02 Procurement Intelligence, 03 Employee Attrition Prediction.
+>
+> Atualização (ADR-019, 2026-11-03): Selected Work atual = 01 DataLab OS,
+> 02 Empório AI Assistant, 03 Procurement Intelligence, 04 Employee
+> Attrition Prediction.
 
 ## Direção futura
 

@@ -15,13 +15,8 @@ import type { Locale } from "@/lib/i18n";
  * External link facts (confirmed with the user on 2026-09-01):
  * - GitHub: https://github.com/mori-mkm — confirmed correct.
  * - LinkedIn: https://www.linkedin.com/in/matheus-mori — confirmed.
- * - Resume: points to a Google Doc the user edits directly (so it's always
- *   current without a redeploy). IMPORTANT — this is an /edit URL, not a
- *   dedicated public view link. Google renders /edit URLs as read-only for
- *   anyone without edit permission, so this only works safely if the doc's
- *   sharing is "Anyone with the link -> Viewer". If it's set to "Editor",
- *   every site visitor could edit the resume. Flagged to the user; not
- *   verified from here (no access to the doc's sharing settings).
+ * - Resume: no résumé link is rendered anywhere on the site (removed
+ *   2026-11-03 at the user's request; LinkedIn and GitHub stay).
  *
  * `selectedWork` / `caseStudies` (M1-03/M1-04): see docs/DECISIONS.md
  * ADR-012 (Home content exclusivity) for why Steel Indicator moved out of
@@ -33,6 +28,11 @@ import type { Locale } from "@/lib/i18n";
  * mori-mkm/datalab-os README (PoC v0.2); no demoHref (no public
  * deployment), and none of its README "Current limitations" are contradicted
  * (sequential/deterministic execution, no production hardening).
+ * ADR-019: Empório AI Assistant is Selected Work `02` (Selected Work only).
+ * It is a technical case for a fictional store — not client work, not
+ * deployed, no demoHref. Every claim comes from the public
+ * mori-mkm/emporio-ai-assistant README; it uses a real, unmodified
+ * screenshot from that repo instead of a ProjectVisual diagram.
  *
  * `experience` (M1-05): company/role/period are historical-fact fields —
  * kept identical across EN/PT (not translated) per the user's explicit
@@ -63,9 +63,13 @@ import type { Locale } from "@/lib/i18n";
  * Prompt & Context Engineering were dropped (their only public evidence,
  * the Application Job repo, is no longer public). Still deliberately
  * excludes RAG, Multi-Agent/dynamic agent systems, LangChain/CrewAI,
- * Vector Databases, AI Evaluation, PySpark, CI/CD, and cloud infra — all
+ * Vector Databases, PySpark, CI/CD, and cloud infra — all
  * omitted silently (no "coming soon"/"planned" labels, this section is not
  * a roadmap). Closer AI is not used as evidence for any of the above.
+ * ADR-019 added AI Evaluation (Empório's development scenarios, reserved
+ * validation and measured config/retrieval comparisons). Empório's BM25 and
+ * embeddings runs are retrieval experiments, not a RAG architecture, so RAG
+ * stays excluded.
  *
  * `nav` / `contact` (M1-08): "Writing" removed from both locale nav
  * arrays — Writing is deferred (no genuine published articles exist yet;
@@ -89,23 +93,44 @@ export type Pillar = {
 
 export type ProjectVisualKind = "datalab" | "procurement" | "steel" | "attrition";
 
+/** Real screenshot copied unmodified from mori-mkm/emporio-ai-assistant examples/screenshots (976x1022 px). */
+const EMPORIO_SCREENSHOT = {
+  src: "/projects/emporio-ai-assistant/03-price-installments.png",
+  width: 976,
+  height: 1022,
+};
+
 export type ProjectProof = {
   value: string;
   label: string;
 };
 
-export type SelectedProject = {
+/** A real product screenshot; width/height are the file's real pixel size. */
+export type ProjectImage = {
+  src: string;
+  alt: string;
+  width: number;
+  height: number;
+};
+
+type SelectedProjectBase = {
   index: string;
   category: string;
   title: string;
   description: string;
   proof: ProjectProof[];
   stack: string;
-  visual: ProjectVisualKind;
   /** Optional — only rendered when the destination actually exists (no dead links). */
   githubHref?: string;
   demoHref?: string;
 };
+
+/** ADR-019: a project shows either an editorial diagram or a real screenshot, never both. */
+export type SelectedProject = SelectedProjectBase &
+  (
+    | { visual: ProjectVisualKind; image?: never }
+    | { image: ProjectImage; visual?: never }
+  );
 
 export type SelectedWorkContent = {
   eyebrow: string;
@@ -225,6 +250,15 @@ export type ContactContent = {
   privacyCopy: string;
 };
 
+/** Footer (ADR-018, PORTFOLIO_SPEC §21) — closing statement + identity line; links reuse `externalLinks`. */
+export type FooterContent = {
+  headlineLine1: string;
+  headlineLine2: string;
+  role: string;
+  location: string;
+  backToTop: string;
+};
+
 type HomeContent = {
   brand: string;
   nav: NavItem[];
@@ -241,8 +275,6 @@ type HomeContent = {
     githubHref: string;
     linkedin: string;
     linkedinHref: string;
-    resume: string;
-    resumeHref: string;
   };
   hero: {
     eyebrow: string;
@@ -273,6 +305,7 @@ type HomeContent = {
   researchRecognition: ResearchRecognitionContent;
   capabilities: CapabilitiesContent;
   contact: ContactContent;
+  footer: FooterContent;
 };
 
 export const homeContent: Record<Locale, HomeContent> = {
@@ -299,15 +332,12 @@ export const homeContent: Record<Locale, HomeContent> = {
       githubHref: "https://github.com/mori-mkm",
       linkedin: "LinkedIn",
       linkedinHref: "https://www.linkedin.com/in/matheus-mori",
-      resume: "Resume",
-      resumeHref:
-        "https://docs.google.com/document/d/1FgSxRx5DYYqcSQD_zA0kodYHP4BQUKToKZcNI36Nd14/edit?usp=sharing",
     },
     hero: {
-      eyebrow: "DATA SCIENCE · AI ENGINEERING",
+      eyebrow: "AI ENGINEERING · DATA SCIENCE",
       name: "Matheus Mori",
-      headlineLine1: "Data Scientist",
-      headlineLine2: "& AI Engineer",
+      headlineLine1: "AI Engineer",
+      headlineLine2: "& Data Scientist",
       descriptor:
         "Building production-oriented AI,\nmachine learning and data products.",
       supportingCopy:
@@ -337,7 +367,7 @@ export const homeContent: Record<Locale, HomeContent> = {
         },
         {
           title: "AI ENGINEERING",
-          description: "LLM applications, RAG, agents, evaluation and AI systems.",
+          description: "LLM applications, tool-using agents, evaluation and observable AI systems.",
         },
         {
           title: "DATA PRODUCTS",
@@ -373,6 +403,25 @@ export const homeContent: Record<Locale, HomeContent> = {
         },
         {
           index: "02",
+          category: "AI ENGINEERING · EVALUATED ASSISTANT",
+          title: "Empório AI Assistant",
+          description:
+            "An evaluated customer-support assistant built for a fictional music-store technical case, with bounded tool use, policy-grounded answers, explicit cost controls and a reproducible evaluation harness.",
+          proof: [
+            { value: "9/10", label: "reserved validation" },
+            { value: "0", label: "critical failures · final config" },
+            { value: "4", label: "read-only tools" },
+            { value: "~71%", label: "observed cache cost reduction" },
+          ],
+          stack: "Python · FastAPI · React · SQLite · Anthropic",
+          image: {
+            ...EMPORIO_SCREENSHOT,
+            alt: "Empório AI Assistant chat interface, in Portuguese, answering the price of a Takamine GD20 acoustic guitar and the value of each installment in a 12-installment plan.",
+          },
+          githubHref: "https://github.com/mori-mkm/emporio-ai-assistant",
+        },
+        {
+          index: "03",
           category: "MACHINE LEARNING · DATA PRODUCT",
           title: "Procurement Intelligence",
           description:
@@ -389,7 +438,7 @@ export const homeContent: Record<Locale, HomeContent> = {
           demoHref: "https://procurement-intelligence-mkm.streamlit.app/",
         },
         {
-          index: "03",
+          index: "04",
           category: "MACHINE LEARNING · PEOPLE ANALYTICS",
           title: "Employee Attrition Prediction",
           description:
@@ -561,6 +610,7 @@ export const homeContent: Record<Locale, HomeContent> = {
             "LLM Applications",
             "Agent Orchestration",
             "LangGraph",
+            "AI Evaluation",
             "AI Observability",
             "AI Automation",
           ],
@@ -628,6 +678,13 @@ export const homeContent: Record<Locale, HomeContent> = {
       },
       privacyCopy: "I'll use these details only to reply to your contact.",
     },
+    footer: {
+      headlineLine1: "Build. Evaluate.",
+      headlineLine2: "Observe. Improve.",
+      role: "AI Engineer & Data Scientist",
+      location: "São Paulo, Brazil",
+      backToTop: "Back to top",
+    },
   },
 
   pt: {
@@ -653,15 +710,12 @@ export const homeContent: Record<Locale, HomeContent> = {
       githubHref: "https://github.com/mori-mkm",
       linkedin: "LinkedIn",
       linkedinHref: "https://www.linkedin.com/in/matheus-mori",
-      resume: "Currículo",
-      resumeHref:
-        "https://docs.google.com/document/d/1FgSxRx5DYYqcSQD_zA0kodYHP4BQUKToKZcNI36Nd14/edit?usp=sharing",
     },
     hero: {
-      eyebrow: "DATA SCIENCE · ENGENHARIA DE IA",
+      eyebrow: "ENGENHARIA DE IA · DATA SCIENCE",
       name: "Matheus Mori",
-      headlineLine1: "Cientista de Dados",
-      headlineLine2: "& Engenheiro de IA",
+      headlineLine1: "Engenheiro de IA",
+      headlineLine2: "& Cientista de Dados",
       descriptor:
         "Construindo produtos de IA,\nmachine learning e dados orientados à produção.",
       supportingCopy:
@@ -691,7 +745,7 @@ export const homeContent: Record<Locale, HomeContent> = {
         },
         {
           title: "ENGENHARIA DE IA",
-          description: "Aplicações com LLM, RAG, agentes, avaliação e sistemas de IA.",
+          description: "Aplicações com LLM, agentes com ferramentas, avaliação e sistemas de IA observáveis.",
         },
         {
           title: "PRODUTOS DE DADOS",
@@ -727,6 +781,25 @@ export const homeContent: Record<Locale, HomeContent> = {
         },
         {
           index: "02",
+          category: "ENGENHARIA DE IA · ASSISTENTE AVALIADO",
+          title: "Empório AI Assistant",
+          description:
+            "Um assistente de atendimento avaliado, construído para um case técnico de uma loja fictícia de música, com uso limitado de ferramentas, respostas fundamentadas nas políticas, controles explícitos de custo e um sistema reproduzível de avaliação.",
+          proof: [
+            { value: "9/10", label: "validação reservada" },
+            { value: "0", label: "falhas críticas · config. final" },
+            { value: "4", label: "ferramentas somente leitura" },
+            { value: "~71%", label: "redução de custo observada com cache" },
+          ],
+          stack: "Python · FastAPI · React · SQLite · Anthropic",
+          image: {
+            ...EMPORIO_SCREENSHOT,
+            alt: "Interface de chat do Empório AI Assistant respondendo ao preço de um violão Takamine GD20 e ao valor de cada parcela em 12x.",
+          },
+          githubHref: "https://github.com/mori-mkm/emporio-ai-assistant",
+        },
+        {
+          index: "03",
           category: "MACHINE LEARNING · PRODUTO DE DADOS",
           title: "Procurement Intelligence",
           description:
@@ -743,7 +816,7 @@ export const homeContent: Record<Locale, HomeContent> = {
           demoHref: "https://procurement-intelligence-mkm.streamlit.app/",
         },
         {
-          index: "03",
+          index: "04",
           category: "MACHINE LEARNING · PEOPLE ANALYTICS",
           title: "Employee Attrition Prediction",
           description:
@@ -915,6 +988,7 @@ export const homeContent: Record<Locale, HomeContent> = {
             "LLM Applications",
             "Orquestração de Agentes",
             "LangGraph",
+            "Avaliação de IA",
             "Observabilidade de IA",
             "Automação com IA",
           ],
@@ -981,6 +1055,13 @@ export const homeContent: Record<Locale, HomeContent> = {
         body: "Tente novamente em instantes.",
       },
       privacyCopy: "Usarei estes dados apenas para responder ao seu contato.",
+    },
+    footer: {
+      headlineLine1: "Construir. Avaliar.",
+      headlineLine2: "Observar. Melhorar.",
+      role: "Engenheiro de IA & Cientista de Dados",
+      location: "São Paulo, Brasil",
+      backToTop: "Voltar ao topo",
     },
   },
 };

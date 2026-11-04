@@ -1,38 +1,81 @@
 @import "tailwindcss";
 
 /*
- * Design tokens — source: docs/planning/PORTFOLIO_SPEC.md §22-28.
- * Light theme only for V1 (ADR: no automatic dark mode in this milestone;
- * SPEC §23.3 documents a dark theme for a *future* opt-in, not V1 default).
+ * Design tokens — dark editorial identity (ADR-018, supersedes the V1
+ * light-only palette in PORTFOLIO_SPEC §23.1). Every color/radius/spacing/
+ * motion value used by components lives here; components reference these
+ * variables or the shared classes below, never raw values.
  */
 :root {
-  /* Color system — SPEC §23.1 */
-  --background: #f3f1ea;
-  --background-soft: #ece9e0;
-  --surface: #f8f7f3;
+  color-scheme: dark;
 
-  --text-primary: #151515;
-  --text-secondary: #62615c;
-  --text-muted: #8a8880;
+  /* Color — ~90% neutral / ~10% accent */
+  --background: #11110f;
+  --background-secondary: #151512;
+  --surface: #1a1a17;
+  --surface-hover: #20201c;
 
-  --border: #d8d4c9;
-  --border-strong: #bdb9af;
+  --text-primary: #f1f0eb;
+  --text-secondary: #a09f98;
+  /* ADR-018: lifted from #6F6E68 (3.7:1) to pass WCAG AA 4.5:1 on --background for small labels. */
+  --text-muted: #85847e;
 
-  --accent: #315cff;
-  --accent-hover: #2448d8;
-  --accent-soft: #e5eaff;
+  --border: rgba(255, 255, 255, 0.1);
+  --border-strong: rgba(255, 255, 255, 0.16);
 
-  --success: #39715b;
-  --warning: #8a6828;
+  --accent: #5b7cff;
+  --accent-hover: #6d8bff;
+  --accent-active: #4c6ef5;
+  --accent-soft: rgba(91, 124, 255, 0.12);
+  --accent-border: rgba(91, 124, 255, 0.28);
+  /* ADR-018: dark text on accent — light text on #5B7CFF is 3.6:1 (fails AA for button text). */
+  --accent-contrast: #11110f;
 
-  /* Layout — SPEC §26 */
-  --container-max: 1240px;
-  --reading-max: 760px;
+  --success: #6fbf98;
+  --warning: #e0b35a;
 
-  /* Fonts — SPEC §24.1 (next/font supplies the Geist family via these variables) */
+  /* Radius */
+  --radius-sm: 6px;
+  --radius-md: 8px;
+  --radius-lg: 12px;
+
+  /* Layout */
+  --container-max: 1360px;
+  --reading-max: 680px;
+  --gutter: 20px;
+  --section-y: 80px;
+  --header-h: 64px;
+
+  /* Type scale */
+  --text-display: clamp(2.75rem, 1rem + 6.6vw, 7rem);
+  --text-section: clamp(2.25rem, 1rem + 4.2vw, 4.5rem);
+  --text-title: clamp(2rem, 1rem + 2.8vw, 3.75rem);
+  --text-lead: clamp(1.125rem, 1rem + 0.45vw, 1.375rem);
+
+  /* Motion */
+  --ease: cubic-bezier(0.2, 0.7, 0.2, 1);
+  --dur-fast: 200ms;
+  --dur-slow: 600ms;
+
+  /* Fonts (next/font supplies the Geist family via these variables) */
   --font-sans: var(--font-geist-sans), Inter, -apple-system, BlinkMacSystemFont,
     "Segoe UI", sans-serif;
   --font-mono: var(--font-geist-mono), "IBM Plex Mono", monospace;
+}
+
+@media (min-width: 768px) {
+  :root {
+    --gutter: 32px;
+    --section-y: 112px;
+    --header-h: 72px;
+  }
+}
+
+@media (min-width: 1200px) {
+  :root {
+    --gutter: 48px;
+    --section-y: 160px;
+  }
 }
 
 @theme inline {
@@ -42,18 +85,13 @@
   --font-mono: var(--font-mono);
 }
 
-/*
- * No @media (prefers-color-scheme: dark) override here on purpose.
- * Dark theme is documented (SPEC §23.3) but explicitly not a V1 requirement;
- * acceptance criteria for M1-02 requires no automatic dark mode.
- */
-
 * {
   border-color: var(--border);
 }
 
 html {
   scroll-behavior: smooth;
+  scroll-padding-top: var(--header-h);
 }
 
 body {
@@ -65,4 +103,173 @@ body {
 ::selection {
   background: var(--accent-soft);
   color: var(--text-primary);
+}
+
+:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 3px;
+  border-radius: 2px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+}
+
+/* Shared building blocks — keep class strings in components short and token-driven. */
+@layer components {
+  .container-x {
+    margin-inline: auto;
+    max-width: var(--container-max);
+    padding-inline: var(--gutter);
+  }
+
+  .section {
+    margin-inline: auto;
+    max-width: var(--container-max);
+    padding: var(--section-y) var(--gutter);
+  }
+
+  .eyebrow {
+    font-family: var(--font-mono);
+    font-size: 12px;
+    font-weight: 500;
+    letter-spacing: 0.08em;
+    line-height: 1.4;
+    text-transform: uppercase;
+    color: var(--text-secondary);
+  }
+
+  .heading-display {
+    font-size: var(--text-display);
+    font-weight: 500;
+    line-height: 0.95;
+    letter-spacing: -0.045em;
+    color: var(--text-primary);
+  }
+
+  .heading-section {
+    font-size: var(--text-section);
+    font-weight: 450;
+    line-height: 1.02;
+    letter-spacing: -0.035em;
+    color: var(--text-primary);
+  }
+
+  .heading-title {
+    font-size: var(--text-title);
+    font-weight: 450;
+    line-height: 1;
+    letter-spacing: -0.03em;
+    color: var(--text-primary);
+  }
+
+  .lead {
+    font-size: var(--text-lead);
+    line-height: 1.55;
+    color: var(--text-secondary);
+    max-width: var(--reading-max);
+  }
+
+  .link-arrow {
+    display: inline-flex;
+    width: fit-content;
+    align-items: center;
+    gap: 0.5em;
+    font-family: var(--font-mono);
+    font-size: 12px;
+    font-weight: 500;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--text-primary);
+    transition: color var(--dur-fast) var(--ease);
+  }
+  .link-arrow:hover {
+    color: var(--accent-hover);
+  }
+  .link-arrow > span {
+    color: var(--accent);
+    transition: transform var(--dur-fast) var(--ease);
+  }
+  .link-arrow:hover > span {
+    transform: translateX(3px);
+  }
+
+  .btn {
+    display: inline-flex;
+    min-height: 48px;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5em;
+    border-radius: var(--radius-md);
+    padding-inline: 22px;
+    font-size: 15px;
+    font-weight: 500;
+    transition:
+      background-color var(--dur-fast) var(--ease),
+      border-color var(--dur-fast) var(--ease),
+      color var(--dur-fast) var(--ease);
+  }
+  .btn-primary {
+    background: var(--accent);
+    color: var(--accent-contrast);
+  }
+  .btn-primary:hover {
+    background: var(--accent-hover);
+  }
+  .btn-primary:active {
+    background: var(--accent-active);
+  }
+  .btn-primary:disabled {
+    opacity: 0.55;
+  }
+  .btn-secondary {
+    border: 1px solid var(--border-strong);
+    color: var(--text-primary);
+  }
+  .btn-secondary:hover {
+    border-color: var(--accent-border);
+    background: var(--accent-soft);
+  }
+}
+
+/*
+ * Motion — CSS only, no JS/dependency. Hero fades in on load; `.reveal`
+ * elements fade up as they enter the viewport via scroll-driven animations
+ * where supported (elsewhere they simply render static). Disabled entirely
+ * under prefers-reduced-motion.
+ */
+@keyframes fade-up {
+  from {
+    opacity: 0;
+    transform: translateY(16px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .intro > * {
+    animation: fade-up var(--dur-slow) var(--ease) both;
+  }
+  .intro > :nth-child(2) {
+    animation-delay: 80ms;
+  }
+  .intro > :nth-child(3) {
+    animation-delay: 160ms;
+  }
+  .intro > :nth-child(4) {
+    animation-delay: 240ms;
+  }
+
+  @supports (animation-timeline: view()) {
+    .reveal {
+      animation: fade-up linear both;
+      animation-timeline: view();
+      animation-range: entry 0% entry 35%;
+    }
+  }
 }

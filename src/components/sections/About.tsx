@@ -35,11 +35,11 @@ export function About({
   return (
     <section
       id="about"
-      className="mx-auto max-w-[var(--container-max)] px-5 py-20 md:px-8 md:py-32"
+      className="section"
     >
       <SectionHeading eyebrow={eyebrow} lines={[headlineLine1, headlineLine2]} />
 
-      <div className="mt-10 flex flex-col gap-10 md:mt-20 md:flex-row md:gap-16">
+      <div className="mt-12 flex flex-col gap-12 md:mt-24 md:flex-row md:gap-16">
         <div className="flex flex-col gap-8 md:w-1/3">
           <List label={backgroundLabel} items={background} />
           <List label={directionLabel} items={direction} />
@@ -49,7 +49,7 @@ export function About({
           {paragraphs.map((paragraph) => (
             <p
               key={paragraph}
-              className="text-lg leading-[1.65] text-[var(--text-primary)] md:text-xl"
+              className="max-w-[720px] text-lg leading-[1.6] text-[var(--text-primary)] md:text-[21px]"
             >
               {paragraph}
             </p>
@@ -67,7 +67,7 @@ export function About({
                 : "border-t border-[var(--border)] pt-6 sm:border-t-0 sm:border-l sm:pl-8 sm:pt-0"
             }
           >
-            <p className="font-mono text-xs uppercase tracking-[0.06em] text-[var(--text-primary)] mb-3">
+            <p className="eyebrow mb-3 text-[var(--text-primary)]">
               {pillar.title}
             </p>
             <p className="text-[15px] leading-[1.5] text-[var(--text-secondary)]">
@@ -83,7 +83,7 @@ export function About({
 function List({ label, items }: { label: string; items: string[] }) {
   return (
     <div>
-      <p className="font-mono text-xs uppercase tracking-[0.06em] text-[var(--text-muted)] mb-3">
+      <p className="eyebrow mb-4 text-[var(--text-muted)]">
         {label}
       </p>
       <ul className="flex flex-col gap-1.5">
