@@ -7,7 +7,7 @@ import type { Locale } from "@/lib/i18n";
  * Contact — PORTFOLIO_SPEC §20 / HOME_WIREFRAME §30, task M1-08.
  * Server Component: the interactive form state lives entirely in the
  * small Client Component below (ADR-005). Reuses `content.externalLinks`
- * (LinkedIn/GitHub/Resume) rather than duplicating URLs here — no Email
+ * (LinkedIn/GitHub) rather than duplicating URLs here — no Email
  * link, on purpose: the real form replaces the need to publish a personal
  * address (CONTACT_NOTIFICATION_EMAIL stays server-only).
  */
@@ -15,7 +15,6 @@ type ContactProps = ContactContent & {
   locale: Locale;
   linkedin: { label: string; href: string };
   github: { label: string; href: string };
-  resume: { label: string; href: string };
 };
 
 export function Contact({
@@ -32,9 +31,8 @@ export function Contact({
   locale,
   linkedin,
   github,
-  resume,
 }: ContactProps) {
-  const links = [linkedin, github, resume];
+  const links = [linkedin, github];
 
   return (
     <section

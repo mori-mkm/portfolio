@@ -12,7 +12,8 @@ import type { NavItem } from "@/content/home";
  * - sticky background/opacity change on scroll (§7.5)
  * - mobile menu open/close (§7.6)
  * ADR-018: desktop shows brand, section links, language and a "Contact →"
- * CTA only; Resume/GitHub/LinkedIn live in the mobile menu, hero and footer.
+ * CTA only; GitHub/LinkedIn live in the mobile menu and footer. No résumé
+ * link anywhere on the site (removed 2026-11-03 at the user's request).
  */
 type HeaderProps = {
   locale: Locale;
@@ -22,7 +23,6 @@ type HeaderProps = {
   menuToggle: { open: string; close: string };
   github: { label: string; href: string };
   linkedin: { label: string; href: string };
-  resume: { label: string; href: string };
 };
 
 export function Header({
@@ -33,7 +33,6 @@ export function Header({
   menuToggle,
   github,
   linkedin,
-  resume,
 }: HeaderProps) {
   const [scrolled, setScrolled] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
@@ -139,7 +138,7 @@ export function Header({
             {/* WIREFRAME §7.7: language switcher sits inside the menu, before external links. */}
             <LanguageSwitcher locale={locale} labels={languageSwitcher} />
 
-            {/* WIREFRAME §7.6: GitHub -> LinkedIn -> Resume, in that order. */}
+            {/* WIREFRAME §7.6: GitHub -> LinkedIn, in that order. */}
             <div className="flex flex-col gap-3">
               <a
                 href={github.href}
@@ -156,14 +155,6 @@ export function Header({
                 className="eyebrow transition-colors hover:text-[var(--accent)]"
               >
                 {linkedin.label} ↗
-              </a>
-              <a
-                href={resume.href}
-                target="_blank"
-                rel="noreferrer"
-                className="eyebrow transition-colors hover:text-[var(--accent)]"
-              >
-                {resume.label} ↗
               </a>
             </div>
           </div>

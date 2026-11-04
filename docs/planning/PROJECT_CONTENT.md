@@ -49,13 +49,14 @@ PROMINENCE
 
 # 1. V1 Project Portfolio
 
-Current Home allocation (ADR-012, ADR-016, ADR-017):
+Current Home allocation (ADR-012, ADR-016, ADR-017, ADR-019):
 
 ```text
 SELECTED WORK
 01 DataLab OS
-02 Procurement Intelligence
-03 Employee Attrition Prediction
+02 Empório AI Assistant
+03 Procurement Intelligence
+04 Employee Attrition Prediction
 
 CASE STUDIES
 01 Steel Indicator
@@ -112,6 +113,12 @@ Work is Procurement Intelligence + Employee Attrition Prediction only. See
 (flagship). Current Selected Work: 01 DataLab OS, 02 Procurement
 Intelligence, 03 Employee Attrition Prediction. DataLab OS is Selected
 Work-only — no Case Study (ADR-012). Content and claim boundaries: §93.
+
+**Updated 2026-11-03 — ADR-019:** Empório AI Assistant added as Selected
+Work `02` (technical case for a fictional store; not client work, not
+deployed). Current Selected Work: 01 DataLab OS, 02 Empório AI Assistant,
+03 Procurement Intelligence, 04 Employee Attrition Prediction. Selected
+Work-only. Content and claim boundaries: §94.
 
 ---
 
@@ -2215,6 +2222,9 @@ Do not automatically sort by date.
 > (flagship, non-compact visual), 02 Procurement Intelligence, 03 Employee
 > Attrition Prediction (compact visual). Steel Indicator is Case Study 01
 > (with Developer Market Research as 02), not Selected Work.
+>
+> **Update (ADR-019, 2026-11-03):** Empório AI Assistant is now `02`
+> (real screenshot); Procurement is `03`, Employee Attrition `04`.
 
 ---
 
@@ -3055,6 +3065,7 @@ It is an internal editorial principle.
 | Project | Home | Project Page | Case Study | Demo | Strong Architecture |
 |---|---:|---:|---:|---:|---:|
 | DataLab OS (ADR-017) | Yes | Later | No | No (GIF in repo) | Yes |
+| Empório AI Assistant (ADR-019) | Yes | Later | No | No (screenshots in repo) | Yes |
 | Procurement Intelligence | Yes | Yes | Yes | Yes | Yes |
 | Steel Indicator | Yes | Yes | Yes | No | Yes |
 | Application Job (removed, ADR-016) | No | Yes | No | No | Medium |
@@ -3076,6 +3087,9 @@ Work entirely, no replacement. Selected Work is now two projects.
 **Updated by ADR-017 (2026-09-22):** DataLab OS added as `01` (flagship).
 Selected Work is now three projects.
 
+**Updated by ADR-019 (2026-11-03):** Empório AI Assistant added as `02`.
+Selected Work is now four projects.
+
 ```text
 02 / SELECTED WORK
 
@@ -3089,10 +3103,14 @@ DataLab OS
 AI Engineering · Agent Orchestration
 
 02
+Empório AI Assistant
+AI Engineering · Evaluated Assistant
+
+03
 Procurement Intelligence
 Machine Learning · Data Product
 
-03
+04
 Employee Attrition Prediction
 Machine Learning · People Analytics
 ```
@@ -3114,10 +3132,14 @@ DataLab OS
 Engenharia de IA · Orquestração de Agentes
 
 02
+Empório AI Assistant
+Engenharia de IA · Assistente Avaliado
+
+03
 Procurement Intelligence
 Machine Learning · Produto de Dados
 
-03
+04
 Employee Attrition Prediction
 Machine Learning · People Analytics
 ```
@@ -3665,3 +3687,143 @@ rendering of the README architecture diagram, not a new claim.
 The repo also has a real demo recording (`docs/assets/demo.gif`). Not used
 on Home (heavy animated media, off the editorial visual language); reserved
 for a future `/projects/datalab-os` page.
+
+---
+
+# 94. PROJECT / 02 — Empório AI Assistant (ADR-019)
+
+Added 2026-11-03. Selected Work `02`, Selected Work only — no Case Study
+(ADR-012). Source of every claim: the public README (plus
+`docs/architecture.md`, `docs/tools.md`, `docs/evaluation.md`) of
+https://github.com/mori-mkm/emporio-ai-assistant, read 2026-11-03.
+Re-sync this section if that README changes.
+
+**Positioning:** an AI Engineer technical case for **Empório da Música, a
+fictional music store**. No client, no production deployment, no
+commercial operation, no real users, no integration with a real stock
+system. Never write anything that suggests otherwise.
+
+## 94.1 Home copy — EN
+
+```text
+PROJECT / 02
+AI ENGINEERING · EVALUATED ASSISTANT
+
+Empório AI Assistant
+
+An evaluated customer-support assistant built for a fictional music-store
+technical case, with bounded tool use, policy-grounded answers, explicit
+cost controls and a reproducible evaluation harness.
+
+9/10   reserved validation
+0      critical failures
+4      read-only tools
+~71%   cost reduction with cache
+
+Python · FastAPI · React · SQLite · Anthropic
+
+GitHub ↗
+```
+
+## 94.2 Home copy — PT
+
+```text
+PROJECT / 02
+ENGENHARIA DE IA · ASSISTENTE AVALIADO
+
+Empório AI Assistant
+
+Um assistente de atendimento avaliado, construído para um case técnico de
+uma loja fictícia de música, com uso limitado de ferramentas, respostas
+fundamentadas nas políticas, controles explícitos de custo e um sistema
+reproduzível de avaliação.
+
+9/10   validação reservada
+0      falhas críticas
+4      ferramentas somente leitura
+~71%   redução de custo com cache
+
+Python · FastAPI · React · SQLite · Anthropic
+
+GitHub ↗
+```
+
+No Live Demo link — there is no public deployment.
+
+## 94.3 Verified facts (README / docs)
+
+- Architecture: Browser → FastAPI → `AssistantService` (sessions) →
+  bounded single agent (one model/tool loop, no framework) → provider
+  adapter (Anthropic / OpenAI / Ollama / simulated) → read-only tools over
+  a local SQLite catalog snapshot.
+- Tools (fixed allowlist, strict Pydantic arguments, no coercion):
+  `search_products`, `get_product`, `quote_price`, `list_categories`. No
+  customer, order, write, file, shell or network tool.
+- Money computed only in code (`commerce.py`, Decimal, ROUND_HALF_UP); the
+  model repeats tool values.
+- Full store manual (~8k tokens) as policy context; citations filtered to
+  section ids that exist.
+- Ephemeral in-memory sessions (30-min idle expiry), request-id dedup,
+  budget ledger on every paid call.
+- Explicit per-turn limits: model calls, tool calls, time, output and
+  prompt/context size.
+- Final configuration (frozen): Anthropic Claude Haiku 5.5, full manual,
+  5-minute prompt cache, max 4 model calls per turn.
+- Development (30 scenarios, hand-reviewed): final config 27/30 and 28/30,
+  0 critical failures in those two runs.
+- Retrieval comparison (cache off, one run each): full manual 28/30, BM25
+  24/30 (1 critical), embeddings 25/30. Retrieval alternatives performed
+  worse on this small static manual; full manual selected.
+- Prompt caching cut the observed full-manual cost by about 71% (measured
+  setup only; do not generalize).
+- Reserved validation: 10 cases, run once after the freeze: 9/10, 0
+  critical failures.
+
+## 94.4 Proof-point context (keep with the numbers)
+
+- **9/10 reserved validation:** 10 cases, run once after configuration
+  freeze; small suite; not a production SLA; not statistical proof; the
+  cases were written by the AI coding assistant after selection and graded
+  by the same reviewer (not blind, not independent).
+- **0 critical failures:** the final development and validation runs
+  described in the project — never "zero failures" in general.
+- **4 read-only tools:** the allowlist above.
+- **~71% cost reduction with cache:** full manual + 5-minute prompt cache
+  vs the equivalent uncached comparison in the project. Never "reduced
+  production costs by 71%".
+
+## 94.5 Claim boundaries (do not cross)
+
+Prototype / technical case: no production deployment, no live inventory
+(the catalog is a static snapshot), no private orders or customer data, no
+authentication, no purchase/reservation/handoff, no WhatsApp, in-memory
+sessions only.
+
+Never describe it as: production-ready, deployed, enterprise, client work,
+a real store, real customer traffic, SLA-backed, statistically proven,
+fully autonomous, multi-agent, LangGraph-based, persistent memory, live
+inventory integration, or a RAG system (BM25 and embeddings are measured
+**retrieval experiments**, not the final architecture).
+
+Safe vocabulary: technical case, fictional store, evaluated assistant,
+bounded single agent, read-only tools, deterministic money calculation,
+policy grounding, citations, evaluation harness, reserved validation,
+retrieval experiments, prompt caching, budget ledger, provider adapters.
+
+## 94.6 Visual
+
+Home shows a real, unmodified screenshot from the repo:
+`examples/screenshots/03-price-installments.png`, copied byte-identical to
+`public/projects/emporio-ai-assistant/03-price-installments.png` (976×1022).
+It shows a live chat answering a Takamine GD20 price and its 12x
+installment value (tool-backed price + deterministic installment split).
+Chosen over `02-store-information.png` because it shows the tool-use core
+of the project; its "Fontes do manual" block is cut off at the bottom, so
+the alt text does not claim visible citations. No browser frame, mockup,
+recolor or crop. The screenshot UI is Portuguese on both locales.
+
+Alt — EN: "Empório AI Assistant chat interface, in Portuguese, answering
+the price of a Takamine GD20 acoustic guitar and the value of each
+installment in a 12-installment plan."
+Alt — PT: "Interface de chat do Empório AI Assistant respondendo ao preço
+de um violão Takamine GD20 e ao valor de cada parcela em 12x."

@@ -1,8 +1,8 @@
 import type { ProjectVisualKind } from "@/content/home";
 
 /**
- * Restrained editorial system diagrams (no real screenshots exist yet — see
- * CURRENT_TASK.md M1-03/M1-04). Decorative supplementary flavor, not required
+ * Restrained editorial system diagrams for projects without a real product
+ * screenshot (projects with one use `image` instead — ADR-019). Decorative supplementary flavor, not required
  * to use or understand the section (the project description/proof/stack text
  * already stands alone), so the whole diagram is aria-hidden rather than
  * duplicated as accessible text.

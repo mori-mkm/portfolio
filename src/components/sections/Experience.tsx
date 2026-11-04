@@ -3,7 +3,7 @@ import type { ExperienceItem } from "@/content/home";
 
 /**
  * Experience — PORTFOLIO_SPEC §15 / HOME_WIREFRAME §22-23, task M1-05.
- * Server Component: no interactivity needed, resume link is a plain anchor.
+ * Server Component: no interactivity needed.
  * Editorial list, not a graphical timeline — no dots/rail/connectors, only
  * a border-top separator between items (WIREFRAME §22.4).
  *
@@ -18,7 +18,6 @@ type ExperienceProps = {
   headlineLine2: string;
   intro: string;
   items: ExperienceItem[];
-  resume: { label: string; href: string };
 };
 
 export function Experience({
@@ -27,7 +26,6 @@ export function Experience({
   headlineLine2,
   intro,
   items,
-  resume,
 }: ExperienceProps) {
   return (
     <section
@@ -41,14 +39,6 @@ export function Experience({
           <p className="lead max-w-[360px]">
             {intro}
           </p>
-          <a
-            href={resume.href}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="link-arrow"
-          >
-            {resume.label} <span aria-hidden="true">↗</span>
-          </a>
         </div>
 
         <ol className="flex flex-col min-[900px]:w-2/3">

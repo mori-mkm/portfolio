@@ -1,3 +1,4 @@
+import Image from "next/image";
 import { ProjectVisual } from "@/components/ui/ProjectVisual";
 import type { SelectedProject } from "@/content/home";
 
@@ -5,8 +6,9 @@ import type { SelectedProject } from "@/content/home";
  * One editorial project block — ADR-018 (supersedes the M1-03 alternating
  * text|visual rows). Same DOM order on every breakpoint:
  * header (label, title | description, stack, links) -> full-width visual
- * -> proof row. The visual is the dominant element; when real product
- * screenshots exist they replace ProjectVisual in the same slot.
+ * -> proof row. The visual is the dominant element; a project with a real
+ * product screenshot (`image`, ADR-019) shows it in the same slot instead
+ * of ProjectVisual — capped at its natural width so it is never upscaled.
  */
 type ProjectFeatureProps = {
   project: SelectedProject;
@@ -46,7 +48,20 @@ export function ProjectFeature({ project, githubLabel, demoLabel }: ProjectFeatu
       </header>
 
       <div className="mt-10 md:mt-14">
-        <ProjectVisual kind={project.visual} />
+        {project.image ? (
+          <div className="mx-auto overflow-hidden rounded-[var(--radius-lg)] border border-[var(--border)]" style={{ maxWidth: project.image.width }}>
+            <Image
+              src={project.image.src}
+              alt={project.image.alt}
+              width={project.image.width}
+              height={project.image.height}
+              sizes={`(max-width: ${project.image.width}px) 100vw, ${project.image.width}px`}
+              className="block h-auto w-full"
+            />
+          </div>
+        ) : (
+          <ProjectVisual kind={project.visual} />
+        )}
       </div>
 
       <dl className="mt-8 grid grid-cols-2 gap-y-6 md:grid-cols-4">

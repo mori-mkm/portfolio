@@ -592,6 +592,7 @@ Negative / trade-off: the flagship is a PoC with no live demo, so its proof poin
 - `src/content/home.ts` (EN + PT `selectedWork`, `capabilities`, `ProjectVisualKind`), `src/components/ui/ProjectVisual.tsx`.
 - `PROJECT_CONTENT.md` §2, §52-53 note, §78-80 and new §93 (DataLab OS content + claim boundaries); `PORTFOLIO_SPEC.md` §10.2-10.3, §18.1-18.2, §56; `HOME_WIREFRAME.md` §12-13, §26.2, §36, §59; `CONTEXT_MAP.md`.
 - `npm run verify` passed; visual check at 1440px/390px, EN/PT.
+- **Superseded in part by ADR-019 (2026-11-03):** Empório AI Assistant added as Selected Work `02`; Procurement and Attrition are now `03` and `04`, and AI Evaluation joined Applied AI. The "Decision" list above is the historical 2026-09-22 membership — see ADR-019 for the current one.
 
 ---
 
@@ -613,6 +614,7 @@ The user asked for a dark, editorial, minimal-tech, product-focused redesign (vi
 - Selected Work: the alternating text|visual rows (M1-03, ADR-017's alternation) are replaced by one editorial block per project: header (label, title | description, stack, link), full-width visual panel, proof row. No real screenshots exist, so the panel keeps the evidence-based pipeline diagram (ADR-007); a future screenshot replaces `ProjectVisual` in the same slot.
 - Header: brand, 5 section links, language, "Contact →" CTA. Resume moved out of the desktop header (hero secondary CTA, Experience, Contact, mobile menu, footer). GitHub moved out of the hero.
 - New Footer (PORTFOLIO_SPEC §21): closing statement, role, location, LinkedIn/GitHub/Resume, back to top. No email (same rule as Contact).
+- **Superseded in part by ADR-020 (2026-11-03):** the Resume placements in the two bullets above are historical; no résumé link is rendered anymore.
 - Motion: CSS only (hero load fade, scroll-driven `.reveal` where `animation-timeline` is supported), off under `prefers-reduced-motion`. No new dependency.
 
 **Alternatives considered**
@@ -629,3 +631,79 @@ Negative / trade-off: PORTFOLIO_SPEC §23 light palette and HOME_WIREFRAME's alt
 
 - `npm run verify` + `node --test` pass; Playwright: 0px overflow at 1440/1024/820/768/390/360, EN + PT; keyboard focus, mobile menu, Contact CTA checked.
 - Pre-redesign version preserved at git tag `pre-dark-editorial`.
+- **Superseded in part by ADR-019 (2026-11-03):** the "No real screenshots exist" line above was true on 2026-09-24. Empório AI Assistant now shows a real screenshot in that slot; the other projects keep `ProjectVisual`.
+
+---
+
+### ADR-019 — Empório AI Assistant added to Selected Work
+
+**Date:** 2026-11-03
+**Status:** accepted
+
+**Context**
+
+The user published `mori-mkm/emporio-ai-assistant` and asked to add it to Selected Work. Its README (read 2026-11-03) describes a customer-support assistant for **Empório da Música, a fictional music store**, built for an AI Engineer technical case. It is not client work, has no deployment, no real users and no stock-system integration; the catalog is a static local SQLite snapshot. Verified facts: one bounded agent (limits on model calls, tool calls, time, output and prompt size) with a real model/tool loop; four read-only tools (`search_products`, `get_product`, `quote_price`, `list_categories`) with strict argument validation; money computed deterministically in code; full store manual as policy context with filtered citations; ephemeral in-memory sessions; request-id dedup; a budget ledger; Anthropic/OpenAI/Ollama provider adapters; FastAPI + React/TypeScript. Evaluation: 30 development scenarios reviewed by hand; BM25 and embeddings retrieval measured and not selected; final configuration (Claude Haiku 5.5, full manual, 5-minute prompt cache, max 4 model calls per turn) passed 27/30 and 28/30 with 0 critical failures; reserved validation (10 cases, run once after the freeze) 9/10, 0 critical failures; prompt caching cut the observed full-manual cost by about 71%. The repo ships four real screenshots under `examples/screenshots/`.
+
+**Decision**
+
+Selected Work contains 4 projects:
+
+```text
+01 DataLab OS
+02 Empório AI Assistant
+03 Procurement Intelligence
+04 Employee Attrition Prediction
+```
+
+- DataLab stays the flagship. Empório is `02` because it complements it (tool use, evaluation, guardrails, cost engineering, product UI vs DataLab's orchestration/observability/independent review).
+- Selected Work only (ADR-012) — not also a Case Study. GitHub link, no Live Demo (no public deployment).
+- The Home uses a **real, unmodified screenshot** (`public/projects/emporio-ai-assistant/03-price-installments.png`, 976×1022, copied byte-identical from the repo) instead of a diagram. `SelectedProject` becomes a union: either `visual: ProjectVisualKind` or `image: ProjectImage` (`src`, `alt`, real `width`/`height`), never both. `ProjectFeature` renders `next/image` in the same slot as `ProjectVisual`, capped at the file's natural width (no upscaling), border + `--radius-lg`, no frame/shadow.
+- Capabilities, Applied AI: adds `AI Evaluation` / `Avaliação de IA` (development scenarios, hand-reviewed runs, reserved validation, measured config and retrieval comparisons, explicit limits).
+- The BM25/embeddings runs are **retrieval experiments**; the final system uses the full manual, so RAG stays excluded from Capabilities and copy.
+- Never claimed: production-ready/deployed, client, real store or traffic, SLA, statistical proof, autonomous or multi-agent, LangGraph, persistent memory, live inventory, auth, orders, purchases, reservations, handoff, WhatsApp. "0 critical failures" and "~71%" stay tied to the measured runs.
+
+**Alternatives considered**
+
+- A new `"emporio"` `ProjectVisualKind` diagram — rejected: a real product screenshot exists and is stronger evidence (ADR-007).
+- `02-store-information.png` — viable (visible citation chip), but `03-price-installments.png` shows the tool-backed price lookup and deterministic installment math, the project's core point.
+- Add Empório to Case Studies too — rejected: ADR-012.
+
+**Consequences**
+
+Positive: public evidence for evaluation and cost engineering; first real product image on the Home.
+Negative / trade-off: the screenshot is Portuguese-only UI on both locales (it is the real product); if the Empório README's results change, the proof row must be re-synced.
+
+**Verification / follow-up**
+
+- `src/content/home.ts` (types, EN + PT `selectedWork`, `capabilities`), `src/components/ui/ProjectFeature.tsx`, `public/projects/emporio-ai-assistant/`.
+- `PROJECT_CONTENT.md` §1 + new §94, `PORTFOLIO_SPEC.md` §10/§18, `HOME_WIREFRAME.md`, `CONTEXT_MAP.md`.
+
+---
+
+### ADR-020 — No public résumé link
+
+**Date:** 2026-11-03
+**Status:** accepted
+
+**Context**
+
+The user asked to stop exposing their résumé as a public action on the site. Since ADR-018 a "Resume"/"Currículo" link (to a Google Doc) appeared in the Hero (secondary CTA), the header mobile menu, Experience, Contact and the Footer.
+
+**Decision**
+
+- Remove every résumé link/CTA from the rendered site, both locales. LinkedIn and GitHub stay where they were.
+- The Hero keeps only its primary CTA ("Explore my work" / PT equivalent); nothing replaces the removed button. No email address is exposed in its place.
+- `externalLinks.resume` / `resumeHref` (type + EN/PT content) and the `resume` props of Header, Hero, Experience, Contact and the Footer link list are deleted (no dead code). The Google Doc URL no longer appears in `src/`.
+
+**Alternatives considered**
+
+- Hide the links behind a flag — rejected: dead configuration for a value that does not change.
+
+**Consequences**
+
+Positive: résumé is shared only on request. Negative / trade-off: recruiters who want a CV must use the Contact form or LinkedIn.
+
+**Verification / follow-up**
+
+- `src/content/home.ts`, `src/app/[locale]/page.tsx`, `src/components/layout/Header.tsx`, `src/components/sections/{Hero,Experience,Contact}.tsx`.
+- Planning-doc "Resume ↗" wireframes and PORTFOLIO_SPEC §45 are historical (annotated at SPEC §45 and WIREFRAME §8.1).

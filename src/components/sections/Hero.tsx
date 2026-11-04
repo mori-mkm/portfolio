@@ -15,7 +15,6 @@ type HeroProps = {
   primaryCtaHref: string;
   scrollCue: string;
   scrollCueHref: string;
-  resume: { label: string; href: string };
 };
 
 export function Hero({
@@ -29,7 +28,6 @@ export function Hero({
   primaryCtaHref,
   scrollCue,
   scrollCueHref,
-  resume,
 }: HeroProps) {
   return (
     <section className="container-x relative flex min-h-[calc(92svh-var(--header-h))] flex-col justify-end pt-24 pb-20 md:min-h-[calc(100svh-var(--header-h))] md:pb-28">
@@ -59,9 +57,6 @@ export function Hero({
           <div className="flex flex-col gap-3 sm:flex-row">
             <a href={primaryCtaHref} className="btn btn-primary">
               {primaryCta} <span aria-hidden="true">→</span>
-            </a>
-            <a href={resume.href} target="_blank" rel="noreferrer" className="btn btn-secondary">
-              {resume.label} <span aria-hidden="true">↗</span>
             </a>
           </div>
         </div>

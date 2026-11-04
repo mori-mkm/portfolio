@@ -42,10 +42,6 @@ export default async function HomePage({
           label: content.externalLinks.linkedin,
           href: content.externalLinks.linkedinHref,
         }}
-        resume={{
-          label: content.externalLinks.resume,
-          href: content.externalLinks.resumeHref,
-        }}
       />
       <main>
         <Hero
@@ -59,10 +55,6 @@ export default async function HomePage({
           primaryCtaHref={content.hero.primaryCtaHref}
           scrollCue={content.hero.scrollCue}
           scrollCueHref={content.hero.scrollCueHref}
-          resume={{
-            label: content.externalLinks.resume,
-            href: content.externalLinks.resumeHref,
-          }}
         />
         <About
           eyebrow={content.about.eyebrow}
@@ -98,10 +90,6 @@ export default async function HomePage({
           headlineLine2={content.experience.headlineLine2}
           intro={content.experience.intro}
           items={content.experience.items}
-          resume={{
-            label: content.externalLinks.resume,
-            href: content.externalLinks.resumeHref,
-          }}
         />
         <ResearchRecognition
           eyebrow={content.researchRecognition.eyebrow}
@@ -137,10 +125,6 @@ export default async function HomePage({
             label: content.externalLinks.github,
             href: content.externalLinks.githubHref,
           }}
-          resume={{
-            label: content.externalLinks.resume,
-            href: content.externalLinks.resumeHref,
-          }}
         />
       </main>
       <Footer
@@ -149,7 +133,6 @@ export default async function HomePage({
         links={[
           { label: content.externalLinks.linkedin, href: content.externalLinks.linkedinHref },
           { label: content.externalLinks.github, href: content.externalLinks.githubHref },
-          { label: content.externalLinks.resume, href: content.externalLinks.resumeHref },
         ]}
       />
     </>

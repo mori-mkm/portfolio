@@ -590,6 +590,11 @@ Within the first screen:
 4. expose a path to projects;
 5. expose GitHub and Resume.
 
+> **Current state (ADR-020, 2026-11-03):** no Resume/Currículo link or
+> CTA is rendered anywhere (Hero keeps only "Explore my work"; header
+> mobile menu, Experience, Contact and Footer keep GitHub/LinkedIn only).
+> Every "Resume ↗" in the wireframes of this document is historical.
+
 ---
 
 ## 8.2 Desktop height
@@ -1302,6 +1307,21 @@ driven by `reverse={index % 2 === 1}` in `SelectedWork.tsx`:
 §14-17 below are the original per-project wireframes (pre-ADR-012/016/017
 numbering); DataLab OS has no dedicated wireframe section — it uses the
 §13/§20 pattern unchanged. Copy: `PROJECT_CONTENT.md` §93.
+
+**Current implementation (ADR-018 layout + ADR-019 membership,
+2026-11-03)** — 4 projects, one single-column editorial block each
+(header → full-width visual → proof row; no alternation since ADR-018):
+
+```text
+01 DataLab OS                     pipeline diagram (flagship)
+02 Empório AI Assistant           REAL SCREENSHOT (976×1022, natural-width cap)
+03 Procurement Intelligence       pipeline diagram
+04 Employee Attrition Prediction  pipeline diagram (compact)
+```
+
+Empório has no dedicated wireframe section either; its visual slot holds
+`public/projects/emporio-ai-assistant/03-price-installments.png` (bordered,
+`--radius-lg`, no frame or shadow). Copy: `PROJECT_CONTENT.md` §94.
 
 ---
 
@@ -2080,6 +2100,10 @@ Orchestration, LangGraph, AI Observability and FastAPI; three Applied AI
 items lost their only public evidence and were dropped. Wireframe below
 shows the current items. RAG/PySpark/CI-CD remain deferred.
 
+**Updated by ADR-019 (2026-11-03):** Empório AI Assistant backs AI
+Evaluation (added between LangGraph and AI Observability). Its retrieval
+experiments do not make RAG a capability.
+
 Four columns.
 
 ```text
@@ -2099,9 +2123,9 @@ Wireframe (final V1 content):
 │ Agent             │ Classification    │ SQL               │ Docker            │
 │   Orchestration   │ Gradient Boosting │ Pandas            │ Testing           │
 │ LangGraph         │ Forecasting       │ Power BI          │ MLflow            │
-│ AI Observability  │ Survival Analysis │ Data Modeling     │ APIs              │
-│ AI Automation     │ Experimentation   │ Data Pipelines    │ FastAPI           │
-│                   │ Model Evaluation  │ Data Quality      │ Streamlit         │
+│ AI Evaluation     │ Survival Analysis │ Data Modeling     │ APIs              │
+│ AI Observability  │ Experimentation   │ Data Pipelines    │ FastAPI           │
+│ AI Automation     │ Model Evaluation  │ Data Quality      │ Streamlit         │
 │                   │                   │                   │ Automation        │
 └───────────────────┴───────────────────┴───────────────────┴───────────────────┘
 ```
@@ -2417,7 +2441,13 @@ No complex sitemap.
 │ LANGGRAPH   118   97   REVIEW                                            │
 │ GitHub ↗                                                                 │
 │                                                                          │
-│                         PROJECT / 02                                     │
+│ PROJECT / 02                                                             │
+│ AI ENGINEERING · EVALUATED ASSISTANT                                     │
+│ Empório AI Assistant            [ real product screenshot ]              │
+│ 9/10   0   4   ~71%                                                      │
+│ GitHub ↗                                                                 │
+│                                                                          │
+│                         PROJECT / 03                                     │
 │ ┌──────────────────────────────┐ MACHINE LEARNING · DATA PRODUCT         │
 │ │                              │                                         │
 │ │ PIPELINE DIAGRAM             │ Procurement Intelligence                │
@@ -2426,7 +2456,7 @@ No complex sitemap.
 │                                5.7M+ · 124 tests                         │
 │                                Live Demo ↗ GitHub ↗                      │
 │                                                                          │
-│ PROJECT / 03                                                             │
+│ PROJECT / 04                                                             │
 │ MACHINE LEARNING · PEOPLE ANALYTICS                                      │
 │ Employee Attrition Prediction   [ compact pipeline diagram ]             │
 │                                                                          │
@@ -2672,10 +2702,16 @@ Reference:
 │ GitHub ↗                   │
 │                            │
 │ PROJECT / 02               │
+│ Empório AI Assistant       │
+│ [ real screenshot ]        │
+│ 9/10           0           │
+│ 4              ~71%        │
+│                            │
+│ PROJECT / 03               │
 │ Procurement Intelligence   │
 │ ...                        │
 │                            │
-│ PROJECT / 03               │
+│ PROJECT / 04               │
 │ Employee Attrition         │
 │ Prediction                 │
 │ ...                        │
@@ -2796,6 +2832,12 @@ For each flagship project, assets should be selected in this priority:
 1. editorial pipeline diagram (current Home visual);
 2. real Control Plane recording (`docs/assets/demo.gif` in the DataLab OS
    repo) — future `/projects/datalab-os` page only, not Home.
+
+## Empório AI Assistant (ADR-019)
+
+1. real product screenshot (current Home visual:
+   `examples/screenshots/03-price-installments.png` from the repo, unmodified);
+2. the other three repo screenshots — future project page only.
 
 ## Procurement Intelligence
 
@@ -3464,6 +3506,12 @@ Before visual-final phase, collect:
 ```text
 [x] demo recording exists (datalab-os repo: docs/assets/demo.gif) — for a future project page
 [ ] static Control Plane screenshot (if ever wanted on Home)
+```
+
+## Empório AI Assistant
+
+```text
+[x] real screenshots exist (repo examples/screenshots/01-04) — 03 used on Home (ADR-019)
 ```
 
 ## Procurement Intelligence

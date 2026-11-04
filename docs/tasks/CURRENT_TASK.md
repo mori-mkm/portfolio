@@ -4,27 +4,28 @@
 
 ## Task
 
-ID: VIS-DARK-EDITORIAL
-Title: Dark editorial visual refactor (ADR-018)
-Status: done - verified on branch `feat/dark-editorial`, **not committed** (user reviews first). Previous version: tag `pre-dark-editorial`.
+ID: CONTENT-EMPORIO + CONTENT-NO-RESUME
+Title: Add Empório AI Assistant as Selected Work 02 (ADR-019); remove every public résumé link (ADR-020)
+Status: done - verified on branch `feat/dark-editorial`, **not committed** (user reviews first).
 
 ## Scope
 
-IN: `globals.css` tokens/shared classes/motion; Header, Hero, SectionHeading, ProjectFeature, ProjectVisual, CaseStudyFeature, all sections' spacing/typography, ContactForm styling; new `layout/Footer.tsx` + `footer` content (EN/PT); ADR-018.
+IN: `src/content/home.ts` (EN/PT Selected Work, Capabilities, `SelectedProject` image|visual union, `externalLinks` without resume), `ProjectFeature.tsx` (next/image branch), `public/projects/emporio-ai-assistant/03-price-installments.png` (byte-identical copy), Header/Hero/Experience/Contact/page.tsx résumé removal, ADR-019/020 and current-state planning docs.
 
-OUT: no content/claim changes beyond footer copy and moving GitHub/Resume links; no new dependency; no Capabilities additions (RAG, Vector DB, CI/CD etc. stay excluded per ADR-007/017); no scroll-spy active nav.
+OUT: no change to other projects' copy/metrics, Hero/About copy, metadata, Case Studies; no RAG/LangChain/multi-agent claims; no Supabase/Resend/Turnstile/DNS/env changes; no commit/push/deploy.
 
 ## Acceptance criteria
 
-- [x] Palette/tokens centralized; no raw colors outside `globals.css`.
-- [x] Accent limited to numbers, CTAs, arrows, hover/focus, final pipeline stage.
-- [x] Hero, navbar, numbered sections, editorial projects, experience rows, footer.
-- [x] No horizontal overflow at 1440/1024/820/768/390/360, EN + PT.
-- [x] Reduced motion respected; visible focus; WCAG AA text contrast.
-- [x] `npm run verify` and `node --test` pass.
+- [x] Selected Work order 01 DataLab OS, 02 Empório AI Assistant, 03 Procurement, 04 Attrition (EN + PT).
+- [x] Empório copy/proof exactly as specified; GitHub link only, no Live Demo.
+- [x] Real screenshot via next/image, real 976x1022 dimensions, no frame/shadow/crop, localized alt matching the image.
+- [x] AI Evaluation / Avaliação de IA in Applied AI; RAG still excluded.
+- [x] Zero rendered Resume/Currículo links or CTAs; `resume`/`resumeHref` removed from the content model.
+- [x] No horizontal overflow at 1440/1024/768/390/360, EN + PT.
+- [x] `npm run verify` and `git diff --check` pass.
 
 ## Verification
 
-- `npm run verify` PASS; `node --test --experimental-strip-types src/lib/supabase/retry.test.ts` 5/5 PASS.
-- Playwright (dev server): overflow 0 on all 12 combos; nav visible >=1024; Tab focus outline; mobile menu opens (11 links) and closes on Escape; `.reveal` reaches opacity 1 in view; primary button #5B7CFF / dark text / 8px radius.
-- Console: only the known pre-existing Playwright-screenshot hydration warning (Contact honeypot, see progress.md).
+- `npm run verify` PASS (lint + build); `git diff --check` clean.
+- Playwright (dev server, 10 combos): overflow 0; image aspect 0.955 preserved, lazy, loads; order 01-04; Empório links = GitHub only; résumé links on page = 0; Hero has 1 CTA; Contact/Footer = LinkedIn + GitHub; mobile menu = GitHub + LinkedIn; no console errors.
+- Dev-only console warning: Next flags the screenshot as LCP when the test scrolls straight to it - test artifact (not above the fold on a normal load), `preload` deliberately not used.
