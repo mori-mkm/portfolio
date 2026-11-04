@@ -409,9 +409,9 @@ export const homeContent: Record<Locale, HomeContent> = {
             "An evaluated customer-support assistant built for a fictional music-store technical case, with bounded tool use, policy-grounded answers, explicit cost controls and a reproducible evaluation harness.",
           proof: [
             { value: "9/10", label: "reserved validation" },
-            { value: "0", label: "critical failures" },
+            { value: "0", label: "critical failures · final config" },
             { value: "4", label: "read-only tools" },
-            { value: "~71%", label: "cost reduction with cache" },
+            { value: "~71%", label: "observed cache cost reduction" },
           ],
           stack: "Python · FastAPI · React · SQLite · Anthropic",
           image: {
@@ -787,9 +787,9 @@ export const homeContent: Record<Locale, HomeContent> = {
             "Um assistente de atendimento avaliado, construído para um case técnico de uma loja fictícia de música, com uso limitado de ferramentas, respostas fundamentadas nas políticas, controles explícitos de custo e um sistema reproduzível de avaliação.",
           proof: [
             { value: "9/10", label: "validação reservada" },
-            { value: "0", label: "falhas críticas" },
+            { value: "0", label: "falhas críticas · config. final" },
             { value: "4", label: "ferramentas somente leitura" },
-            { value: "~71%", label: "redução de custo com cache" },
+            { value: "~71%", label: "redução de custo observada com cache" },
           ],
           stack: "Python · FastAPI · React · SQLite · Anthropic",
           image: {

@@ -3716,9 +3716,9 @@ technical case, with bounded tool use, policy-grounded answers, explicit
 cost controls and a reproducible evaluation harness.
 
 9/10   reserved validation
-0      critical failures
+0      critical failures · final config
 4      read-only tools
-~71%   cost reduction with cache
+~71%   observed cache cost reduction
 
 Python · FastAPI · React · SQLite · Anthropic
 
@@ -3739,9 +3739,9 @@ fundamentadas nas políticas, controles explícitos de custo e um sistema
 reproduzível de avaliação.
 
 9/10   validação reservada
-0      falhas críticas
+0      falhas críticas · config. final
 4      ferramentas somente leitura
-~71%   redução de custo com cache
+~71%   redução de custo observada com cache
 
 Python · FastAPI · React · SQLite · Anthropic
 
@@ -3785,10 +3785,11 @@ No Live Demo link — there is no public deployment.
   freeze; small suite; not a production SLA; not statistical proof; the
   cases were written by the AI coding assistant after selection and graded
   by the same reviewer (not blind, not independent).
-- **0 critical failures:** the final development and validation runs
-  described in the project — never "zero failures" in general.
+- **0 critical failures · final config:** the final configuration's
+  development and validation runs described in the project (BM25 had a
+  critical failure in an earlier experiment) — never "zero failures" in general.
 - **4 read-only tools:** the allowlist above.
-- **~71% cost reduction with cache:** full manual + 5-minute prompt cache
+- **~71% observed cache cost reduction:** full manual + 5-minute prompt cache
   vs the equivalent uncached comparison in the project. Never "reduced
   production costs by 71%".
 

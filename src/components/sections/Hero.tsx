@@ -1,8 +1,8 @@
 /**
  * Hero — SPEC §8 / HOME_WIREFRAME §8-9.
  * Server Component: no interactivity of its own, all links are plain anchors.
- * ADR-018: bottom-anchored display headline, one primary + one secondary
- * CTA (GitHub moved out of the hero; it stays in Contact, Footer, mobile menu).
+ * ADR-018: bottom-anchored display headline. ADR-020: a single primary CTA
+ * (no résumé link; GitHub stays in Contact, Footer and the mobile menu).
  */
 type HeroProps = {
   eyebrow: string;

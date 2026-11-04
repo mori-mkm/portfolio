@@ -6,7 +6,7 @@
 
 ID: CONTENT-EMPORIO + CONTENT-NO-RESUME
 Title: Add Empório AI Assistant as Selected Work 02 (ADR-019); remove every public résumé link (ADR-020)
-Status: done - verified on branch `feat/dark-editorial`, **not committed** (user reviews first).
+Status: done - verified and committed on branch `feat/dark-editorial` (`1530329`); not yet merged into `main`.
 
 ## Scope
 
