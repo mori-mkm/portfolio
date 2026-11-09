@@ -3,7 +3,8 @@ import { ProjectFeature } from "@/components/ui/ProjectFeature";
 import type { SelectedWorkContent } from "@/content/home";
 
 /**
- * Selected Work — SPEC §10-11 / HOME_WIREFRAME §12-20.
+ * Selected AI & Data Projects — SPEC §10-11 / HOME_WIREFRAME §12-20; four
+ * featured product stories since ADR-021 (see ProjectFeature).
  * Server Component: hover states are pure CSS, no client boundary needed.
  */
 type SelectedWorkProps = SelectedWorkContent;

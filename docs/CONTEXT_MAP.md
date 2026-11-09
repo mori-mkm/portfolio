@@ -4,6 +4,10 @@
 
 Legend: `SPEC` = `docs/planning/PORTFOLIO_SPEC.md`, `WIREFRAME` = `docs/planning/HOME_WIREFRAME.md`, `CONTENT` = `docs/planning/PROJECT_CONTENT.md`.
 
+## Home section order (current — ADR-021)
+
+Hero → 01 Professional Impact (`#impact`) → 02 Selected AI & Data Projects (`#projects`) → 03 Experience → 04 Other Work & Research (`#other-work`) → 05 About → 06 Capabilities → 07 Contact. Copy source: `src/content/home.ts`; boundaries: CONTENT §95. Sections below that predate ADR-021 point at historical spec ranges — check ADR-021 first.
+
 ## Global product / brand / UX principles
 
 Read: SPEC §1-3 (Visão do produto, Referências, Princípios de UX), §22 (Identidade visual)
@@ -28,8 +32,8 @@ Likely code: `src/components/sections/About.tsx` (not created yet), `src/content
 ## Selected Work (Home section)
 
 Read: SPEC §10 (02 / Selected Work), SPEC §11 (Project Card), WIREFRAME §12-20 (Selected Work + per-project wireframes + mobile)
-Content: current order is CONTENT §79-80 (01 DataLab OS, 02 Empório AI Assistant, 03 Procurement Intelligence, 04 Employee Attrition — ADR-019); CONTENT §1 summarizes the current allocation. Per-project sections: CONTENT §93 (DataLab OS), §94 (Empório AI Assistant — technical case, fictional store, claim boundaries), §8 (Procurement Intelligence), §43 (Employee Attrition) — grep the project name for its block, don't read all projects for a one-project task.
-Code: `src/components/sections/SelectedWork.tsx`, `src/components/ui/ProjectFeature.tsx` (renders `image` — real screenshot — or `ProjectVisual`), `src/content/home.ts`, `public/projects/`
+Content: current order is 01 DataLab OS, 02 Empório AI Assistant, 03 AI Closer (private, in development — CONTENT §95.2), 04 Procurement Intelligence (ADR-021); CONTENT §1 summarizes the current allocation. Per-project sections: CONTENT §93 (DataLab OS), §94 (Empório AI Assistant — technical case, fictional store, claim boundaries), §8 (Procurement Intelligence), §43 (Employee Attrition) — grep the project name for its block, don't read all projects for a one-project task.
+Code: `src/components/sections/SelectedWork.tsx`, `src/components/ui/ProjectFeature.tsx`, `src/components/ui/ProjectMediaStage.tsx` (media union diagram | image | video, 16:10 stage), `ProjectVisual.tsx`, `ProjectVideo.tsx` (Client), `src/content/home.ts`, `public/projects/`
 
 ## Project pages (`/[locale]/projects/[slug]`)
 
@@ -47,11 +51,19 @@ Likely code: `src/app/[locale]/case-studies/` (not created yet)
 Read: SPEC §15 (04 / Experience), WIREFRAME §22-23 (04 / Experience + mobile)
 Likely code: `src/components/sections/Experience.tsx` (not created yet), `src/content/home.ts`
 
-## Research & Recognition
+## Other Work & Research (ADR-021 — replaces Case Studies + Research & Recognition on Home)
+
+Code: `src/components/sections/OtherWork.tsx`, `src/content/home.ts` (`otherWork`). Items: Steel Indicator, Employee Attrition · Developer Market Research, Wavelet, FarmIA, Retail.
+
+## Professional Impact (ADR-021)
+
+Code: `src/components/sections/ProfessionalImpact.tsx`, `src/content/home.ts` (`professionalImpact`). Numbers come only from Experience (CONTENT §95.1).
+
+## Research & Recognition (historical section — now a group inside Other Work)
 
 Read: SPEC §16 (05 / Research & Recognition — finalized M1-06, ADR-013) + §17 (Research vs Writing), WIREFRAME §24-25 (05 / Research & Recognition + mobile)
 Content: CONTENT §92 (Research & Recognition — Wavelet thesis, FarmIA, Retail Sales Forecasting; the only 3 V1 items)
-Likely code: `src/components/sections/ResearchRecognition.tsx`, `src/content/home.ts`
+Code: `src/components/sections/OtherWork.tsx` (ResearchRecognition.tsx removed by ADR-021), `src/content/home.ts`
 Note: the pre-ADR-012 4-topic Research draft (Economic Index Construction, Shapley Driver Decomposition, Survival Analysis, Forecasting Workforce Dynamics) is obsolete — kept only in a collapsed historical note in SPEC §16 / WIREFRAME §24-25, do not implement it.
 
 ## Capabilities

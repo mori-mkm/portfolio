@@ -3,11 +3,11 @@ import { notFound } from "next/navigation";
 import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
 import { Hero } from "@/components/sections/Hero";
-import { About } from "@/components/sections/About";
+import { ProfessionalImpact } from "@/components/sections/ProfessionalImpact";
 import { SelectedWork } from "@/components/sections/SelectedWork";
-import { CaseStudies } from "@/components/sections/CaseStudies";
 import { Experience } from "@/components/sections/Experience";
-import { ResearchRecognition } from "@/components/sections/ResearchRecognition";
+import { OtherWork } from "@/components/sections/OtherWork";
+import { About } from "@/components/sections/About";
 import { Capabilities } from "@/components/sections/Capabilities";
 import { Contact } from "@/components/sections/Contact";
 import { homeContent } from "@/content/home";
@@ -44,29 +44,19 @@ export default async function HomePage({
         }}
       />
       <main>
+        {/* ADR-021 hiring-first order: Hero → 01 Impact → 02 Projects → 03 Experience → 04 Other Work → 05 About → 06 Capabilities → 07 Contact. */}
         <Hero
           eyebrow={content.hero.eyebrow}
           name={content.hero.name}
           headlineLine1={content.hero.headlineLine1}
           headlineLine2={content.hero.headlineLine2}
-          descriptor={content.hero.descriptor}
-          supportingCopy={content.hero.supportingCopy}
+          paragraphs={content.hero.paragraphs}
           primaryCta={content.hero.primaryCta}
           primaryCtaHref={content.hero.primaryCtaHref}
           scrollCue={content.hero.scrollCue}
           scrollCueHref={content.hero.scrollCueHref}
         />
-        <About
-          eyebrow={content.about.eyebrow}
-          headlineLine1={content.about.headlineLine1}
-          headlineLine2={content.about.headlineLine2}
-          paragraphs={content.about.paragraphs}
-          backgroundLabel={content.about.backgroundLabel}
-          background={content.about.background}
-          directionLabel={content.about.directionLabel}
-          direction={content.about.direction}
-          pillars={content.about.pillars}
-        />
+        <ProfessionalImpact {...content.professionalImpact} />
         <SelectedWork
           eyebrow={content.selectedWork.eyebrow}
           headlineLine1={content.selectedWork.headlineLine1}
@@ -76,14 +66,6 @@ export default async function HomePage({
           demoLabel={content.selectedWork.demoLabel}
           projects={content.selectedWork.projects}
         />
-        <CaseStudies
-          eyebrow={content.caseStudies.eyebrow}
-          headlineLine1={content.caseStudies.headlineLine1}
-          headlineLine2={content.caseStudies.headlineLine2}
-          supportingCopy={content.caseStudies.supportingCopy}
-          githubLabel={content.caseStudies.githubLabel}
-          studies={content.caseStudies.studies}
-        />
         <Experience
           eyebrow={content.experience.eyebrow}
           headlineLine1={content.experience.headlineLine1}
@@ -91,13 +73,8 @@ export default async function HomePage({
           intro={content.experience.intro}
           items={content.experience.items}
         />
-        <ResearchRecognition
-          eyebrow={content.researchRecognition.eyebrow}
-          headlineLine1={content.researchRecognition.headlineLine1}
-          headlineLine2={content.researchRecognition.headlineLine2}
-          supportingCopy={content.researchRecognition.supportingCopy}
-          items={content.researchRecognition.items}
-        />
+        <OtherWork {...content.otherWork} />
+        <About {...content.about} />
         <Capabilities
           eyebrow={content.capabilities.eyebrow}
           headlineLine1={content.capabilities.headlineLine1}

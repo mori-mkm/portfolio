@@ -4,28 +4,24 @@
 
 ## Task
 
-ID: CONTENT-EMPORIO + CONTENT-NO-RESUME
-Title: Add Empório AI Assistant as Selected Work 02 (ADR-019); remove every public résumé link (ADR-020)
-Status: done - verified and committed on branch `feat/dark-editorial` (`1530329`); not yet merged into `main`.
+ID: HOME-REFINE-021
+Title: Hiring-first Home hierarchy and product-showcase content (ADR-021)
+Status: done - verified on branch `feat/dark-editorial` (from `0d49aa9`); not committed.
 
 ## Scope
 
-IN: `src/content/home.ts` (EN/PT Selected Work, Capabilities, `SelectedProject` image|visual union, `externalLinks` without resume), `ProjectFeature.tsx` (next/image branch), `public/projects/emporio-ai-assistant/03-price-installments.png` (byte-identical copy), Header/Hero/Experience/Contact/page.tsx résumé removal, ADR-019/020 and current-state planning docs.
+IN: Home only - `src/content/home.ts`, `src/app/[locale]/page.tsx`, Hero, new ProfessionalImpact / OtherWork, SelectedWork, About (portrait-ready), Capabilities (quieter), Contact copy, ProjectFeature / new ProjectMediaStage / new ProjectVideo / ProjectVisual; ADR-021 + current-state docs.
 
-OUT: no change to other projects' copy/metrics, Hero/About copy, metadata, Case Studies; no RAG/LangChain/multi-agent claims; no Supabase/Resend/Turnstile/DNS/env changes; no commit/push/deploy.
+OUT: Supabase, Resend, Turnstile, migrations, API behavior, env vars, DNS, WAF; `<html lang>`; résumé links; public email; new dependencies; portrait/stock assets; commit/push/deploy.
 
 ## Acceptance criteria
 
-- [x] Selected Work order 01 DataLab OS, 02 Empório AI Assistant, 03 Procurement, 04 Attrition (EN + PT).
-- [x] Empório copy/proof exactly as specified; GitHub link only, no Live Demo.
-- [x] Real screenshot via next/image, real 976x1022 dimensions, no frame/shadow/crop, localized alt matching the image.
-- [x] AI Evaluation / Avaliação de IA in Applied AI; RAG still excluded.
-- [x] Zero rendered Resume/Currículo links or CTAs; `resume`/`resumeHref` removed from the content model.
-- [x] No horizontal overflow at 1440/1024/768/390/360, EN + PT.
+- [x] Section order Hero, 01 Impact, 02 Projects, 03 Experience, 04 Other Work & Research, 05 About, 06 Capabilities, 07 Contact (EN + PT).
+- [x] Projects: DataLab OS, Empório, AI Closer (no links, IN DEVELOPMENT), Procurement.
+- [x] Attrition in Other Work; Case Studies / Research sections removed.
+- [x] Hero has exactly one CTA; zero résumé links.
+- [x] Media union diagram | image | video; Empório image in a 16:10 cover stage.
+- [x] No portrait rendered (none exists).
+- [x] Capabilities evidence boundary unchanged.
+- [x] No overflow at 1440/1024/768/390/360, EN + PT; no console errors.
 - [x] `npm run verify` and `git diff --check` pass.
-
-## Verification
-
-- `npm run verify` PASS (lint + build); `git diff --check` clean.
-- Playwright (dev server, 10 combos): overflow 0; image aspect 0.955 preserved, lazy, loads; order 01-04; Empório links = GitHub only; résumé links on page = 0; Hero has 1 CTA; Contact/Footer = LinkedIn + GitHub; mobile menu = GitHub + LinkedIn; no console errors.
-- Dev-only console warning: Next flags the screenshot as LCP when the test scrolls straight to it - test artifact (not above the fold on a normal load), `preload` deliberately not used.

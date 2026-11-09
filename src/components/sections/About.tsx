@@ -1,26 +1,15 @@
+import Image from "next/image";
+
 import { SectionHeading } from "@/components/ui/SectionHeading";
-import type { Pillar } from "@/content/home";
+import type { AboutContent } from "@/content/home";
 
 /**
- * About — SPEC §9 / HOME_WIREFRAME §10-11.
- * Server Component, no interactivity. Uses the "BACKGROUND / CURRENT
- * DIRECTION" left block (WIREFRAME §10.5's *preferred* V1 content), not the
- * metrics alternative — metrics mix project-specific numbers and the spec
- * explicitly warns against surfacing those without clear per-project
- * context, which belongs to Selected Work (BACKLOG M1-03), not here.
+ * About — SPEC §9 / HOME_WIREFRAME §10-11; moved after Other Work and made
+ * portrait-ready by ADR-021. The left column shows a REAL portrait only when
+ * `portrait` is set (none exists yet — never a placeholder or stock photo),
+ * then the Background / Current direction lists; without a portrait the
+ * section is complete as-is. Server Component, no interactivity.
  */
-type AboutProps = {
-  eyebrow: string;
-  headlineLine1: string;
-  headlineLine2: string;
-  paragraphs: string[];
-  backgroundLabel: string;
-  background: string[];
-  directionLabel: string;
-  direction: string[];
-  pillars: Pillar[];
-};
-
 export function About({
   eyebrow,
   headlineLine1,
@@ -31,16 +20,24 @@ export function About({
   directionLabel,
   direction,
   pillars,
-}: AboutProps) {
+  portrait,
+}: AboutContent) {
   return (
-    <section
-      id="about"
-      className="section"
-    >
+    <section id="about" className="section">
       <SectionHeading eyebrow={eyebrow} lines={[headlineLine1, headlineLine2]} />
 
       <div className="mt-12 flex flex-col gap-12 md:mt-24 md:flex-row md:gap-16">
         <div className="flex flex-col gap-8 md:w-1/3">
+          {portrait && (
+            <Image
+              src={portrait.src}
+              alt={portrait.alt}
+              width={portrait.width}
+              height={portrait.height}
+              sizes="(min-width: 768px) 33vw, 100vw"
+              className="h-auto w-full max-w-[360px] rounded-[var(--radius-lg)] border border-[var(--border)]"
+            />
+          )}
           <List label={backgroundLabel} items={background} />
           <List label={directionLabel} items={direction} />
         </div>

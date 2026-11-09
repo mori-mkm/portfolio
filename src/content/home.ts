@@ -1,84 +1,68 @@
 import type { Locale } from "@/lib/i18n";
 
 /**
- * Typed, localized content for the Home page (Header, Hero, About — M1-02 scope).
+ * Typed, localized content for the Home page.
  *
  * Copy sources (do not edit copy here without checking these first):
- * - EN: docs/planning/PORTFOLIO_SPEC.md §7-9 (canonical)
- * - PT-BR: docs/planning/HOME_WIREFRAME.md §63.1 (baseline) for Hero + About
- *   label/headline/pillars; About body paragraphs, pillar descriptions and the
- *   background/direction lists are editorial PT-BR translations of the EN
- *   copy, written per the translation rules in PORTFOLIO_SPEC.md
- *   ("Tradução editorial" / "Nomes próprios e tecnologias") — not present
- *   verbatim in the source docs yet. Flag for review, not fabricated claims.
+ * - Current Home copy (ADR-021, 2026-11-09): supplied by the user and
+ *   recorded in docs/planning/PROJECT_CONTENT.md §95 (Hero, Professional
+ *   Impact, Featured Projects, Experience, About, Contact). PT-BR strings are
+ *   editorial translations of the EN copy (same meaning, not literal).
+ * - Older sections not rewritten by ADR-021 (Other Work & Research items,
+ *   Capabilities, Contact form fields, Footer) keep their earlier verified
+ *   copy — see PROJECT_CONTENT.md §2/§92/§93/§94 and PORTFOLIO_SPEC §18.
  *
  * External link facts (confirmed with the user on 2026-09-01):
  * - GitHub: https://github.com/mori-mkm — confirmed correct.
  * - LinkedIn: https://www.linkedin.com/in/matheus-mori — confirmed.
  * - Resume: no résumé link is rendered anywhere on the site (removed
- *   2026-11-03 at the user's request; LinkedIn and GitHub stay).
+ *   2026-11-03 at the user's request, ADR-020; LinkedIn and GitHub stay).
  *
- * `selectedWork` / `caseStudies` (M1-03/M1-04): see docs/DECISIONS.md
- * ADR-012 (Home content exclusivity) for why Steel Indicator moved out of
- * Selected Work and into Case Studies, and why the Developer Market
- * Research / CNN Brasil case study is deliberately hedged (no unverified
- * authorship or figures beyond what the user confirmed). ADR-017: DataLab
- * OS is Selected Work's flagship (`01`), Selected Work only — never also a
- * Case Study. Every DataLab claim is backed by the public
- * mori-mkm/datalab-os README (PoC v0.2); no demoHref (no public
- * deployment), and none of its README "Current limitations" are contradicted
- * (sequential/deterministic execution, no production hardening).
- * ADR-019: Empório AI Assistant is Selected Work `02` (Selected Work only).
- * It is a technical case for a fictional store — not client work, not
- * deployed, no demoHref. Every claim comes from the public
- * mori-mkm/emporio-ai-assistant README; it uses a real, unmodified
- * screenshot from that repo instead of a ProjectVisual diagram.
+ * Home order (ADR-021): Hero → 01 Professional Impact → 02 Selected AI &
+ * Data Projects → 03 Experience → 04 Other Work & Research → 05 About →
+ * 06 Capabilities → 07 Contact.
+ *
+ * `professionalImpact`: PROFESSIONAL EXPERIENCE results only (never
+ * personal-project metrics). Every number already appears in the user's
+ * Experience history (ADR-011 source, M1-05); wording says "contributed" /
+ * "helped deliver" — collaborative work, no sole-causality claim.
+ *
+ * `selectedWork` (ADR-012 exclusivity, ADR-017/019/021): exactly four
+ * featured projects — DataLab OS, Empório AI Assistant, AI Closer,
+ * Procurement Intelligence. None of them also appears in Other Work.
+ * - DataLab OS: public README (local-first PoC). No test counts on Home.
+ * - Empório: fictional-store technical case (not client work, not deployed,
+ *   internal evaluation). Final architecture is full policy context, not
+ *   RAG; BM25/embeddings were measured alternatives (PROJECT_CONTENT §94).
+ * - AI Closer: private repository, collaborative prototype in development.
+ *   No GitHub link, no metrics, no deployment/commercial claim. Its stack
+ *   (RAG, pgvector, Supabase, OpenAI…) is listed on the project only — it
+ *   does NOT feed Capabilities.
+ * - Procurement: public-data proxy. Stack follows its repo (no PySpark or
+ *   MLflow there). ML matched the baseline's accuracy and only expanded
+ *   coverage — never framed as "more accurate".
  *
  * `experience` (M1-05): company/role/period are historical-fact fields —
- * kept identical across EN/PT (not translated) per the user's explicit
- * instruction not to silently alter an official job title. Source: the
- * user's private master résumé (never committed — ADR-011). Per ADR-012,
- * none of these entries reproduce the Selected Work / Case Studies content
- * already featured elsewhere (no CNN/research detail under Rocketseat, no
- * Employee Attrition metrics under Banco BV).
+ * kept identical across EN/PT and never renamed (no "Data Scientist" /
+ * "AI Engineer" relabeling). Descriptions were rewritten for ADR-021 to
+ * emphasize impact without repeating every Professional Impact number.
  *
- * `researchRecognition` (M1-06): see docs/DECISIONS.md ADR-013 (Research &
- * Recognition allocation) for why this replaces the older, pre-ADR-012
- * Research wireframe content (Economic Index Construction, Shapley Driver
- * Decomposition, Survival Analysis, Forecasting Workforce Dynamics — all
- * dropped as duplicates of Steel Indicator / Experience / Employee
- * Attrition). Exactly 3 items, editorial (non-chronological) order. FarmIA
- * and Retail Sales Forecasting are framed strictly as historical/academic
- * work (hackathon prototype, final coursework project) — no production,
- * deployment, or business-outcome claims. Closer AI is deliberately
- * omitted (ADR-007, evidence before prominence).
+ * `otherWork` (ADR-021): the quieter secondary section. Merges the former
+ * Case Studies (Steel Indicator, Developer Market Research) and Research &
+ * Recognition (Wavelet thesis, FarmIA, Retail Sales Forecasting) content,
+ * plus Employee Attrition Prediction moved out of Selected Work. Copy is the
+ * earlier verified copy; FarmIA and Retail are framed strictly as historical/
+ * academic work. Application Job stays removed (ADR-016).
  *
- * `capabilities` (M1-07): synthesis layer, not a new evidence source — an
- * application of ADR-007 (evidence before prominence) to the current
- * public-project/experience evidence, not a new architectural decision
- * (no ADR-014). Group is "Applied AI", not "AI Engineering". Updated by
- * ADR-017: DataLab OS's public repo now evidences Agent Orchestration,
- * LangGraph, AI Observability (typed, replayable event stream) and FastAPI,
- * so those were added; AI-assisted Workflows / Structured Outputs /
- * Prompt & Context Engineering were dropped (their only public evidence,
- * the Application Job repo, is no longer public). Still deliberately
- * excludes RAG, Multi-Agent/dynamic agent systems, LangChain/CrewAI,
- * Vector Databases, PySpark, CI/CD, and cloud infra — all
- * omitted silently (no "coming soon"/"planned" labels, this section is not
- * a roadmap). Closer AI is not used as evidence for any of the above.
- * ADR-019 added AI Evaluation (Empório's development scenarios, reserved
- * validation and measured config/retrieval comparisons). Empório's BM25 and
- * embeddings runs are retrieval experiments, not a RAG architecture, so RAG
- * stays excluded.
+ * `capabilities` (M1-07, ADR-017, ADR-019): a synthesis of public evidence
+ * only. Still excludes RAG, Multi-Agent/dynamic agent systems,
+ * LangChain/CrewAI, Vector Databases, PySpark, CI/CD and cloud infra.
+ * AI Closer (private) is not used as evidence for any capability. Empório's
+ * BM25/embeddings runs are retrieval experiments, not a RAG architecture.
  *
- * `nav` / `contact` (M1-08): "Writing" removed from both locale nav
- * arrays — Writing is deferred (no genuine published articles exist yet;
- * see PORTFOLIO_SPEC.md §19). Contact is renumbered 07 (was planned as
- * 08, behind Writing) so the visitor never sees a missing section number.
- * The actual submit wiring (POST /api/contact, Supabase + Resend, ADR-014
- * in docs/DECISIONS.md) lives in `src/app/api/contact/route.ts` and
- * `src/components/forms/ContactForm.tsx` — this content object only
- * supplies copy, never the destination email or any credential.
+ * `contact` (M1-08): the submit wiring (POST /api/contact, Supabase + Resend,
+ * ADR-014) lives in `src/app/api/contact/route.ts` and
+ * `src/components/forms/ContactForm.tsx` — this object only supplies copy.
  */
 
 export type NavItem = {
@@ -91,46 +75,66 @@ export type Pillar = {
   description: string;
 };
 
-export type ProjectVisualKind = "datalab" | "procurement" | "steel" | "attrition";
-
-/** Real screenshot copied unmodified from mori-mkm/emporio-ai-assistant examples/screenshots (976x1022 px). */
-const EMPORIO_SCREENSHOT = {
-  src: "/projects/emporio-ai-assistant/03-price-installments.png",
-  width: 976,
-  height: 1022,
-};
-
-export type ProjectProof = {
-  value: string;
-  label: string;
-};
-
-/** A real product screenshot; width/height are the file's real pixel size. */
-export type ProjectImage = {
+/** A real image file; width/height are its real pixel size (never invented). */
+export type MediaImage = {
   src: string;
   alt: string;
   width: number;
   height: number;
 };
 
-type SelectedProjectBase = {
+/** Editorial pipeline diagrams rendered by ProjectVisual (projects without real media). */
+export type ProjectVisualKind = "datalab" | "closer" | "procurement";
+
+/**
+ * ADR-021: one media slot per featured project. Images and videos render in
+ * a bounded 16:10 stage (Home = preview, never the full asset); `focus` is a
+ * CSS object-position for the useful region.
+ */
+export type ProjectMedia =
+  | { kind: "diagram"; diagram: ProjectVisualKind }
+  | { kind: "image"; image: MediaImage; focus?: string }
+  | {
+      kind: "video";
+      sources: { src: string; type: "video/webm" | "video/mp4" }[];
+      /** Shown before playback and as the reduced-motion fallback. */
+      poster: MediaImage;
+      focus?: string;
+    };
+
+/** Small, real-information micrographics. No invented numbers. */
+export type ProjectEvidence =
+  | { kind: "fact"; label: string; value: string; note?: string }
+  | { kind: "metric"; label: string; value: string; note: string }
+  | {
+      kind: "comparison";
+      label: string;
+      joiner: "vs" | "→";
+      items: [{ label: string; value: string }, { label: string; value: string }];
+      note: string;
+    };
+
+export type ProjectNote = {
+  label: string;
+  text: string;
+};
+
+export type FeaturedProject = {
   index: string;
   category: string;
+  /** Maturity/context line, always visible (e.g. "IN DEVELOPMENT", "TECHNICAL CASE · FICTIONAL STORE"). */
+  status: string;
   title: string;
-  description: string;
-  proof: ProjectProof[];
+  headline: string;
+  description: string[];
+  notes?: ProjectNote[];
+  evidence: ProjectEvidence[];
   stack: string;
+  media: ProjectMedia;
   /** Optional — only rendered when the destination actually exists (no dead links). */
   githubHref?: string;
   demoHref?: string;
 };
-
-/** ADR-019: a project shows either an editorial diagram or a real screenshot, never both. */
-export type SelectedProject = SelectedProjectBase &
-  (
-    | { visual: ProjectVisualKind; image?: never }
-    | { image: ProjectImage; visual?: never }
-  );
 
 export type SelectedWorkContent = {
   eyebrow: string;
@@ -139,36 +143,21 @@ export type SelectedWorkContent = {
   supportingCopy: string;
   githubLabel: string;
   demoLabel: string;
-  projects: SelectedProject[];
+  projects: FeaturedProject[];
 };
 
-export type CaseStudyVisualKind = "steel" | "research";
-
-export type CaseEvidence = {
+export type ImpactItem = {
+  value: string;
   label: string;
-  text: string;
+  description: string;
 };
 
-export type CaseStudy = {
-  index: string;
-  category: string;
-  title: string;
-  positioning: string;
-  evidence: CaseEvidence[];
-  visual: CaseStudyVisualKind;
-  /** Optional — only rendered when the destination actually exists (no dead links). */
-  githubHref?: string;
-  externalHref?: string;
-  externalLabel?: string;
-};
-
-export type CaseStudiesContent = {
+export type ProfessionalImpactContent = {
   eyebrow: string;
   headlineLine1: string;
   headlineLine2: string;
   supportingCopy: string;
-  githubLabel: string;
-  studies: CaseStudy[];
+  items: ImpactItem[];
 };
 
 export type ExperienceItem = {
@@ -188,28 +177,29 @@ export type ExperienceContent = {
   items: ExperienceItem[];
 };
 
-export type ResearchRecognitionType = "research" | "recognition";
-
-export type ResearchRecognitionItem = {
-  type: ResearchRecognitionType;
-  index: string;
+export type OtherWorkItem = {
+  kicker: string;
   title: string;
-  /** Institution/competition + program-type + year — treated as an identity fact, not translated (same rationale as Experience's company/role). */
-  context: string;
+  /** Institution/competition/year — an identity fact, not translated (same rationale as Experience). */
+  context?: string;
   description: string;
-  metadata: string;
-  /** Optional standout callout (e.g. a placement result or a status flag) — quiet, not a metric tile. */
+  /** Optional quiet callout (a placement, a result, a status flag) — never a metric tile. */
   evidence?: string;
-  href: string;
-  linkLabel: string;
+  metadata?: string;
+  links: { label: string; href: string }[];
 };
 
-export type ResearchRecognitionContent = {
+export type OtherWorkGroup = {
+  title: string;
+  items: OtherWorkItem[];
+};
+
+export type OtherWorkContent = {
   eyebrow: string;
   headlineLine1: string;
   headlineLine2: string;
   supportingCopy: string;
-  items: ResearchRecognitionItem[];
+  groups: OtherWorkGroup[];
 };
 
 export type CapabilityGroup = {
@@ -236,7 +226,7 @@ export type ContactContent = {
   eyebrow: string;
   headlineLine1: string;
   headlineLine2: string;
-  supportingCopy: string;
+  supportingCopy: string[];
   fields: {
     name: ContactFieldContent;
     email: ContactFieldContent;
@@ -257,6 +247,20 @@ export type FooterContent = {
   role: string;
   location: string;
   backToTop: string;
+};
+
+export type AboutContent = {
+  eyebrow: string;
+  headlineLine1: string;
+  headlineLine2: string;
+  paragraphs: string[];
+  backgroundLabel: string;
+  background: string[];
+  directionLabel: string;
+  direction: string[];
+  pillars: Pillar[];
+  /** Only a REAL photo of Matheus (ADR-021). None exists yet — suggested path public/about/matheus-portrait.webp, 4:5. */
+  portrait?: MediaImage;
 };
 
 type HomeContent = {
@@ -281,42 +285,40 @@ type HomeContent = {
     name: string;
     headlineLine1: string;
     headlineLine2: string;
-    descriptor: string;
-    supportingCopy: string;
+    paragraphs: string[];
     primaryCta: string;
     primaryCtaHref: string;
     scrollCue: string;
     scrollCueHref: string;
   };
-  about: {
-    eyebrow: string;
-    headlineLine1: string;
-    headlineLine2: string;
-    paragraphs: string[];
-    backgroundLabel: string;
-    background: string[];
-    directionLabel: string;
-    direction: string[];
-    pillars: Pillar[];
-  };
+  professionalImpact: ProfessionalImpactContent;
   selectedWork: SelectedWorkContent;
-  caseStudies: CaseStudiesContent;
   experience: ExperienceContent;
-  researchRecognition: ResearchRecognitionContent;
+  otherWork: OtherWorkContent;
+  about: AboutContent;
   capabilities: CapabilitiesContent;
   contact: ContactContent;
   footer: FooterContent;
 };
 
+/** Real screenshot copied unmodified from mori-mkm/emporio-ai-assistant examples/screenshots (976x1022 px, ADR-019). */
+const EMPORIO_SCREENSHOT = {
+  src: "/projects/emporio-ai-assistant/03-price-installments.png",
+  width: 976,
+  height: 1022,
+};
+/** Shows the chat panel: price answer, the 12x question and the start of the installment answer. */
+const EMPORIO_FOCUS = "50% 30%";
+
 export const homeContent: Record<Locale, HomeContent> = {
   en: {
     brand: "Matheus Mori",
     nav: [
-      { label: "About", href: "#about" },
+      { label: "Impact", href: "#impact" },
       { label: "Projects", href: "#projects" },
-      { label: "Case Studies", href: "#case-studies" },
       { label: "Experience", href: "#experience" },
-      { label: "Research", href: "#research" },
+      { label: "Other Work", href: "#other-work" },
+      { label: "About", href: "#about" },
       { label: "Contact", href: "#contact" },
     ],
     languageSwitcher: {
@@ -334,26 +336,345 @@ export const homeContent: Record<Locale, HomeContent> = {
       linkedinHref: "https://www.linkedin.com/in/matheus-mori",
     },
     hero: {
-      eyebrow: "AI ENGINEERING · DATA SCIENCE",
+      eyebrow: "AI ENGINEER · DATA SCIENTIST",
       name: "Matheus Mori",
-      headlineLine1: "AI Engineer",
-      headlineLine2: "& Data Scientist",
-      descriptor:
-        "Building production-oriented AI,\nmachine learning and data products.",
-      supportingCopy:
-        "I work across data, machine learning and AI — turning complex problems into systems people can actually use.",
-      primaryCta: "Explore my work",
+      headlineLine1: "I build AI and data products",
+      headlineLine2: "that solve practical problems.",
+      paragraphs: [
+        "I'm a statistician with professional experience in data and analytics since 2021, building solutions across growth, financial services, and business operations.",
+        "Today, I combine that experience with hands-on AI engineering to develop LLM applications, machine learning systems, and analytical tools — with an emphasis on measurable results, reliability, and sound technical decisions.",
+      ],
+      primaryCta: "Explore My Work",
       primaryCtaHref: "#projects",
       scrollCue: "Scroll",
-      scrollCueHref: "#about",
+      scrollCueHref: "#impact",
+    },
+    professionalImpact: {
+      eyebrow: "01 / PROFESSIONAL IMPACT",
+      headlineLine1: "Experience that",
+      headlineLine2: "delivers results.",
+      supportingCopy:
+        "Before building AI applications, I spent years applying statistics, experimentation, and data analytics to real business challenges. These are some of the outcomes I've helped deliver.",
+      items: [
+        {
+          value: "~11%",
+          label: "HIGHER CONVERSION",
+          description:
+            "Data-driven experimentation and growth optimizations at Contmatic contributed to an approximately 11% increase in conversion.",
+        },
+        {
+          value: "~20%",
+          label: "LOWER ACQUISITION COST",
+          description:
+            "Analytics and experimentation initiatives contributed to an approximately 20% reduction in customer acquisition cost at Contmatic.",
+        },
+        {
+          value: "1 week → 1 day",
+          label: "REPORTING WORKFLOW",
+          description:
+            "Redesigned and automated international reporting workflows at BIP Consulting, reducing monthly consolidation time from approximately one week to one day.",
+        },
+        {
+          value: "4,000+",
+          label: "EMPLOYEES COVERED",
+          description:
+            "Developed enterprise analytics solutions at Banco BV supporting workforce and organizational performance reporting for a population of over 4,000 employees.",
+        },
+      ],
+    },
+    selectedWork: {
+      eyebrow: "02 / SELECTED AI & DATA PROJECTS",
+      headlineLine1: "Systems designed to",
+      headlineLine2: "solve real problems.",
+      supportingCopy:
+        "A selection of AI systems, machine learning systems and data products.",
+      githubLabel: "GitHub",
+      demoLabel: "Live Demo",
+      projects: [
+        {
+          index: "01",
+          category: "AI ENGINEERING · AGENT ORCHESTRATION",
+          status: "PROOF OF CONCEPT · LOCAL-FIRST",
+          title: "DataLab OS",
+          headline:
+            "An AI-powered Data Science workflow with independent quality control.",
+          description: [
+            "A multi-agent system that transforms tabular datasets into exploratory analysis, baseline models, and structured reports.",
+            "An independent review stage checks methodological validity and can reject results when it detects issues such as target leakage. A live operations console makes decisions, execution steps, and generated artifacts traceable.",
+          ],
+          notes: [
+            {
+              label: "KEY DIFFERENTIATOR",
+              text: "Data Science automation with built-in methodological review and transparent execution.",
+            },
+          ],
+          evidence: [
+            { kind: "fact", label: "RUNTIME", value: "LOCAL-FIRST" },
+            { kind: "fact", label: "ORCHESTRATION", value: "LANGGRAPH" },
+            { kind: "fact", label: "SYSTEM / REVIEW", value: "INDEPENDENT GATE" },
+            { kind: "fact", label: "OBSERVABILITY", value: "TRACEABLE EXECUTION" },
+          ],
+          stack: "Python · LangGraph · FastAPI · Next.js · React Flow · scikit-learn",
+          media: { kind: "diagram", diagram: "datalab" },
+          githubHref: "https://github.com/mori-mkm/datalab-os",
+        },
+        {
+          index: "02",
+          category: "AI ENGINEERING · EVALUATION",
+          status: "TECHNICAL CASE · FICTIONAL STORE",
+          title: "Empório AI Assistant",
+          headline:
+            "A customer-support AI assistant built for accuracy and cost efficiency.",
+          description: [
+            "A full-stack AI assistant that answers customer questions about products, pricing, availability, and store policies using verified information and controlled tools.",
+            "The system was evaluated against alternative retrieval approaches, with explicit safeguards against unsupported answers and incorrect pricing calculations.",
+          ],
+          evidence: [
+            {
+              kind: "comparison",
+              label: "EVAL / DEVELOPMENT",
+              joiner: "vs",
+              items: [
+                { label: "FULL POLICY CONTEXT", value: "~93%" },
+                { label: "BM25 RETRIEVAL", value: "80%" },
+              ],
+              note: "28/30 vs 24/30 development scenarios (~13 pts). Internal, controlled comparison on a small static manual — not an industry benchmark.",
+            },
+            {
+              kind: "metric",
+              label: "CACHE / OBSERVED COST",
+              value: "≈ −71%",
+              note: "Prompt caching in comparable internal runs, with no observed quality decrease.",
+            },
+            {
+              kind: "metric",
+              label: "VALIDATION / RESERVED",
+              value: "9/10",
+              note: "10 reserved cases, run once after the configuration freeze.",
+            },
+          ],
+          stack:
+            "Python · FastAPI · React · TypeScript · SQLite · LLM Tool Calling · Evaluation",
+          media: {
+            kind: "image",
+            image: {
+              ...EMPORIO_SCREENSHOT,
+              alt: "Empório AI Assistant chat interface, in Portuguese, answering the price of a Takamine GD20 acoustic guitar and the value of each installment in a 12-installment plan.",
+            },
+            focus: EMPORIO_FOCUS,
+          },
+          githubHref: "https://github.com/mori-mkm/emporio-ai-assistant",
+        },
+        {
+          index: "03",
+          category: "APPLIED AI · SALES INTELLIGENCE",
+          status: "IN DEVELOPMENT · PRIVATE REPOSITORY",
+          title: "AI Closer",
+          headline:
+            "Turning live sales conversations into actionable intelligence.",
+          description: [
+            "An AI-powered sales copilot that analyzes conversations during Google Meet calls, identifies objections, buying signals, and sales opportunities, and recommends the most relevant next action for the seller.",
+            "Instead of overwhelming users with alerts, the system combines conversational context, structured commercial memory, and retrieval-augmented knowledge to prioritize one actionable recommendation at a time.",
+          ],
+          notes: [
+            {
+              label: "KEY DIFFERENTIATOR",
+              text: "Real-time sales intelligence with evidence-based recommendations and intelligent action prioritization.",
+            },
+            {
+              label: "STATUS",
+              text: "Collaborative prototype under active development. Core live conversation processing, commercial intelligence modules, and recommendation prioritization are implemented. Human-reviewed evaluation and end-to-end reliability validation are ongoing.",
+            },
+          ],
+          evidence: [
+            {
+              kind: "fact",
+              label: "ROLE / PROJECT",
+              value: "PRODUCT OWNER · TECHNICAL ARCHITECTURE",
+              note: "I lead product direction, architectural decisions, technical integration, and evaluation strategy within a collaborative development team.",
+            },
+            { kind: "fact", label: "SYSTEM / INPUT", value: "LIVE CONVERSATION INTELLIGENCE" },
+            { kind: "fact", label: "SYSTEM / CONTEXT", value: "STRUCTURED COMMERCIAL MEMORY" },
+            { kind: "fact", label: "SYSTEM / GUIDANCE", value: "KNOWLEDGE-AUGMENTED GUIDANCE" },
+            { kind: "fact", label: "SYSTEM / OUTPUT", value: "ONE NEXT ACTION" },
+          ],
+          stack:
+            "Python · FastAPI · OpenAI · Supabase · PostgreSQL/pgvector · RAG · Browser Extension · Streamlit",
+          media: { kind: "diagram", diagram: "closer" },
+        },
+        {
+          index: "04",
+          category: "MACHINE LEARNING · DATA PRODUCT",
+          status: "PUBLIC DATA · LIVE DEMO",
+          title: "Procurement Intelligence",
+          headline:
+            "Turning procurement data into actionable purchasing intelligence.",
+          description: [
+            "An interactive analytics platform that uses public procurement data to analyze spending patterns, identify pricing anomalies, and surface potential savings opportunities.",
+            "The system combines data engineering, statistical benchmarks, and machine learning to support more informed purchasing decisions.",
+          ],
+          evidence: [
+            {
+              kind: "comparison",
+              label: "COVERAGE / EVALUATED ITEMS",
+              joiner: "→",
+              items: [
+                { label: "BASELINE", value: "~70–80%" },
+                { label: "ML (LIGHTGBM)", value: "100%" },
+              ],
+              note: "Similar median prediction error: machine learning expanded coverage without a meaningful accuracy advantage over the simpler baseline.",
+            },
+            {
+              kind: "metric",
+              label: "DATA / PUBLIC RECORDS",
+              value: "5.7M+",
+              note: "Brazilian public procurement transactions — a proxy for corporate procurement.",
+            },
+            {
+              kind: "fact",
+              label: "OUTPUT / REVIEW",
+              value: "POTENTIAL SAVINGS",
+              note: "Flagged opportunities require human review; no overpricing is confirmed.",
+            },
+          ],
+          stack: "Python · SQL · DuckDB · LightGBM · Streamlit",
+          media: { kind: "diagram", diagram: "procurement" },
+          githubHref: "https://github.com/mori-mkm/procurement-intelligence",
+          demoHref: "https://procurement-intelligence-mkm.streamlit.app/",
+        },
+      ],
+    },
+    experience: {
+      eyebrow: "03 / EXPERIENCE",
+      headlineLine1: "Where I've worked",
+      headlineLine2: "and what I've built.",
+      intro:
+        "Professional experience across finance, consulting and technology — applying analytics, machine learning, experimentation and data products to real business problems.",
+      items: [
+        {
+          period: "2025 — 2026",
+          company: "Banco BV",
+          role: "People Analytics Analyst Pleno · Data Analytics",
+          description:
+            "Developed analytics products supporting strategic reporting and organizational performance for a population of over 4,000 employees, with reporting accessed across multiple leadership levels.",
+          metadata: "SQL Server · Power BI · Python · Databricks",
+        },
+        {
+          period: "2024 — 2025",
+          company: "BIP Consulting",
+          role: "People Analytics · Data Analytics",
+          description:
+            "Automated and redesigned international reporting workflows, reducing a monthly process from approximately one week to one day.",
+          metadata: "Python · Power Query · Power Automate · ETL",
+        },
+        {
+          period: "2022 — 2023",
+          company: "Contmatic Phoenix",
+          role: "Data Science Junior · Growth & Marketing Analytics",
+          description:
+            "Applied experimentation, customer analytics, and segmentation to growth initiatives that contributed to higher conversion and lower acquisition costs.",
+          metadata: "Python · SQL · Experimentation · Growth Analytics",
+        },
+        {
+          period: "2021 — 2022",
+          company: "Rocketseat",
+          role: "Data Science Junior · Growth & Customer Analytics",
+          description:
+            "Used customer segmentation and predictive modeling to support digital education growth initiatives, including work associated with an approximately 15% increase in course-purchase conversion.",
+          metadata: "Python · R · SQL · Customer Analytics",
+        },
+      ],
+    },
+    otherWork: {
+      eyebrow: "04 / OTHER WORK & RESEARCH",
+      headlineLine1: "More projects, research",
+      headlineLine2: "and recognition.",
+      supportingCopy:
+        "Earlier projects, academic research and recognition across statistics, forecasting and applied data science.",
+      groups: [
+        {
+          title: "OTHER PROJECTS",
+          items: [
+            {
+              kicker: "DATA ENGINEERING · ECONOMIC INTELLIGENCE",
+              title: "Steel Indicator",
+              description:
+                "An auditable economic indicator built from fragmented public data and changing policy parameters, with immutable vintages, source provenance and a versioned index methodology with declared proxies.",
+              evidence: "529 AUTOMATED TESTS",
+              links: [{ label: "GitHub", href: "https://github.com/mori-mkm/steel-indicator" }],
+            },
+            {
+              kicker: "MACHINE LEARNING · PEOPLE ANALYTICS",
+              title: "Employee Attrition Prediction",
+              description:
+                "An interpretable classification workflow focused on identifying employees at higher attrition risk.",
+              evidence: "74% RECALL · SMOTE · THRESHOLD OPTIMIZATION · 5-FOLD CV",
+              metadata: "Python · Scikit-learn · Imbalanced-learn",
+              links: [{ label: "GitHub", href: "https://github.com/mori-mkm/HR-Predict" }],
+            },
+          ],
+        },
+        {
+          title: "RESEARCH & RECOGNITION",
+          items: [
+            {
+              kicker: "APPLIED RESEARCH · DATA SCIENCE",
+              title: "Developer Market Research",
+              context: "Rocketseat",
+              description:
+                "Research and data analysis developed during my time at Rocketseat, with findings on women's representation in technology reaching CNN Brasil.",
+              evidence: "~20% REPORTED REPRESENTATION · CNN BRASIL COVERAGE",
+              links: [{ label: "Watch coverage", href: "https://lnkd.in/p/djifF6qh" }],
+            },
+            {
+              kicker: "RESEARCH",
+              title: "Wavelet Multivariate Time Series Analysis",
+              context: "UFSCar · Undergraduate Thesis · 2023",
+              description:
+                "Undergraduate statistics research examining how relationships among financial markets change across time and scale using wavelet methods.",
+              metadata: "Time Series · Statistics · Wavelets",
+              links: [
+                {
+                  label: "View research",
+                  href: "https://github.com/mori-mkm/UFSCar/tree/main/undergraduate-thesis",
+                },
+              ],
+            },
+            {
+              kicker: "RECOGNITION",
+              title: "FarmIA — Santander Data Challenge",
+              context: "1st Place · 2020",
+              description:
+                "First-place data challenge project developed by a five-person team, using statistical modeling and agrometeorological data to support agricultural planning.",
+              evidence: "1ST PLACE · 100+ TEAMS",
+              metadata: "Applied Data Science · Agriculture",
+              links: [{ label: "GitHub", href: "https://github.com/mori-mkm/FarmAI.Hackaton" }],
+            },
+            {
+              kicker: "RESEARCH",
+              title: "Retail Sales Forecasting",
+              context: "Digital House · Final Data Science Project",
+              description:
+                "Academic forecasting project exploring monthly store-level sales with SARIMAX, chronological validation and a historical Flask prototype.",
+              evidence: "ACADEMIC PROJECT",
+              metadata: "Forecasting · SARIMAX · Time Series",
+              links: [
+                { label: "GitHub", href: "https://github.com/mori-mkm/retail-sales-forecasting" },
+              ],
+            },
+          ],
+        },
+      ],
     },
     about: {
-      eyebrow: "01 / ABOUT",
-      headlineLine1: "I build at the intersection of",
-      headlineLine2: "data, machine learning and AI.",
+      eyebrow: "05 / ABOUT",
+      headlineLine1: "A statistician's approach",
+      headlineLine2: "to building AI.",
       paragraphs: [
-        "I'm a statistician and data professional focused on turning analytical problems into reliable products and systems.",
-        "My background spans analytics, machine learning, experimentation and decision-support products. Today, I'm increasingly focused on AI engineering — especially systems that combine LLMs, retrieval, agents, evaluation, APIs and production-oriented software practices.",
+        "My background is in Statistics, and my professional experience spans data science, growth analytics, business intelligence, and enterprise data solutions.",
+        "I've worked on problems involving customer acquisition, conversion, retention, operational reporting, and organizational performance — learning how to connect technical work with real business needs.",
+        "That experience shapes how I approach AI engineering today: start with the problem, choose the simplest effective solution, and evaluate whether it works.",
+        "I care about more than making models run. I care about building systems that are understandable, reliable, and useful.",
       ],
       backgroundLabel: "BACKGROUND",
       background: ["Statistics", "Data Science", "Machine Learning", "Analytics"],
@@ -373,229 +694,6 @@ export const homeContent: Record<Locale, HomeContent> = {
           title: "DATA PRODUCTS",
           description:
             "Turning models and analysis into tools people can actually use.",
-        },
-      ],
-    },
-    selectedWork: {
-      eyebrow: "02 / SELECTED WORK",
-      headlineLine1: "Systems designed to",
-      headlineLine2: "solve real problems.",
-      supportingCopy:
-        "A selection of AI systems, machine learning systems and data products.",
-      githubLabel: "GitHub",
-      demoLabel: "Live Demo",
-      projects: [
-        {
-          index: "01",
-          category: "AI ENGINEERING · AGENT ORCHESTRATION",
-          title: "DataLab OS",
-          description:
-            "A local-first, observable Data Science agent system built with LangGraph, covering profiling, EDA, modeling and independent methodological review.",
-          proof: [
-            { value: "LANGGRAPH", label: "orchestration" },
-            { value: "118", label: "backend tests" },
-            { value: "97", label: "frontend tests" },
-            { value: "REVIEW", label: "independent gate" },
-          ],
-          stack: "Python · LangGraph · FastAPI · Next.js · React Flow",
-          visual: "datalab",
-          githubHref: "https://github.com/mori-mkm/datalab-os",
-        },
-        {
-          index: "02",
-          category: "AI ENGINEERING · EVALUATED ASSISTANT",
-          title: "Empório AI Assistant",
-          description:
-            "An evaluated customer-support assistant built for a fictional music-store technical case, with bounded tool use, policy-grounded answers, explicit cost controls and a reproducible evaluation harness.",
-          proof: [
-            { value: "9/10", label: "reserved validation" },
-            { value: "0", label: "critical failures · final config" },
-            { value: "4", label: "read-only tools" },
-            { value: "~71%", label: "observed cache cost reduction" },
-          ],
-          stack: "Python · FastAPI · React · SQLite · Anthropic",
-          image: {
-            ...EMPORIO_SCREENSHOT,
-            alt: "Empório AI Assistant chat interface, in Portuguese, answering the price of a Takamine GD20 acoustic guitar and the value of each installment in a 12-installment plan.",
-          },
-          githubHref: "https://github.com/mori-mkm/emporio-ai-assistant",
-        },
-        {
-          index: "03",
-          category: "MACHINE LEARNING · DATA PRODUCT",
-          title: "Procurement Intelligence",
-          description:
-            "A spend and price intelligence platform built on 5.7M+ public procurement transactions.",
-          proof: [
-            { value: "5.7M+", label: "transactions" },
-            { value: "124", label: "automated tests" },
-            { value: "TEMPORAL", label: "ML validation" },
-            { value: "LIVE", label: "dashboard" },
-          ],
-          stack: "Python · DuckDB · LightGBM · Streamlit",
-          visual: "procurement",
-          githubHref: "https://github.com/mori-mkm/procurement-intelligence",
-          demoHref: "https://procurement-intelligence-mkm.streamlit.app/",
-        },
-        {
-          index: "04",
-          category: "MACHINE LEARNING · PEOPLE ANALYTICS",
-          title: "Employee Attrition Prediction",
-          description:
-            "An interpretable classification workflow focused on identifying employees at higher attrition risk.",
-          proof: [
-            { value: "74%", label: "recall" },
-            { value: "SMOTE", label: "class balancing" },
-            { value: "THRESHOLD", label: "optimization" },
-            { value: "5-FOLD", label: "cross-validation" },
-          ],
-          stack: "Python · Scikit-learn · Imbalanced-learn",
-          visual: "attrition",
-          githubHref: "https://github.com/mori-mkm/HR-Predict",
-        },
-      ],
-    },
-    caseStudies: {
-      eyebrow: "03 / CASE STUDIES",
-      headlineLine1: "The reasoning behind",
-      headlineLine2: "the work.",
-      supportingCopy:
-        "Problems, architecture, methodology, trade-offs and evidence behind selected work.",
-      githubLabel: "GitHub",
-      studies: [
-        {
-          index: "01",
-          category: "DATA ENGINEERING · ECONOMIC INTELLIGENCE",
-          title: "Steel Indicator",
-          positioning:
-            "Building an auditable economic indicator from fragmented public data.",
-          evidence: [
-            {
-              label: "PROBLEM",
-              text: "Fragmented public sources and changing policy parameters.",
-            },
-            {
-              label: "ENGINEERING",
-              text: "Immutable vintages and source provenance.",
-            },
-            {
-              label: "METHODOLOGY",
-              text: "Versioned index methodology and declared proxies.",
-            },
-            { label: "RELIABILITY", text: "529 automated tests." },
-          ],
-          visual: "steel",
-          githubHref: "https://github.com/mori-mkm/steel-indicator",
-        },
-        {
-          index: "02",
-          category: "APPLIED RESEARCH · DATA SCIENCE",
-          title: "Developer Market Research",
-          positioning:
-            "Research and data analysis developed during my time at Rocketseat, with findings on women's representation in technology reaching CNN Brasil.",
-          evidence: [
-            {
-              label: "QUESTION",
-              text: "What does the Brazilian technology workforce look like?",
-            },
-            {
-              label: "RESEARCH",
-              text: "Market and workforce data analysis, conducted during my time at Rocketseat.",
-            },
-            {
-              label: "FINDING",
-              text: "Women represented a minority of technology employment in the reported analysis.",
-            },
-            { label: "IMPACT", text: "The finding reached CNN Brasil coverage." },
-          ],
-          visual: "research",
-          externalHref: "https://lnkd.in/p/djifF6qh",
-          externalLabel: "Watch coverage",
-        },
-      ],
-    },
-    experience: {
-      eyebrow: "04 / EXPERIENCE",
-      headlineLine1: "Where I've worked",
-      headlineLine2: "and what I've built.",
-      intro:
-        "Professional experience across finance, consulting and technology — applying analytics, machine learning, experimentation and data products to real business problems.",
-      items: [
-        {
-          period: "2025 — 2026",
-          company: "Banco BV",
-          role: "People Analytics Analyst Pleno · Data Analytics",
-          description:
-            "Built and evolved analytics, forecasting and decision-support products covering a workforce of 4,000+ employees and serving multiple levels of leadership. Worked across SQL Server, Power BI, Python and Databricks.",
-          metadata: "SQL Server · Power BI · Python · Databricks",
-        },
-        {
-          period: "2024 — 2025",
-          company: "BIP Consulting",
-          role: "People Analytics · Data Analytics",
-          description:
-            "Took ownership of People Analytics operations and redesigned monthly international reporting, reducing consolidation from about one week to one day. Built ETL and automation flows with Power Automate, Python and Power Query.",
-          metadata: "Python · Power Query · Power Automate · ETL",
-        },
-        {
-          period: "2022 — 2023",
-          company: "Contmatic Phoenix",
-          role: "Data Science Junior · Growth & Marketing Analytics",
-          description:
-            "Worked across experimentation, segmentation, churn/LTV, funnels and campaign analytics on a base of ~1M leads and ~60k users. A series of data-driven optimizations contributed to ~11% higher conversion and ~20% lower CAC.",
-          metadata: "Python · SQL · Experimentation · Growth Analytics",
-        },
-        {
-          period: "2021 — 2022",
-          company: "Rocketseat",
-          role: "Data Science Junior · Growth & Customer Analytics",
-          description:
-            "Applied data science to segmentation, retention, cohorts and growth analytics across 60k+ paying students. A decision-tree segmentation initiative contributed to ~15% higher course-purchase conversion.",
-          metadata: "Python · R · SQL · Customer Analytics",
-        },
-      ],
-    },
-    researchRecognition: {
-      eyebrow: "05 / RESEARCH & RECOGNITION",
-      headlineLine1: "Research and milestones",
-      headlineLine2: "that shaped my work.",
-      supportingCopy:
-        "Academic investigations and early projects across statistics, forecasting and applied data science.",
-      items: [
-        {
-          type: "research",
-          index: "01",
-          title: "Wavelet Multivariate Time Series Analysis",
-          context: "UFSCar · Undergraduate Thesis · 2023",
-          description:
-            "Undergraduate statistics research examining how relationships among financial markets change across time and scale using wavelet methods.",
-          metadata: "Time Series · Statistics · Wavelets",
-          href: "https://github.com/mori-mkm/UFSCar/tree/main/undergraduate-thesis",
-          linkLabel: "View research",
-        },
-        {
-          type: "recognition",
-          index: "01",
-          title: "FarmIA — Santander Data Challenge",
-          context: "1st Place · 2020",
-          description:
-            "First-place data challenge project developed by a five-person team, using statistical modeling and agrometeorological data to support agricultural planning.",
-          evidence: "1ST PLACE · 100+ TEAMS",
-          metadata: "Applied Data Science · Agriculture",
-          href: "https://github.com/mori-mkm/FarmAI.Hackaton",
-          linkLabel: "GitHub",
-        },
-        {
-          type: "research",
-          index: "02",
-          title: "Retail Sales Forecasting",
-          context: "Digital House · Final Data Science Project",
-          description:
-            "Academic forecasting project exploring monthly store-level sales with SARIMAX, chronological validation and a historical Flask prototype.",
-          evidence: "ACADEMIC PROJECT",
-          metadata: "Forecasting · SARIMAX · Time Series",
-          href: "https://github.com/mori-mkm/retail-sales-forecasting",
-          linkLabel: "GitHub",
         },
       ],
     },
@@ -645,7 +743,6 @@ export const homeContent: Record<Locale, HomeContent> = {
             "Git & GitHub",
             "Docker",
             "Testing",
-            "MLflow",
             "APIs",
             "FastAPI",
             "Streamlit",
@@ -658,8 +755,10 @@ export const homeContent: Record<Locale, HomeContent> = {
       eyebrow: "07 / CONTACT",
       headlineLine1: "Let's build",
       headlineLine2: "something useful.",
-      supportingCopy:
-        "I'm interested in opportunities and conversations around Data Science, Machine Learning and Applied AI.",
+      supportingCopy: [
+        "I'm interested in opportunities where data science, machine learning, and AI engineering can create meaningful business value.",
+        "If you're building AI-powered products, solving complex data challenges, or looking for someone who combines technical execution with business understanding, I'd be glad to connect.",
+      ],
       fields: {
         name: { label: "NAME *", placeholder: "Jane Doe" },
         email: { label: "EMAIL *", placeholder: "jane@example.com" },
@@ -690,11 +789,11 @@ export const homeContent: Record<Locale, HomeContent> = {
   pt: {
     brand: "Matheus Mori",
     nav: [
-      { label: "Sobre", href: "#about" },
+      { label: "Impacto", href: "#impact" },
       { label: "Projetos", href: "#projects" },
-      { label: "Estudos de Caso", href: "#case-studies" },
       { label: "Experiência", href: "#experience" },
-      { label: "Pesquisa", href: "#research" },
+      { label: "Outros Trabalhos", href: "#other-work" },
+      { label: "Sobre", href: "#about" },
       { label: "Contato", href: "#contact" },
     ],
     languageSwitcher: {
@@ -712,26 +811,345 @@ export const homeContent: Record<Locale, HomeContent> = {
       linkedinHref: "https://www.linkedin.com/in/matheus-mori",
     },
     hero: {
-      eyebrow: "ENGENHARIA DE IA · DATA SCIENCE",
+      eyebrow: "ENGENHEIRO DE IA · CIENTISTA DE DADOS",
       name: "Matheus Mori",
-      headlineLine1: "Engenheiro de IA",
-      headlineLine2: "& Cientista de Dados",
-      descriptor:
-        "Construindo produtos de IA,\nmachine learning e dados orientados à produção.",
-      supportingCopy:
-        "Atuo entre dados, machine learning e inteligência artificial — transformando problemas complexos em sistemas que as pessoas realmente podem usar.",
+      headlineLine1: "Construo produtos de IA e dados",
+      headlineLine2: "para resolver problemas reais.",
+      paragraphs: [
+        "Sou estatístico, com experiência profissional em dados e analytics desde 2021, construindo soluções para growth, serviços financeiros e operações de negócio.",
+        "Hoje, combino essa experiência com AI engineering na prática para desenvolver aplicações com LLMs, sistemas de machine learning e ferramentas analíticas — com foco em resultados mensuráveis, confiabilidade e boas decisões técnicas.",
+      ],
       primaryCta: "Conheça meus projetos",
       primaryCtaHref: "#projects",
       scrollCue: "Rolar",
-      scrollCueHref: "#about",
+      scrollCueHref: "#impact",
+    },
+    professionalImpact: {
+      eyebrow: "01 / IMPACTO PROFISSIONAL",
+      headlineLine1: "Experiência que",
+      headlineLine2: "gera resultados.",
+      supportingCopy:
+        "Antes de construir aplicações de IA, passei anos aplicando estatística, experimentação e analytics a desafios reais de negócio. Estes são alguns dos resultados que ajudei a entregar.",
+      items: [
+        {
+          value: "~11%",
+          label: "MAIS CONVERSÃO",
+          description:
+            "Experimentação orientada por dados e otimizações de growth na Contmatic contribuíram para um aumento de aproximadamente 11% na conversão.",
+        },
+        {
+          value: "~20%",
+          label: "MENOR CUSTO DE AQUISIÇÃO",
+          description:
+            "Iniciativas de analytics e experimentação contribuíram para uma redução de aproximadamente 20% no custo de aquisição de clientes na Contmatic.",
+        },
+        {
+          value: "1 semana → 1 dia",
+          label: "FLUXO DE REPORTING",
+          description:
+            "Redesenhei e automatizei fluxos de reporting internacional na BIP Consulting, reduzindo o tempo de consolidação mensal de cerca de uma semana para um dia.",
+        },
+        {
+          value: "4.000+",
+          label: "COLABORADORES COBERTOS",
+          description:
+            "Desenvolvi soluções analíticas corporativas no Banco BV para reporting de força de trabalho e performance organizacional de uma população de mais de 4.000 colaboradores.",
+        },
+      ],
+    },
+    selectedWork: {
+      eyebrow: "02 / PROJETOS DE IA & DADOS",
+      headlineLine1: "Sistemas construídos para",
+      headlineLine2: "resolver problemas reais.",
+      supportingCopy:
+        "Uma seleção de sistemas de IA, machine learning e produtos de dados.",
+      githubLabel: "GitHub",
+      demoLabel: "Demo",
+      projects: [
+        {
+          index: "01",
+          category: "ENGENHARIA DE IA · ORQUESTRAÇÃO DE AGENTES",
+          status: "PROVA DE CONCEITO · LOCAL-FIRST",
+          title: "DataLab OS",
+          headline:
+            "Um workflow de Data Science com IA e controle de qualidade independente.",
+          description: [
+            "Um sistema multiagente que transforma datasets tabulares em análise exploratória, modelos baseline e relatórios estruturados.",
+            "Uma etapa de revisão independente verifica a validade metodológica e pode rejeitar resultados quando detecta problemas como target leakage. Um console de operações ao vivo torna rastreáveis as decisões, as etapas de execução e os artefatos gerados.",
+          ],
+          notes: [
+            {
+              label: "DIFERENCIAL",
+              text: "Automação de Data Science com revisão metodológica embutida e execução transparente.",
+            },
+          ],
+          evidence: [
+            { kind: "fact", label: "EXECUÇÃO", value: "LOCAL-FIRST" },
+            { kind: "fact", label: "ORQUESTRAÇÃO", value: "LANGGRAPH" },
+            { kind: "fact", label: "SISTEMA / REVISÃO", value: "GATE INDEPENDENTE" },
+            { kind: "fact", label: "OBSERVABILIDADE", value: "EXECUÇÃO RASTREÁVEL" },
+          ],
+          stack: "Python · LangGraph · FastAPI · Next.js · React Flow · scikit-learn",
+          media: { kind: "diagram", diagram: "datalab" },
+          githubHref: "https://github.com/mori-mkm/datalab-os",
+        },
+        {
+          index: "02",
+          category: "ENGENHARIA DE IA · AVALIAÇÃO",
+          status: "CASE TÉCNICO · LOJA FICTÍCIA",
+          title: "Empório AI Assistant",
+          headline:
+            "Um assistente de IA para atendimento construído para precisão e eficiência de custo.",
+          description: [
+            "Um assistente de IA full-stack que responde a perguntas de clientes sobre produtos, preços, disponibilidade e políticas da loja usando informações verificadas e ferramentas controladas.",
+            "O sistema foi avaliado contra abordagens alternativas de retrieval, com salvaguardas explícitas contra respostas sem suporte e cálculos de preço incorretos.",
+          ],
+          evidence: [
+            {
+              kind: "comparison",
+              label: "AVALIAÇÃO / DESENVOLVIMENTO",
+              joiner: "vs",
+              items: [
+                { label: "CONTEXTO COMPLETO DAS POLÍTICAS", value: "~93%" },
+                { label: "RETRIEVAL BM25", value: "80%" },
+              ],
+              note: "28/30 vs 24/30 cenários de desenvolvimento (~13 p.p.). Comparação interna e controlada, num manual pequeno e estático — não é um benchmark de mercado.",
+            },
+            {
+              kind: "metric",
+              label: "CACHE / CUSTO OBSERVADO",
+              value: "≈ −71%",
+              note: "Prompt caching em execuções internas comparáveis, sem queda de qualidade observada.",
+            },
+            {
+              kind: "metric",
+              label: "VALIDAÇÃO / RESERVADA",
+              value: "9/10",
+              note: "10 casos reservados, executados uma vez após o congelamento da configuração.",
+            },
+          ],
+          stack:
+            "Python · FastAPI · React · TypeScript · SQLite · LLM Tool Calling · Evaluation",
+          media: {
+            kind: "image",
+            image: {
+              ...EMPORIO_SCREENSHOT,
+              alt: "Interface de chat do Empório AI Assistant respondendo ao preço de um violão Takamine GD20 e ao valor de cada parcela em 12x.",
+            },
+            focus: EMPORIO_FOCUS,
+          },
+          githubHref: "https://github.com/mori-mkm/emporio-ai-assistant",
+        },
+        {
+          index: "03",
+          category: "IA APLICADA · INTELIGÊNCIA DE VENDAS",
+          status: "EM DESENVOLVIMENTO · REPOSITÓRIO PRIVADO",
+          title: "AI Closer",
+          headline:
+            "Transformando conversas de vendas ao vivo em inteligência acionável.",
+          description: [
+            "Um copiloto de vendas com IA que analisa conversas durante chamadas no Google Meet, identifica objeções, sinais de compra e oportunidades de venda, e recomenda a próxima ação mais relevante para o vendedor.",
+            "Em vez de sobrecarregar o usuário com alertas, o sistema combina o contexto da conversa, memória comercial estruturada e conhecimento recuperado via RAG para priorizar uma recomendação acionável por vez.",
+          ],
+          notes: [
+            {
+              label: "DIFERENCIAL",
+              text: "Inteligência de vendas em tempo real, com recomendações baseadas em evidências e priorização inteligente de ações.",
+            },
+            {
+              label: "STATUS",
+              text: "Protótipo colaborativo em desenvolvimento ativo. O processamento de conversas ao vivo, os módulos de inteligência comercial e a priorização de recomendações estão implementados. A avaliação com revisão humana e a validação de confiabilidade ponta a ponta estão em andamento.",
+            },
+          ],
+          evidence: [
+            {
+              kind: "fact",
+              label: "PAPEL / PROJETO",
+              value: "PRODUCT OWNER · ARQUITETURA TÉCNICA",
+              note: "Lidero a direção de produto, as decisões de arquitetura, a integração técnica e a estratégia de avaliação dentro de um time de desenvolvimento colaborativo.",
+            },
+            { kind: "fact", label: "SISTEMA / ENTRADA", value: "INTELIGÊNCIA DE CONVERSA AO VIVO" },
+            { kind: "fact", label: "SISTEMA / CONTEXTO", value: "MEMÓRIA COMERCIAL ESTRUTURADA" },
+            { kind: "fact", label: "SISTEMA / ORIENTAÇÃO", value: "ORIENTAÇÃO AUMENTADA POR CONHECIMENTO" },
+            { kind: "fact", label: "SISTEMA / SAÍDA", value: "UMA PRÓXIMA AÇÃO" },
+          ],
+          stack:
+            "Python · FastAPI · OpenAI · Supabase · PostgreSQL/pgvector · RAG · Browser Extension · Streamlit",
+          media: { kind: "diagram", diagram: "closer" },
+        },
+        {
+          index: "04",
+          category: "MACHINE LEARNING · PRODUTO DE DADOS",
+          status: "DADOS PÚBLICOS · DEMO AO VIVO",
+          title: "Procurement Intelligence",
+          headline:
+            "Transformando dados de compras em inteligência acionável para decisões de compra.",
+          description: [
+            "Uma plataforma analítica interativa que usa dados públicos de compras governamentais para analisar padrões de gasto, identificar anomalias de preço e evidenciar potenciais oportunidades de economia.",
+            "O sistema combina engenharia de dados, benchmarks estatísticos e machine learning para apoiar decisões de compra mais bem informadas.",
+          ],
+          evidence: [
+            {
+              kind: "comparison",
+              label: "COBERTURA / ITENS AVALIADOS",
+              joiner: "→",
+              items: [
+                { label: "BASELINE", value: "~70–80%" },
+                { label: "ML (LIGHTGBM)", value: "100%" },
+              ],
+              note: "Erro mediano de previsão semelhante: o machine learning ampliou a cobertura sem demonstrar vantagem relevante de precisão sobre o baseline mais simples.",
+            },
+            {
+              kind: "metric",
+              label: "DADOS / REGISTROS PÚBLICOS",
+              value: "5,7M+",
+              note: "Transações de compras públicas brasileiras — um proxy para procurement corporativo.",
+            },
+            {
+              kind: "fact",
+              label: "SAÍDA / REVISÃO",
+              value: "POTENCIAL DE ECONOMIA",
+              note: "Oportunidades sinalizadas exigem revisão humana; nenhum sobrepreço é confirmado.",
+            },
+          ],
+          stack: "Python · SQL · DuckDB · LightGBM · Streamlit",
+          media: { kind: "diagram", diagram: "procurement" },
+          githubHref: "https://github.com/mori-mkm/procurement-intelligence",
+          demoHref: "https://procurement-intelligence-mkm.streamlit.app/",
+        },
+      ],
+    },
+    experience: {
+      eyebrow: "03 / EXPERIÊNCIA",
+      headlineLine1: "Onde trabalhei",
+      headlineLine2: "e o que construí.",
+      intro:
+        "Experiência profissional em finanças, consultoria e tecnologia — aplicando analytics, machine learning, experimentação e produtos de dados a problemas reais de negócio.",
+      items: [
+        {
+          period: "2025 — 2026",
+          company: "Banco BV",
+          role: "People Analytics Analyst Pleno · Data Analytics",
+          description:
+            "Desenvolvi produtos analíticos para reporting estratégico e performance organizacional de uma população de mais de 4.000 colaboradores, com relatórios acessados por diferentes níveis de liderança.",
+          metadata: "SQL Server · Power BI · Python · Databricks",
+        },
+        {
+          period: "2024 — 2025",
+          company: "BIP Consulting",
+          role: "People Analytics · Data Analytics",
+          description:
+            "Automatizei e redesenhei fluxos de reporting internacional, reduzindo um processo mensal de cerca de uma semana para um dia.",
+          metadata: "Python · Power Query · Power Automate · ETL",
+        },
+        {
+          period: "2022 — 2023",
+          company: "Contmatic Phoenix",
+          role: "Data Science Junior · Growth & Marketing Analytics",
+          description:
+            "Apliquei experimentação, analytics de clientes e segmentação a iniciativas de growth que contribuíram para mais conversão e menor custo de aquisição.",
+          metadata: "Python · SQL · Experimentation · Growth Analytics",
+        },
+        {
+          period: "2021 — 2022",
+          company: "Rocketseat",
+          role: "Data Science Junior · Growth & Customer Analytics",
+          description:
+            "Usei segmentação de clientes e modelagem preditiva para apoiar iniciativas de crescimento em educação digital, incluindo um trabalho associado a um aumento de cerca de 15% na conversão de compra de cursos.",
+          metadata: "Python · R · SQL · Customer Analytics",
+        },
+      ],
+    },
+    otherWork: {
+      eyebrow: "04 / OUTROS TRABALHOS & PESQUISA",
+      headlineLine1: "Mais projetos, pesquisas",
+      headlineLine2: "e reconhecimentos.",
+      supportingCopy:
+        "Projetos anteriores, pesquisa acadêmica e reconhecimentos em estatística, forecasting e ciência de dados aplicada.",
+      groups: [
+        {
+          title: "OUTROS PROJETOS",
+          items: [
+            {
+              kicker: "ENGENHARIA DE DADOS · INTELIGÊNCIA ECONÔMICA",
+              title: "Steel Indicator",
+              description:
+                "Um indicador econômico auditável construído a partir de dados públicos fragmentados e parâmetros de política em constante mudança, com vintages imutáveis, rastreabilidade de origem dos dados e metodologia de índice versionada com proxies declarados.",
+              evidence: "529 TESTES AUTOMATIZADOS",
+              links: [{ label: "GitHub", href: "https://github.com/mori-mkm/steel-indicator" }],
+            },
+            {
+              kicker: "MACHINE LEARNING · PEOPLE ANALYTICS",
+              title: "Employee Attrition Prediction",
+              description:
+                "Um workflow de classificação interpretável focado em identificar funcionários com maior risco de desligamento.",
+              evidence: "74% RECALL · SMOTE · OTIMIZAÇÃO DE THRESHOLD · VALIDAÇÃO CRUZADA 5-FOLD",
+              metadata: "Python · Scikit-learn · Imbalanced-learn",
+              links: [{ label: "GitHub", href: "https://github.com/mori-mkm/HR-Predict" }],
+            },
+          ],
+        },
+        {
+          title: "PESQUISA & RECONHECIMENTO",
+          items: [
+            {
+              kicker: "PESQUISA APLICADA · DATA SCIENCE",
+              title: "Pesquisa sobre o Mercado de Tecnologia",
+              context: "Rocketseat",
+              description:
+                "Pesquisa e análise de dados desenvolvidas durante minha atuação na Rocketseat, com resultados sobre a participação feminina no mercado de tecnologia chegando à CNN Brasil.",
+              evidence: "~20% DE REPRESENTAÇÃO REPORTADA · COBERTURA DA CNN BRASIL",
+              links: [{ label: "Assistir cobertura", href: "https://lnkd.in/p/djifF6qh" }],
+            },
+            {
+              kicker: "PESQUISA",
+              title: "Wavelet Multivariate Time Series Analysis",
+              context: "UFSCar · Undergraduate Thesis · 2023",
+              description:
+                "Pesquisa de graduação em Estatística investigando como as relações entre mercados financeiros mudam ao longo do tempo e em diferentes escalas utilizando métodos wavelet.",
+              metadata: "Time Series · Statistics · Wavelets",
+              links: [
+                {
+                  label: "Ver pesquisa",
+                  href: "https://github.com/mori-mkm/UFSCar/tree/main/undergraduate-thesis",
+                },
+              ],
+            },
+            {
+              kicker: "RECONHECIMENTO",
+              title: "FarmIA — Santander Data Challenge",
+              context: "1º Lugar · 2020",
+              description:
+                "Projeto vencedor de um data challenge desenvolvido por uma equipe de cinco pessoas, utilizando modelagem estatística e dados agrometeorológicos para apoiar o planejamento agrícola.",
+              evidence: "1º LUGAR · 100+ EQUIPES",
+              metadata: "Applied Data Science · Agriculture",
+              links: [{ label: "GitHub", href: "https://github.com/mori-mkm/FarmAI.Hackaton" }],
+            },
+            {
+              kicker: "PESQUISA",
+              title: "Retail Sales Forecasting",
+              context: "Digital House · Final Data Science Project",
+              description:
+                "Projeto acadêmico de forecasting de vendas mensais por loja utilizando SARIMAX, validação cronológica e um protótipo histórico em Flask.",
+              evidence: "PROJETO ACADÊMICO",
+              metadata: "Forecasting · SARIMAX · Time Series",
+              links: [
+                { label: "GitHub", href: "https://github.com/mori-mkm/retail-sales-forecasting" },
+              ],
+            },
+          ],
+        },
+      ],
     },
     about: {
-      eyebrow: "01 / SOBRE",
-      headlineLine1: "Construo na interseção entre",
-      headlineLine2: "dados, machine learning e IA.",
+      eyebrow: "05 / SOBRE",
+      headlineLine1: "A abordagem de um estatístico",
+      headlineLine2: "para construir IA.",
       paragraphs: [
-        "Sou estatístico e profissional de dados focado em transformar problemas analíticos em produtos e sistemas confiáveis.",
-        "Minha trajetória passa por analytics, machine learning, experimentação e produtos de apoio à decisão. Hoje, estou cada vez mais focado em AI engineering — sistemas que combinam LLMs, retrieval, agentes, avaliação, APIs e práticas de engenharia orientadas à produção.",
+        "Minha formação é em Estatística, e minha experiência profissional passa por ciência de dados, growth analytics, business intelligence e soluções de dados corporativas.",
+        "Trabalhei com problemas de aquisição de clientes, conversão, retenção, reporting operacional e performance organizacional — aprendendo a conectar o trabalho técnico às necessidades reais do negócio.",
+        "Essa experiência define como abordo AI engineering hoje: começar pelo problema, escolher a solução eficaz mais simples e avaliar se ela realmente funciona.",
+        "Não me importo apenas em fazer modelos rodarem. Me importo em construir sistemas compreensíveis, confiáveis e úteis.",
       ],
       backgroundLabel: "FORMAÇÃO",
       background: ["Estatística", "Data Science", "Machine Learning", "Analytics"],
@@ -751,229 +1169,6 @@ export const homeContent: Record<Locale, HomeContent> = {
           title: "PRODUTOS DE DADOS",
           description:
             "Transformando modelos e análises em ferramentas que as pessoas realmente usam.",
-        },
-      ],
-    },
-    selectedWork: {
-      eyebrow: "02 / PROJETOS SELECIONADOS",
-      headlineLine1: "Sistemas construídos para",
-      headlineLine2: "resolver problemas reais.",
-      supportingCopy:
-        "Uma seleção de sistemas de IA, machine learning e produtos de dados.",
-      githubLabel: "GitHub",
-      demoLabel: "Demo",
-      projects: [
-        {
-          index: "01",
-          category: "ENGENHARIA DE IA · ORQUESTRAÇÃO DE AGENTES",
-          title: "DataLab OS",
-          description:
-            "Um sistema local-first e observável de agentes para Data Science, construído com LangGraph e cobrindo profiling, EDA, modelagem e revisão metodológica independente.",
-          proof: [
-            { value: "LANGGRAPH", label: "orquestração" },
-            { value: "118", label: "testes backend" },
-            { value: "97", label: "testes frontend" },
-            { value: "REVIEW", label: "gate independente" },
-          ],
-          stack: "Python · LangGraph · FastAPI · Next.js · React Flow",
-          visual: "datalab",
-          githubHref: "https://github.com/mori-mkm/datalab-os",
-        },
-        {
-          index: "02",
-          category: "ENGENHARIA DE IA · ASSISTENTE AVALIADO",
-          title: "Empório AI Assistant",
-          description:
-            "Um assistente de atendimento avaliado, construído para um case técnico de uma loja fictícia de música, com uso limitado de ferramentas, respostas fundamentadas nas políticas, controles explícitos de custo e um sistema reproduzível de avaliação.",
-          proof: [
-            { value: "9/10", label: "validação reservada" },
-            { value: "0", label: "falhas críticas · config. final" },
-            { value: "4", label: "ferramentas somente leitura" },
-            { value: "~71%", label: "redução de custo observada com cache" },
-          ],
-          stack: "Python · FastAPI · React · SQLite · Anthropic",
-          image: {
-            ...EMPORIO_SCREENSHOT,
-            alt: "Interface de chat do Empório AI Assistant respondendo ao preço de um violão Takamine GD20 e ao valor de cada parcela em 12x.",
-          },
-          githubHref: "https://github.com/mori-mkm/emporio-ai-assistant",
-        },
-        {
-          index: "03",
-          category: "MACHINE LEARNING · PRODUTO DE DADOS",
-          title: "Procurement Intelligence",
-          description:
-            "Uma plataforma de inteligência de gastos e preços construída sobre mais de 5,7 milhões de transações de compras públicas.",
-          proof: [
-            { value: "5,7M+", label: "transações" },
-            { value: "124", label: "testes automatizados" },
-            { value: "TEMPORAL", label: "validação de ML" },
-            { value: "LIVE", label: "dashboard" },
-          ],
-          stack: "Python · DuckDB · LightGBM · Streamlit",
-          visual: "procurement",
-          githubHref: "https://github.com/mori-mkm/procurement-intelligence",
-          demoHref: "https://procurement-intelligence-mkm.streamlit.app/",
-        },
-        {
-          index: "04",
-          category: "MACHINE LEARNING · PEOPLE ANALYTICS",
-          title: "Employee Attrition Prediction",
-          description:
-            "Um workflow de classificação interpretável focado em identificar funcionários com maior risco de desligamento.",
-          proof: [
-            { value: "74%", label: "recall" },
-            { value: "SMOTE", label: "balanceamento" },
-            { value: "THRESHOLD", label: "otimização" },
-            { value: "5-FOLD", label: "validação cruzada" },
-          ],
-          stack: "Python · Scikit-learn · Imbalanced-learn",
-          visual: "attrition",
-          githubHref: "https://github.com/mori-mkm/HR-Predict",
-        },
-      ],
-    },
-    caseStudies: {
-      eyebrow: "03 / ESTUDOS DE CASO",
-      headlineLine1: "O raciocínio por trás",
-      headlineLine2: "do trabalho.",
-      supportingCopy:
-        "Problemas, arquitetura, metodologia, trade-offs e evidências por trás de trabalhos selecionados.",
-      githubLabel: "GitHub",
-      studies: [
-        {
-          index: "01",
-          category: "ENGENHARIA DE DADOS · INTELIGÊNCIA ECONÔMICA",
-          title: "Steel Indicator",
-          positioning:
-            "Construindo um indicador econômico auditável a partir de dados públicos fragmentados.",
-          evidence: [
-            {
-              label: "PROBLEMA",
-              text: "Fontes públicas fragmentadas e parâmetros de política em constante mudança.",
-            },
-            {
-              label: "ENGENHARIA",
-              text: "Vintages imutáveis e rastreabilidade de origem dos dados.",
-            },
-            {
-              label: "METODOLOGIA",
-              text: "Metodologia de índice versionada e proxies declarados.",
-            },
-            { label: "CONFIABILIDADE", text: "529 testes automatizados." },
-          ],
-          visual: "steel",
-          githubHref: "https://github.com/mori-mkm/steel-indicator",
-        },
-        {
-          index: "02",
-          category: "PESQUISA APLICADA · DATA SCIENCE",
-          title: "Pesquisa sobre o Mercado de Tecnologia",
-          positioning:
-            "Pesquisa e análise de dados desenvolvidas durante minha atuação na Rocketseat, com resultados sobre a participação feminina no mercado de tecnologia chegando à CNN Brasil.",
-          evidence: [
-            {
-              label: "QUESTÃO",
-              text: "Como se configura o mercado de tecnologia no Brasil?",
-            },
-            {
-              label: "PESQUISA",
-              text: "Análise de dados de mercado e força de trabalho, conduzida durante minha atuação na Rocketseat.",
-            },
-            {
-              label: "ACHADO",
-              text: "Mulheres representaram uma minoria dos empregos em tecnologia na análise reportada.",
-            },
-            { label: "REPERCUSSÃO", text: "O achado chegou à cobertura da CNN Brasil." },
-          ],
-          visual: "research",
-          externalHref: "https://lnkd.in/p/djifF6qh",
-          externalLabel: "Assistir cobertura",
-        },
-      ],
-    },
-    experience: {
-      eyebrow: "04 / EXPERIÊNCIA",
-      headlineLine1: "Onde trabalhei",
-      headlineLine2: "e o que construí.",
-      intro:
-        "Experiência profissional em finanças, consultoria e tecnologia — aplicando analytics, machine learning, experimentação e produtos de dados a problemas reais de negócio.",
-      items: [
-        {
-          period: "2025 — 2026",
-          company: "Banco BV",
-          role: "People Analytics Analyst Pleno · Data Analytics",
-          description:
-            "Desenvolvi e evoluí produtos analíticos, forecasting e soluções de apoio à decisão cobrindo uma força de trabalho de mais de 4.000 colaboradores e diferentes níveis de liderança. Atuei com SQL Server, Power BI, Python e Databricks.",
-          metadata: "SQL Server · Power BI · Python · Databricks",
-        },
-        {
-          period: "2024 — 2025",
-          company: "BIP Consulting",
-          role: "People Analytics · Data Analytics",
-          description:
-            "Assumi a operação de People Analytics e redesenhei o reporting internacional mensal, reduzindo a consolidação de cerca de uma semana para um dia. Estruturei fluxos de ETL e automação com Power Automate, Python e Power Query.",
-          metadata: "Python · Power Query · Power Automate · ETL",
-        },
-        {
-          period: "2022 — 2023",
-          company: "Contmatic Phoenix",
-          role: "Data Science Junior · Growth & Marketing Analytics",
-          description:
-            "Atuei com experimentação, segmentação, churn/LTV, funis e análise de campanhas sobre uma base de cerca de 1 milhão de leads e 60 mil usuários. Uma série de otimizações orientadas por dados contribuiu para cerca de 11% de aumento na conversão e 20% de redução no CAC.",
-          metadata: "Python · SQL · Experimentation · Growth Analytics",
-        },
-        {
-          period: "2021 — 2022",
-          company: "Rocketseat",
-          role: "Data Science Junior · Growth & Customer Analytics",
-          description:
-            "Apliquei ciência de dados em segmentação, retenção, coortes e Growth Analytics sobre uma base de mais de 60 mil alunos pagantes. Uma iniciativa de segmentação com árvore de decisão contribuiu para cerca de 15% de aumento na conversão de compra de cursos.",
-          metadata: "Python · R · SQL · Customer Analytics",
-        },
-      ],
-    },
-    researchRecognition: {
-      eyebrow: "05 / PESQUISA & RECONHECIMENTO",
-      headlineLine1: "Pesquisas e marcos",
-      headlineLine2: "que moldaram meu trabalho.",
-      supportingCopy:
-        "Investigações acadêmicas e projetos anteriores em estatística, forecasting e ciência de dados aplicada.",
-      items: [
-        {
-          type: "research",
-          index: "01",
-          title: "Wavelet Multivariate Time Series Analysis",
-          context: "UFSCar · Undergraduate Thesis · 2023",
-          description:
-            "Pesquisa de graduação em Estatística investigando como as relações entre mercados financeiros mudam ao longo do tempo e em diferentes escalas utilizando métodos wavelet.",
-          metadata: "Time Series · Statistics · Wavelets",
-          href: "https://github.com/mori-mkm/UFSCar/tree/main/undergraduate-thesis",
-          linkLabel: "Ver pesquisa",
-        },
-        {
-          type: "recognition",
-          index: "01",
-          title: "FarmIA — Santander Data Challenge",
-          context: "1º Lugar · 2020",
-          description:
-            "Projeto vencedor de um data challenge desenvolvido por uma equipe de cinco pessoas, utilizando modelagem estatística e dados agrometeorológicos para apoiar o planejamento agrícola.",
-          evidence: "1º LUGAR · 100+ EQUIPES",
-          metadata: "Applied Data Science · Agriculture",
-          href: "https://github.com/mori-mkm/FarmAI.Hackaton",
-          linkLabel: "GitHub",
-        },
-        {
-          type: "research",
-          index: "02",
-          title: "Retail Sales Forecasting",
-          context: "Digital House · Final Data Science Project",
-          description:
-            "Projeto acadêmico de forecasting de vendas mensais por loja utilizando SARIMAX, validação cronológica e um protótipo histórico em Flask.",
-          evidence: "PROJETO ACADÊMICO",
-          metadata: "Forecasting · SARIMAX · Time Series",
-          href: "https://github.com/mori-mkm/retail-sales-forecasting",
-          linkLabel: "GitHub",
         },
       ],
     },
@@ -1023,7 +1218,6 @@ export const homeContent: Record<Locale, HomeContent> = {
             "Git & GitHub",
             "Docker",
             "Testes",
-            "MLflow",
             "APIs",
             "FastAPI",
             "Streamlit",
@@ -1036,8 +1230,10 @@ export const homeContent: Record<Locale, HomeContent> = {
       eyebrow: "07 / CONTATO",
       headlineLine1: "Vamos construir",
       headlineLine2: "algo útil.",
-      supportingCopy:
-        "Tenho interesse em oportunidades e conversas sobre Ciência de Dados, Machine Learning e IA Aplicada.",
+      supportingCopy: [
+        "Tenho interesse em oportunidades em que ciência de dados, machine learning e AI engineering possam gerar valor real para o negócio.",
+        "Se você está construindo produtos com IA, resolvendo desafios complexos de dados ou procurando alguém que una execução técnica e entendimento de negócio, será um prazer conversar.",
+      ],
       fields: {
         name: { label: "NOME *", placeholder: "Jane Doe" },
         email: { label: "EMAIL *", placeholder: "jane@example.com" },

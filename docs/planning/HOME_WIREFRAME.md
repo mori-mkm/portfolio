@@ -88,6 +88,11 @@ GENERIC DEVELOPER TEMPLATE
 
 # 2. Page sequence
 
+> **Current sequence (ADR-021, 2026-11-09)** — the list below is historical:
+> Hero (unnumbered) → 01 / PROFESSIONAL IMPACT → 02 / SELECTED AI & DATA
+> PROJECTS → 03 / EXPERIENCE → 04 / OTHER WORK & RESEARCH → 05 / ABOUT →
+> 06 / CAPABILITIES → 07 / CONTACT.
+
 Official Home sequence:
 
 ```text
@@ -1308,6 +1313,19 @@ driven by `reverse={index % 2 === 1}` in `SelectedWork.tsx`:
 numbering); DataLab OS has no dedicated wireframe section — it uses the
 §13/§20 pattern unchanged. Copy: `PROJECT_CONTENT.md` §93.
 
+**Current implementation (ADR-021, 2026-11-09)** — supersedes the block
+below. Each project: header (index/category, status, title, outcome headline
+| description, notes, links) → body (media 8/12 | evidence micrographics 4/12;
+stacked below `lg`) → one mono stack line. Media sits in a 16:10 stage
+(diagram, `object-fit: cover` image, or muted reduced-motion-aware video).
+
+```text
+01 DataLab OS                diagram
+02 Empório AI Assistant      image (16:10 preview, focus 50% 30%)
+03 AI Closer                 diagram (no links — private, in development)
+04 Procurement Intelligence  diagram
+```
+
 **Current implementation (ADR-018 layout + ADR-019 membership,
 2026-11-03)** — 4 projects, one single-column editorial block each
 (header → full-width visual → proof row; no alternation since ADR-018):
@@ -2104,6 +2122,9 @@ shows the current items. RAG/PySpark/CI-CD remain deferred.
 Evaluation (added between LangGraph and AI Observability). Its retrieval
 experiments do not make RAG a capability.
 
+**Updated by ADR-021 (2026-11-09):** MLflow removed from Engineering (no
+sufficient public evidence). Wireframe below reflects it.
+
 Four columns.
 
 ```text
@@ -2122,11 +2143,10 @@ Wireframe (final V1 content):
 │ LLM Applications  │ Regression        │ Python            │ Git & GitHub      │
 │ Agent             │ Classification    │ SQL               │ Docker            │
 │   Orchestration   │ Gradient Boosting │ Pandas            │ Testing           │
-│ LangGraph         │ Forecasting       │ Power BI          │ MLflow            │
-│ AI Evaluation     │ Survival Analysis │ Data Modeling     │ APIs              │
-│ AI Observability  │ Experimentation   │ Data Pipelines    │ FastAPI           │
-│ AI Automation     │ Model Evaluation  │ Data Quality      │ Streamlit         │
-│                   │                   │                   │ Automation        │
+│ LangGraph         │ Forecasting       │ Power BI          │ APIs              │
+│ AI Evaluation     │ Survival Analysis │ Data Modeling     │ FastAPI           │
+│ AI Observability  │ Experimentation   │ Data Pipelines    │ Streamlit         │
+│ AI Automation     │ Model Evaluation  │ Data Quality      │ Automation        │
 └───────────────────┴───────────────────┴───────────────────┴───────────────────┘
 ```
 
@@ -2385,6 +2405,8 @@ No complex sitemap.
 ---
 
 # 32. Full 1440px desktop wireframe
+
+> **Historical (pre-ADR-012/018/021):** original draft — section order, nav and Capabilities items are superseded. Current order: §2 note (ADR-021); current Capabilities: §26.2.
 
 ```text
 ┌──────────────────────────────────────────────────────────────────────────┐

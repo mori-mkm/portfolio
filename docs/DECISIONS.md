@@ -375,6 +375,7 @@ Negative / trade-off: Selected Work is one project shorter (3 instead of 4) — 
 - Before adding any new named project/study to any Home section later, check it isn't already featured elsewhere on Home.
 - M1-06 added Research & Recognition (ADR-013) — Wavelet thesis, FarmIA, Retail Sales Forecasting. None of these, nor the CNN research figures above, are duplicated across sections.
 - **Superseded in part by ADR-016 (2026-09-05):** Application Job was removed from Selected Work entirely (not reassigned to another section). The "Current allocation" list above is a historical record of the allocation as decided on 2026-09-01 — see ADR-016 for the current Selected Work membership.
+- **Superseded in part by ADR-021 (2026-11-09):** Case Studies no longer exists as a Home section; Steel Indicator and Developer Market Research live in Other Work & Research. The exclusivity rule itself still holds.
 
 ---
 
@@ -411,6 +412,7 @@ Negative / trade-off: no Steel methodology topics duplicated here; no Banco BV w
 
 - `docs/planning/PORTFOLIO_SPEC.md` §16, `HOME_WIREFRAME.md` §24-25, `PROJECT_CONTENT.md` (new Research & Recognition block), and `docs/CONTEXT_MAP.md` updated to match (M1-06).
 - Before adding a fourth Research & Recognition item later (e.g. UFSCar teaching), check ADR-012's exclusivity rule and confirm it doesn't already have a narrative home.
+- **Superseded in part by ADR-021 (2026-11-09):** the three items now sit in the Research & Recognition group of `04 / Other Work & Research`; the standalone section is gone.
 
 ---
 
@@ -593,6 +595,7 @@ Negative / trade-off: the flagship is a PoC with no live demo, so its proof poin
 - `PROJECT_CONTENT.md` §2, §52-53 note, §78-80 and new §93 (DataLab OS content + claim boundaries); `PORTFOLIO_SPEC.md` §10.2-10.3, §18.1-18.2, §56; `HOME_WIREFRAME.md` §12-13, §26.2, §36, §59; `CONTEXT_MAP.md`.
 - `npm run verify` passed; visual check at 1440px/390px, EN/PT.
 - **Superseded in part by ADR-019 (2026-11-03):** Empório AI Assistant added as Selected Work `02`; Procurement and Attrition are now `03` and `04`, and AI Evaluation joined Applied AI. The "Decision" list above is the historical 2026-09-22 membership — see ADR-019 for the current one.
+- **Superseded in part by ADR-021 (2026-11-09):** see ADR-021 for the current featured-project membership.
 
 ---
 
@@ -632,6 +635,7 @@ Negative / trade-off: PORTFOLIO_SPEC §23 light palette and HOME_WIREFRAME's alt
 - `npm run verify` + `node --test` pass; Playwright: 0px overflow at 1440/1024/820/768/390/360, EN + PT; keyboard focus, mobile menu, Contact CTA checked.
 - Pre-redesign version preserved at git tag `pre-dark-editorial`.
 - **Superseded in part by ADR-019 (2026-11-03):** the "No real screenshots exist" line above was true on 2026-09-24. Empório AI Assistant now shows a real screenshot in that slot; the other projects keep `ProjectVisual`.
+- **Superseded in part by ADR-021 (2026-11-09):** Home section order, project media (16:10 stage) and Selected Work anatomy changed — see ADR-021.
 
 ---
 
@@ -677,6 +681,7 @@ Negative / trade-off: the screenshot is Portuguese-only UI on both locales (it i
 
 - `src/content/home.ts` (types, EN + PT `selectedWork`, `capabilities`), `src/components/ui/ProjectFeature.tsx`, `public/projects/emporio-ai-assistant/`.
 - `PROJECT_CONTENT.md` §1 + new §94, `PORTFOLIO_SPEC.md` §10/§18, `HOME_WIREFRAME.md`, `CONTEXT_MAP.md`.
+- **Superseded in part by ADR-021 (2026-11-09):** featured projects are now 01 DataLab OS, 02 Empório, 03 AI Closer, 04 Procurement (Attrition moved to Other Work); the Empório screenshot renders as a 16:10 cropped preview, not at natural size.
 
 ---
 
@@ -707,3 +712,43 @@ Positive: résumé is shared only on request. Negative / trade-off: recruiters w
 
 - `src/content/home.ts`, `src/app/[locale]/page.tsx`, `src/components/layout/Header.tsx`, `src/components/sections/{Hero,Experience,Contact}.tsx`.
 - Planning-doc "Resume ↗" wireframes and PORTFOLIO_SPEC §45 are historical (annotated at SPEC §45 and WIREFRAME §8.1).
+
+---
+
+### ADR-021 — Hiring-first Home hierarchy and product-showcase content
+
+**Date:** 2026-11-09
+**Status:** accepted
+
+**Context**
+
+The user asked for a Home refinement, not a redesign: recruiters should see positioning, professional results and the strongest AI/data products first. The ADR-018 dark editorial system (palette, Geist, accent, hairlines, CSS-only motion, Header/Footer) stays.
+
+**Decision**
+
+- Section order: Hero (unnumbered) → `01 / PROFESSIONAL IMPACT` (`#impact`) → `02 / SELECTED AI & DATA PROJECTS` (`#projects`) → `03 / EXPERIENCE` → `04 / OTHER WORK & RESEARCH` (`#other-work`) → `05 / ABOUT` → `06 / CAPABILITIES` → `07 / CONTACT`.
+- Hero: hiring-first headline + two paragraphs, exactly one CTA (no résumé, ADR-020).
+- Professional Impact: 4 metrics taken from the existing Experience content (~11% conversion, ~20% acquisition cost, 1 week → 1 day reporting, 4,000+ employees). No new numbers.
+- Featured projects, in order: 01 DataLab OS, 02 Empório AI Assistant, 03 AI Closer, 04 Procurement Intelligence.
+- AI Closer: private repository, collaborative prototype in development. Status shown explicitly; no GitHub/demo link, no metrics, no results claims; its stack (OpenAI, Supabase, pgvector, RAG, Browser Extension) is project-scoped and does **not** back any Capabilities item.
+- Employee Attrition moves from Selected Work to Other Work. Case Studies and Research & Recognition merge into Other Work & Research (Steel Indicator, Employee Attrition · Developer Market Research, Wavelet, FarmIA, Retail). ADR-012 exclusivity still holds: each item appears once.
+- Media is a typed union `diagram | image | video`. Image/video render in a fixed 16:10 stage (`object-fit: cover`, per-item focus point); diagrams use the same 16:10 footprint on desktop. Video is muted/looping, autoplays only without `prefers-reduced-motion` (the only new Client Component, ADR-005). No video asset exists yet.
+- Empório's screenshot becomes a bounded 16:10 preview (focus `50% 30%`) instead of the full 976×1022 image.
+- Procurement stack drops PySpark/MLflow (not in its repo); test counts leave the Home.
+- About moves to `05`, is portrait-ready (`about.portrait?`), and renders no image until a real portrait is supplied. Recommended asset: `public/about/matheus-portrait.webp`, 4:5.
+- Capabilities: visually quieter; MLflow removed from Engineering (no sufficient public evidence; not in the Procurement repo). No item added; AI Closer backs none.
+
+**Alternatives considered**
+
+- Keep Case Studies and Research as separate sections — rejected: two thin sections delay Experience and dilute the hierarchy.
+- Placeholder/stock portrait — rejected (ADR-007).
+- A carousel/animation library for media — rejected: no new dependency; CSS + native `<video>` are enough.
+
+**Consequences**
+
+Positive: positioning and results are visible before the projects; every project shares one media footprint. Negative / trade-off: AI Closer is shown without public evidence (labeled as in-development/private); the Empório preview crops the screenshot.
+
+**Verification / follow-up**
+
+- `src/content/home.ts`, `src/app/[locale]/page.tsx`, `src/components/sections/{Hero,ProfessionalImpact,SelectedWork,OtherWork,About,Capabilities,Contact}.tsx`, `src/components/ui/{ProjectFeature,ProjectMediaStage,ProjectVideo,ProjectVisual}.tsx`; removed `CaseStudies.tsx`, `ResearchRecognition.tsx`, `CaseStudyFeature.tsx`.
+- `PROJECT_CONTENT.md` §1 + new §95, `PORTFOLIO_SPEC.md` §10.2, `HOME_WIREFRAME.md` §2/§12, `CONTEXT_MAP.md`.
