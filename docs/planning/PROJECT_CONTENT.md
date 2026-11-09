@@ -51,6 +51,19 @@ PROMINENCE
 
 Current Home allocation (ADR-012, ADR-016, ADR-017, ADR-019):
 
+> **Current allocation (ADR-021, 2026-11-09)** — supersedes the block below:
+>
+> ```text
+> 02 / SELECTED AI & DATA PROJECTS
+> 01 DataLab OS · 02 Empório AI Assistant · 03 AI Closer · 04 Procurement Intelligence
+>
+> 04 / OTHER WORK & RESEARCH
+> Other projects: Steel Indicator, Employee Attrition Prediction
+> Research & recognition: Developer Market Research, Wavelet thesis, FarmIA, Retail Sales Forecasting
+> ```
+>
+> Home copy and AI Closer claim boundaries: §95.
+
 ```text
 SELECTED WORK
 01 DataLab OS
@@ -3828,3 +3841,42 @@ the price of a Takamine GD20 acoustic guitar and the value of each
 installment in a 12-installment plan."
 Alt — PT: "Interface de chat do Empório AI Assistant respondendo ao preço
 de um violão Takamine GD20 e ao valor de cada parcela em 12x."
+
+---
+
+# 95. HOME REFINEMENT (ADR-021, 2026-11-09)
+
+The rendered EN/PT copy lives in `src/content/home.ts` (single source; not
+duplicated here). This section keeps only what is needed to edit it safely.
+
+## 95.1 Professional Impact
+
+Four metrics, all already present in the Experience content (no new numbers):
+~11% higher conversion and ~20% lower acquisition cost (Contmatic Phoenix,
+a series of optimizations — not one test); reporting workflow 1 week → 1 day;
+4,000+ employees covered (BIP People Analytics).
+
+## 95.2 AI Closer — claim boundaries
+
+Source: the user (private repository; no public evidence).
+
+- Shown as: APPLIED AI · SALES INTELLIGENCE; status "IN DEVELOPMENT ·
+  PRIVATE REPOSITORY"; collaborative prototype; role Product Owner ·
+  Technical Architecture within a team.
+- No GitHub/demo link, no metrics, no users/customers/revenue, no accuracy or
+  conversion results, no "production"/"deployed".
+- Evaluation and end-to-end reliability validation are described as ongoing.
+- Its stack (OpenAI, Supabase, PostgreSQL/pgvector, RAG, Browser Extension)
+  is project-scoped: it does **not** back any Capabilities item (ADR-007).
+- Visual: `ProjectVisual` "closer" diagram (Meet captions → conversation
+  analysis → commercial memory → knowledge retrieval → one next action).
+
+## 95.3 Other changes
+
+- Procurement stack: Python · SQL · DuckDB · LightGBM · Streamlit (PySpark
+  and MLflow removed — not in the repo).
+- Test counts no longer appear on Home.
+- Capabilities / Engineering: MLflow removed (no sufficient public evidence).
+- Employee Attrition moved to Other Work (74% recall · SMOTE · threshold
+  optimization · 5-fold CV).
+- Empório image: 16:10 preview, `object-fit: cover`, focus `50% 30%`.

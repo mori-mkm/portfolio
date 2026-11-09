@@ -43,9 +43,13 @@ export function Contact({
 
       <div className="mt-12 flex flex-col gap-12 md:mt-20 md:flex-row md:gap-16">
         <div className="flex flex-col gap-8 md:w-1/3">
-          <p className="lead max-w-[360px]">
-            {supportingCopy}
-          </p>
+          <div className="flex flex-col gap-4">
+            {supportingCopy.map((paragraph) => (
+              <p key={paragraph} className="lead max-w-[380px]">
+                {paragraph}
+              </p>
+            ))}
+          </div>
 
           <ul className="flex flex-col divide-y divide-[var(--border)] border-y border-[var(--border)]">
             {links.map((link) => (

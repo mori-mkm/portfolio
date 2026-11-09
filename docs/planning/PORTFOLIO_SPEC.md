@@ -708,6 +708,13 @@ de uma loja fictícia (não é cliente, não está em produção) e usa um
 screenshot real do produto no lugar do diagrama. Não aparece em Case
 Studies.
 
+> **Estado atual (ADR-021, 2026-11-09):** a seção virou `02 / SELECTED AI &
+> DATA PROJECTS` — 01 DataLab OS, 02 Empório AI Assistant, 03 AI Closer
+> (privado, em desenvolvimento), 04 Procurement Intelligence. Employee
+> Attrition foi para `04 / OTHER WORK & RESEARCH`, que substitui Case Studies
+> e Research & Recognition. Mídia: união diagram | image | video em palco
+> 16:10. Ordem da Home e copy: ADR-021 e `PROJECT_CONTENT.md` §95.
+
 Não mostrar todo o GitHub.
 
 ---
@@ -1807,6 +1814,10 @@ measured model/config and retrieval comparisons, explicit limitations. AI
 Evaluation is therefore rendered. Its BM25/embeddings runs are retrieval
 experiments, not a RAG architecture — RAG stays excluded.
 
+**Updated by ADR-021 (2026-11-09):** MLflow removed from Engineering — no
+sufficient public evidence (it is not in the Procurement Intelligence repo,
+and its stack no longer lists it). AI Closer (private) backs no item.
+
 ---
 
 ## 18.2 Final V1 groups (rendered)
@@ -1873,7 +1884,6 @@ that.
 Git & GitHub
 Docker
 Testing
-MLflow
 APIs
 FastAPI
 Streamlit
@@ -1882,7 +1892,7 @@ Automation
 
 Rationale: Git/GitHub (public projects + the portfolio itself), Docker
 (Steel Indicator), Testing (Procurement + Steel's public test suites),
-MLflow (Procurement Intelligence), APIs (experience/projects/technical
+APIs (experience/projects/technical
 background), Streamlit (Procurement Intelligence's live app), Automation
 (professional experience; Application Job previously evidenced this too but
 is no longer featured in Selected Work — see ADR-016).
