@@ -752,3 +752,5 @@ Positive: positioning and results are visible before the projects; every project
 
 - `src/content/home.ts`, `src/app/[locale]/page.tsx`, `src/components/sections/{Hero,ProfessionalImpact,SelectedWork,OtherWork,About,Capabilities,Contact}.tsx`, `src/components/ui/{ProjectFeature,ProjectMediaStage,ProjectVideo,ProjectVisual}.tsx`; removed `CaseStudies.tsx`, `ResearchRecognition.tsx`, `CaseStudyFeature.tsx`.
 - `PROJECT_CONTENT.md` §1 + new §95, `PORTFOLIO_SPEC.md` §10.2, `HOME_WIREFRAME.md` §2/§12, `CONTEXT_MAP.md`.
+
+- **Corrected 2026-11-18 (facts, not a new decision):** the Professional Impact metrics listed above were mis-attributed. Current items: +11% lead volume (Contmatic), −20% CAC (Rocketseat), 7 days → 1 day (BIP), 4,000+ employees (Banco BV) — see `PROJECT_CONTENT.md` §95.1.
