@@ -1762,6 +1762,8 @@ Gap:
 
 # 22. 04 / Experience
 
+> **Corrected 2026-11-18:** Experience copy facts follow the Master Resume — see `PORTFOLIO_SPEC.md` §15 note and `PROJECT_CONTENT.md` §95.1. Layout unchanged.
+
 Anchor:
 
 ```text
@@ -1922,6 +1924,8 @@ Editorial list is cleaner.
 ---
 
 # 24. 05 / Research & Recognition
+
+> **Corrected 2026-11-18:** the Wavelet context below now renders without the year (`UFSCar · Undergraduate Thesis`); see `PROJECT_CONTENT.md` §92.1. Section is now a group inside Other Work & Research (ADR-021).
 
 **Updated by M1-06 (ADR-013):** section renamed from "05 / Research" —
 the old 4-item wireframe below predates ADR-012 and duplicated Steel

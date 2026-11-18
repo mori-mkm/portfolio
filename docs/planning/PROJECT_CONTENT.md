@@ -2434,6 +2434,13 @@ GitHub ↗
 
 # 58. Case Study / 02 card
 
+> **Corrected 2026-11-18 (current state):** rendered in Other Work & Research.
+> Copy: "Contributed to research at Rocketseat on gender representation in
+> technology, with findings featured in CNN Brasil coverage." Link: "View
+> LinkedIn Post" → `https://www.linkedin.com/posts/matheus-mori_estatistica-cienciadedados-ugcPost-6892806172886593537-B6Ij/`
+> (replaces `lnkd.in/p/djifF6qh` / "Watch coverage"). Never claim Matheus was
+> interviewed by or appeared on CNN.
+
 **New in M1-04 (ADR-012):** Developer Market Research / CNN Brasil replaces
 Procurement Intelligence as Case Study / 02. This is a research/
 communication case study, not an engineering one — see the "safe
@@ -3458,6 +3465,8 @@ repositories' full READMEs here.
 
 ## 92.1 Research / 01 — Wavelet Multivariate Time Series Analysis
 
+> **Corrected 2026-11-18:** context renders without a year (`UFSCar · Undergraduate Thesis`). The degree was completed June 2025; the thesis presentation year is not established by the Master Resume — do not show 2023 or 2025.
+
 Identity:
 
 ```yaml
@@ -3497,6 +3506,8 @@ exploratory statistical research.
 ---
 
 ## 92.2 Recognition / 01 — FarmIA — Santander Data Challenge
+
+> **Updated 2026-11-18:** second link "View Award Post" / "Ver publicação da premiação" → `https://www.linkedin.com/posts/matheus-mori_santanderbrasil-shawee-hackaton-share-6697587025119326208-jvkq/`. Master Resume confirms: 2020, 1st place, five-person team, 100+ teams, role Data Scientist.
 
 Identity:
 
@@ -3852,9 +3863,26 @@ duplicated here). This section keeps only what is needed to edit it safely.
 ## 95.1 Professional Impact
 
 Four metrics, all already present in the Experience content (no new numbers):
-~11% higher conversion and ~20% lower acquisition cost (Contmatic Phoenix,
-a series of optimizations — not one test); reporting workflow 1 week → 1 day;
-4,000+ employees covered (BIP People Analytics).
+one result per employer (corrected 2026-11-18; Source: Master Resume (`Curriculo_Mestre_Matheus_Mori.md`, updated 2026-11-12).):
++11% lead volume (Contmatic Phoenix); −20% customer acquisition cost
+(Rocketseat); reporting cycle 7 days → 1 day (BIP Consulting); 4,000+
+employees covered (Banco BV — workforce, not users). Growth results use
+"contributed to"; never attributed to one test or model.
+
+Experience facts behind them:
+
+- Contmatic Phoenix: **+11% lead volume** and **−13% cost per lead (CPL)** —
+  aggregate result of a set of growth/acquisition initiatives. Not conversion,
+  not percentage points, not CAC.
+- Rocketseat: **+15% purchase volume** and **−20% customer acquisition cost
+  (CAC)** — growth initiatives, not one model. Not percentage points.
+- BIP Consulting: monthly international reporting cycle **7 days → 1 day**
+  (elapsed time, not labor saved). Joined March 2024 as intern, promoted
+  directly to mid-level (Pleno) in July 2024 — no Junior step. Displayed
+  role: `People Analytics Analyst Pleno · Data Analytics`.
+- Banco BV: indicators covering **4,000+ employees** (workforce covered, not
+  dashboard users). Attendance/capacity analyses helped inform the review of
+  the on-site work policy (not decided by Matheus alone).
 
 ## 95.2 AI Closer — claim boundaries
 

@@ -1323,6 +1323,24 @@ Exemplos:
 
 # 15. 04 / Experience
 
+> **Current state (corrected 2026-11-18).** Source: Master Resume (`Curriculo_Mestre_Matheus_Mori.md`, updated 2026-11-12). The copy below is a
+> historical snapshot; its Contmatic ~11% conversion / ~20% CAC, Rocketseat
+> ~15% course-purchase conversion and BIP "Junior" notes are superseded.
+> Rendered copy lives in `src/content/home.ts`. Facts:
+>
+> - Contmatic Phoenix: **+11% lead volume** and **−13% cost per lead (CPL)** —
+>   aggregate result of a set of growth/acquisition initiatives. Not conversion,
+>   not percentage points, not CAC.
+> - Rocketseat: **+15% purchase volume** and **−20% customer acquisition cost
+>   (CAC)** — growth initiatives, not one model. Not percentage points.
+> - BIP Consulting: monthly international reporting cycle **7 days → 1 day**
+>   (elapsed time, not labor saved). Joined March 2024 as intern, promoted
+>   directly to mid-level (Pleno) in July 2024 — no Junior step. Displayed
+>   role: `People Analytics Analyst Pleno · Data Analytics`.
+> - Banco BV: indicators covering **4,000+ employees** (workforce covered, not
+>   dashboard users). Attendance/capacity analyses helped inform the review of
+>   the on-site work policy (not decided by Matheus alone).
+
 **Finalized by M1-05** (2026-09-01) — this replaces the earlier placeholder
 copy below with the actual implemented content, per ADR-011 (no private
 résumé material in the repo — only public-safe facts) and ADR-012 (Home
@@ -1401,13 +1419,14 @@ attrition-model architecture) — see ADR-012.
 ```text
 2024 — 2025
 BIP Consulting
-People Analytics · Data Analytics
+People Analytics Analyst Pleno · Data Analytics
 ```
 
-The user entered as an intern and was later promoted to Junior Analyst, but
-the exact transition date isn't in the evidence base — the Home
-deliberately uses the functional role above instead of labeling the whole
-2024–2025 period "Junior", which would be a false level/date combination.
+**Corrected 2026-11-18 (Master Resume):** joined March 2024 as intern and
+was promoted directly to People Analytics Analyst Pleno in July 2024 — no
+Junior step. The role shows the official final title plus the functional
+descriptor; the description states the direct promotion. (Superseded note:
+the earlier "promoted to Junior Analyst, date unknown" rationale was wrong.)
 
 EN copy:
 
@@ -1560,6 +1579,8 @@ anchor) — only the section's own heading uses the expanded name.
 ---
 
 ## 16.2 Final allocation (V1) — editorial order, not chronological
+
+> **Corrected 2026-11-18:** the Wavelet thesis context renders as `UFSCar · Undergraduate Thesis` (no year) — the Master Resume does not establish the presentation year. FarmIA also links to its award post on LinkedIn; Developer Market Research links to a LinkedIn post ("View LinkedIn Post"), not "Watch coverage".
 
 ### Research / 01 — Wavelet Multivariate Time Series Analysis
 

@@ -357,28 +357,28 @@ export const homeContent: Record<Locale, HomeContent> = {
         "Before building AI applications, I spent years applying statistics, experimentation, and data analytics to real business challenges. These are some of the outcomes I've helped deliver.",
       items: [
         {
-          value: "~11%",
-          label: "HIGHER CONVERSION",
+          value: "+11%",
+          label: "HIGHER LEAD VOLUME",
           description:
-            "Data-driven experimentation and growth optimizations at Contmatic contributed to an approximately 11% increase in conversion.",
+            "Growth and acquisition initiatives at Contmatic contributed to an 11% increase in lead volume.",
         },
         {
-          value: "~20%",
+          value: "−20%",
           label: "LOWER ACQUISITION COST",
           description:
-            "Analytics and experimentation initiatives contributed to an approximately 20% reduction in customer acquisition cost at Contmatic.",
+            "Customer analytics and growth initiatives at Rocketseat contributed to a 20% reduction in customer acquisition cost.",
         },
         {
-          value: "1 week → 1 day",
+          value: "7 days → 1 day",
           label: "REPORTING WORKFLOW",
           description:
-            "Redesigned and automated international reporting workflows at BIP Consulting, reducing monthly consolidation time from approximately one week to one day.",
+            "Automated international reporting workflows at BIP Consulting, reducing the monthly reporting cycle from approximately seven days to one.",
         },
         {
           value: "4,000+",
           label: "EMPLOYEES COVERED",
           description:
-            "Developed enterprise analytics solutions at Banco BV supporting workforce and organizational performance reporting for a population of over 4,000 employees.",
+            "Developed strategic analytics products at Banco BV supporting organizational reporting and management decisions involving more than 4,000 employees.",
         },
       ],
     },
@@ -556,15 +556,15 @@ export const homeContent: Record<Locale, HomeContent> = {
           company: "Banco BV",
           role: "People Analytics Analyst Pleno · Data Analytics",
           description:
-            "Developed analytics products supporting strategic reporting and organizational performance for a population of over 4,000 employees, with reporting accessed across multiple leadership levels.",
+            "Developed and evolved strategic analytics products covering a workforce of 4,000+ employees. Analyses of office capacity and attendance helped inform changes to the bank's on-site work policy.",
           metadata: "SQL Server · Power BI · Python · Databricks",
         },
         {
           period: "2024 — 2025",
           company: "BIP Consulting",
-          role: "People Analytics · Data Analytics",
+          role: "People Analytics Analyst Pleno · Data Analytics",
           description:
-            "Automated and redesigned international reporting workflows, reducing a monthly process from approximately one week to one day.",
+            "Promoted directly from intern to mid-level analyst in approximately four months. Took ownership of international reporting workflows, reducing the monthly cycle from seven days to one through automation.",
           metadata: "Python · Power Query · Power Automate · ETL",
         },
         {
@@ -572,7 +572,7 @@ export const homeContent: Record<Locale, HomeContent> = {
           company: "Contmatic Phoenix",
           role: "Data Science Junior · Growth & Marketing Analytics",
           description:
-            "Applied experimentation, customer analytics, and segmentation to growth initiatives that contributed to higher conversion and lower acquisition costs.",
+            "Led data-driven experimentation, customer segmentation and acquisition analytics, contributing to 11% higher lead volume and 13% lower cost per lead.",
           metadata: "Python · SQL · Experimentation · Growth Analytics",
         },
         {
@@ -580,7 +580,7 @@ export const homeContent: Record<Locale, HomeContent> = {
           company: "Rocketseat",
           role: "Data Science Junior · Growth & Customer Analytics",
           description:
-            "Used customer segmentation and predictive modeling to support digital education growth initiatives, including work associated with an approximately 15% increase in course-purchase conversion.",
+            "Applied predictive modeling, customer analytics and experimentation to growth initiatives, contributing to a 15% increase in purchase volume and a 20% reduction in customer acquisition cost.",
           metadata: "Python · R · SQL · Customer Analytics",
         },
       ],
@@ -622,14 +622,19 @@ export const homeContent: Record<Locale, HomeContent> = {
               title: "Developer Market Research",
               context: "Rocketseat",
               description:
-                "Research and data analysis developed during my time at Rocketseat, with findings on women's representation in technology reaching CNN Brasil.",
+                "Contributed to research at Rocketseat on gender representation in technology, with findings featured in CNN Brasil coverage.",
               evidence: "~20% REPORTED REPRESENTATION · CNN BRASIL COVERAGE",
-              links: [{ label: "Watch coverage", href: "https://lnkd.in/p/djifF6qh" }],
+              links: [
+                {
+                  label: "View LinkedIn Post",
+                  href: "https://www.linkedin.com/posts/matheus-mori_estatistica-cienciadedados-ugcPost-6892806172886593537-B6Ij/",
+                },
+              ],
             },
             {
               kicker: "RESEARCH",
               title: "Wavelet Multivariate Time Series Analysis",
-              context: "UFSCar · Undergraduate Thesis · 2023",
+              context: "UFSCar · Undergraduate Thesis",
               description:
                 "Undergraduate statistics research examining how relationships among financial markets change across time and scale using wavelet methods.",
               metadata: "Time Series · Statistics · Wavelets",
@@ -648,7 +653,10 @@ export const homeContent: Record<Locale, HomeContent> = {
                 "First-place data challenge project developed by a five-person team, using statistical modeling and agrometeorological data to support agricultural planning.",
               evidence: "1ST PLACE · 100+ TEAMS",
               metadata: "Applied Data Science · Agriculture",
-              links: [{ label: "GitHub", href: "https://github.com/mori-mkm/FarmAI.Hackaton" }],
+              links: [
+                { label: "GitHub", href: "https://github.com/mori-mkm/FarmAI.Hackaton" },
+                { label: "View Award Post", href: "https://www.linkedin.com/posts/matheus-mori_santanderbrasil-shawee-hackaton-share-6697587025119326208-jvkq/" },
+              ],
             },
             {
               kicker: "RESEARCH",
@@ -671,7 +679,7 @@ export const homeContent: Record<Locale, HomeContent> = {
       headlineLine1: "A statistician's approach",
       headlineLine2: "to building AI.",
       paragraphs: [
-        "My background is in Statistics, and my professional experience spans data science, growth analytics, business intelligence, and enterprise data solutions.",
+        "I hold a Bachelor's degree in Statistics from the Federal University of São Carlos (UFSCar), and my professional experience spans data science, growth analytics, business intelligence, and enterprise data solutions.",
         "I've worked on problems involving customer acquisition, conversion, retention, operational reporting, and organizational performance — learning how to connect technical work with real business needs.",
         "That experience shapes how I approach AI engineering today: start with the problem, choose the simplest effective solution, and evaluate whether it works.",
         "I care about more than making models run. I care about building systems that are understandable, reliable, and useful.",
@@ -832,28 +840,28 @@ export const homeContent: Record<Locale, HomeContent> = {
         "Antes de construir aplicações de IA, passei anos aplicando estatística, experimentação e analytics a desafios reais de negócio. Estes são alguns dos resultados que ajudei a entregar.",
       items: [
         {
-          value: "~11%",
-          label: "MAIS CONVERSÃO",
+          value: "+11%",
+          label: "MAIS LEADS CAPTADOS",
           description:
-            "Experimentação orientada por dados e otimizações de growth na Contmatic contribuíram para um aumento de aproximadamente 11% na conversão.",
+            "Iniciativas de growth e aquisição na Contmatic contribuíram para um aumento de 11% no volume de leads captados.",
         },
         {
-          value: "~20%",
+          value: "−20%",
           label: "MENOR CUSTO DE AQUISIÇÃO",
           description:
-            "Iniciativas de analytics e experimentação contribuíram para uma redução de aproximadamente 20% no custo de aquisição de clientes na Contmatic.",
+            "Iniciativas de customer analytics e growth na Rocketseat contribuíram para uma redução de 20% no custo de aquisição de clientes (CAC).",
         },
         {
-          value: "1 semana → 1 dia",
-          label: "FLUXO DE REPORTING",
+          value: "7 dias → 1 dia",
+          label: "PROCESSO DE REPORTING",
           description:
-            "Redesenhei e automatizei fluxos de reporting internacional na BIP Consulting, reduzindo o tempo de consolidação mensal de cerca de uma semana para um dia.",
+            "Automatizei fluxos de reporting internacional na BIP Consulting, reduzindo o ciclo mensal de reporting de cerca de sete dias para um.",
         },
         {
           value: "4.000+",
-          label: "COLABORADORES COBERTOS",
+          label: "COLABORADORES ABRANGIDOS",
           description:
-            "Desenvolvi soluções analíticas corporativas no Banco BV para reporting de força de trabalho e performance organizacional de uma população de mais de 4.000 colaboradores.",
+            "Desenvolvi produtos analíticos estratégicos no Banco BV para reporting organizacional e decisões de gestão envolvendo mais de 4.000 colaboradores.",
         },
       ],
     },
@@ -1031,15 +1039,15 @@ export const homeContent: Record<Locale, HomeContent> = {
           company: "Banco BV",
           role: "People Analytics Analyst Pleno · Data Analytics",
           description:
-            "Desenvolvi produtos analíticos para reporting estratégico e performance organizacional de uma população de mais de 4.000 colaboradores, com relatórios acessados por diferentes níveis de liderança.",
+            "Desenvolvi e evoluí produtos analíticos estratégicos abrangendo mais de 4.000 colaboradores. Análises de capacidade do prédio e de presença ajudaram a embasar mudanças na política de trabalho presencial do banco.",
           metadata: "SQL Server · Power BI · Python · Databricks",
         },
         {
           period: "2024 — 2025",
           company: "BIP Consulting",
-          role: "People Analytics · Data Analytics",
+          role: "People Analytics Analyst Pleno · Data Analytics",
           description:
-            "Automatizei e redesenhei fluxos de reporting internacional, reduzindo um processo mensal de cerca de uma semana para um dia.",
+            "Promovido diretamente de estagiário a analista pleno em cerca de quatro meses. Assumi os fluxos de reporting internacional, reduzindo o ciclo mensal de sete dias para um com automação.",
           metadata: "Python · Power Query · Power Automate · ETL",
         },
         {
@@ -1047,7 +1055,7 @@ export const homeContent: Record<Locale, HomeContent> = {
           company: "Contmatic Phoenix",
           role: "Data Science Junior · Growth & Marketing Analytics",
           description:
-            "Apliquei experimentação, analytics de clientes e segmentação a iniciativas de growth que contribuíram para mais conversão e menor custo de aquisição.",
+            "Liderei experimentação orientada por dados, segmentação de clientes e analytics de aquisição, contribuindo para um aumento de 11% no volume de leads e uma redução de 13% no custo por lead (CPL).",
           metadata: "Python · SQL · Experimentation · Growth Analytics",
         },
         {
@@ -1055,7 +1063,7 @@ export const homeContent: Record<Locale, HomeContent> = {
           company: "Rocketseat",
           role: "Data Science Junior · Growth & Customer Analytics",
           description:
-            "Usei segmentação de clientes e modelagem preditiva para apoiar iniciativas de crescimento em educação digital, incluindo um trabalho associado a um aumento de cerca de 15% na conversão de compra de cursos.",
+            "Apliquei modelagem preditiva, analytics de clientes e experimentação a iniciativas de growth, contribuindo para um aumento de 15% no volume de compras e uma redução de 20% no custo de aquisição de clientes (CAC).",
           metadata: "Python · R · SQL · Customer Analytics",
         },
       ],
@@ -1097,14 +1105,19 @@ export const homeContent: Record<Locale, HomeContent> = {
               title: "Pesquisa sobre o Mercado de Tecnologia",
               context: "Rocketseat",
               description:
-                "Pesquisa e análise de dados desenvolvidas durante minha atuação na Rocketseat, com resultados sobre a participação feminina no mercado de tecnologia chegando à CNN Brasil.",
+                "Contribuí para uma pesquisa da Rocketseat sobre representatividade de gênero na tecnologia, com resultados destacados em reportagem da CNN Brasil.",
               evidence: "~20% DE REPRESENTAÇÃO REPORTADA · COBERTURA DA CNN BRASIL",
-              links: [{ label: "Assistir cobertura", href: "https://lnkd.in/p/djifF6qh" }],
+              links: [
+                {
+                  label: "Ver publicação no LinkedIn",
+                  href: "https://www.linkedin.com/posts/matheus-mori_estatistica-cienciadedados-ugcPost-6892806172886593537-B6Ij/",
+                },
+              ],
             },
             {
               kicker: "PESQUISA",
               title: "Wavelet Multivariate Time Series Analysis",
-              context: "UFSCar · Undergraduate Thesis · 2023",
+              context: "UFSCar · Undergraduate Thesis",
               description:
                 "Pesquisa de graduação em Estatística investigando como as relações entre mercados financeiros mudam ao longo do tempo e em diferentes escalas utilizando métodos wavelet.",
               metadata: "Time Series · Statistics · Wavelets",
@@ -1123,7 +1136,10 @@ export const homeContent: Record<Locale, HomeContent> = {
                 "Projeto vencedor de um data challenge desenvolvido por uma equipe de cinco pessoas, utilizando modelagem estatística e dados agrometeorológicos para apoiar o planejamento agrícola.",
               evidence: "1º LUGAR · 100+ EQUIPES",
               metadata: "Applied Data Science · Agriculture",
-              links: [{ label: "GitHub", href: "https://github.com/mori-mkm/FarmAI.Hackaton" }],
+              links: [
+                { label: "GitHub", href: "https://github.com/mori-mkm/FarmAI.Hackaton" },
+                { label: "Ver publicação da premiação", href: "https://www.linkedin.com/posts/matheus-mori_santanderbrasil-shawee-hackaton-share-6697587025119326208-jvkq/" },
+              ],
             },
             {
               kicker: "PESQUISA",
@@ -1146,7 +1162,7 @@ export const homeContent: Record<Locale, HomeContent> = {
       headlineLine1: "A abordagem de um estatístico",
       headlineLine2: "para construir IA.",
       paragraphs: [
-        "Minha formação é em Estatística, e minha experiência profissional passa por ciência de dados, growth analytics, business intelligence e soluções de dados corporativas.",
+        "Sou bacharel em Estatística pela Universidade Federal de São Carlos (UFSCar), e minha experiência profissional abrange ciência de dados, growth analytics, business intelligence e soluções corporativas de dados.",
         "Trabalhei com problemas de aquisição de clientes, conversão, retenção, reporting operacional e performance organizacional — aprendendo a conectar o trabalho técnico às necessidades reais do negócio.",
         "Essa experiência define como abordo AI engineering hoje: começar pelo problema, escolher a solução eficaz mais simples e avaliar se ela realmente funciona.",
         "Não me importo apenas em fazer modelos rodarem. Me importo em construir sistemas compreensíveis, confiáveis e úteis.",
